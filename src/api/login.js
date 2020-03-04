@@ -3,7 +3,7 @@ import axios from '@/api/index';
 let login = (data) => {
     return axios({
         method: 'post',
-        url: `/user/login`,
+        url: `/employee/login`,
         data
     })
 }

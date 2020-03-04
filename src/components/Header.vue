@@ -1,30 +1,13 @@
 <template>
-    <el-row>
-        <el-col :span="20">
-            <div class="head-wrap">
-                <el-image :src="require('@/assets/logo-lion.png')" class="logo"/>
-                智慧食堂业务支撑系统
-            </div>
-        </el-col>
-        <el-col :span="4">
-            <div class="demonstration" style="color:white;float: right">
-                  <span>
-                    <i class="el-icon-user-solid"></i> admin
-                  </span>
-                <span>
-              修改密码
-            </span>
-                <span>
-              安全退出
-            </span>
-            </div>
-        </el-col>
-    </el-row>
+    <div class="demonstration">
+        <el-image :src="require('@/assets/header-icon.png')" class="header-img"/>
+        <span class="user-name">欢迎您：admin</span>&nbsp;| &nbsp;
+        <span style="color: #777">修改密码</span>&nbsp;| &nbsp;
+        <span style="color: #777">安全退出</span>
+    </div>
 </template>
 <script>
-    export default {
-
-    }
+    export default {}
 </script>
 <style>
     html {
@@ -41,9 +24,20 @@
         align-items: center;
     }
 
-    .logo {
-        width: 50px;
-        height: 50px;
+    .demonstration {
+        font-size: 14px;
+        color: #333333;
+        letter-spacing: 0;
+        float: right;
+        display: flex;
+        align-items: center;
+    }
+
+    .header-img {
+        width: 20px;
+        height: 20px;
         margin-right: 10px;
     }
+
+
 </style>

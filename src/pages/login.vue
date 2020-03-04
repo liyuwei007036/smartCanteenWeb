@@ -30,8 +30,8 @@
         data() {
             return {
                 loginForm: {
-                    account: '',
-                    password: '',
+                    account: 'admin',
+                    password: '123456',
                     code: 'aaa'
                 },
                 rules: {

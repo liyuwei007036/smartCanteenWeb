@@ -1,11 +1,17 @@
 <template>
     <div>
-        <div class="search">
+        <div v-if="isSerachVisible" class="search" style="border-bottom: 1px solid #eaeaea;padding-bottom: 15px">
             <el-input v-model="search.mobile" placeholder="请输入手机号" style="width:240px"></el-input>
             <el-input v-model="search.name" placeholder="请输入姓名" style="width:240px"></el-input>
             <el-input v-model="search.no" placeholder="请输入账号" style="width:240px"></el-input>
-            <el-button type="primary" @click="serach">搜索</el-button>
-            <el-button type="primary" @click="addOrUpdateEmployee()">新增</el-button>
+            <el-button type="primary" @click="serach" icon="el-icon-search">搜索</el-button>
+        </div>
+        <div class="option-menu">
+            <el-button type="primary" class="add-btn" @click="addOrUpdateEmployee()" icon="el-icon-plus">新增人员
+            </el-button>
+            <el-button type="danger" class="del-btn" @click="addOrUpdateEmployee()" icon="el-icon-delete">删除</el-button>
+            <el-button type="primary" class="search-btn" @click="isSerachVisible = !isSerachVisible" icon="el-icon-search"
+                       style="float: right;"></el-button>
         </div>
         <div>
             <el-table
@@ -136,7 +142,8 @@
                     no: "",
                     password: ""
                 },
-                isVisible: false,
+                isVisible: false, //弹窗
+                isSerachVisible: false //搜索
             }
         },
         mounted: function () {
@@ -150,7 +157,7 @@
                 if (res.code === 1000) {
                     this.total = res.data.total;
                     this.currentPage = res.data.currentPage;
-                    this.tableData = res.data.employeeList
+                    this.tableData = res.data.data
                 } else {
                     this.$message.error(res.msg);
                 }
@@ -165,14 +172,6 @@
 
             serach() {
                 this.getList()
-            },
-            //新增员工
-            add() {
-                console.log("新增")
-            },
-
-            handleClick(row) {
-                console.log(row);
             },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);

@@ -44,10 +44,6 @@
 <style scoped>
     .bread {
         display: inline-block;
-        display: inline-block;
-        height: 48px;
-        vertical-align: top;
-        line-height: 48px;
     }
 
 

@@ -5,6 +5,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import origination from '@/pages/origination';
 import employeeList from '@/pages/employeeList';
+import userList from '@/pages/userList';
 import index from '@/pages/index';
 import login from '@/pages/login';
 import home from '@/pages/home';
@@ -44,9 +45,16 @@ const router = new VueRouter({
                     path: '/employeeList',
                     component: employeeList,
                     name: 'employeeList',
-                  meta: {
-                    title: '人员资料'
-                  }
+                    meta: {
+                        title: '人员资料'
+                    }
+                }, {
+                    path: '/userList',
+                    component: userList,
+                    name: 'userList',
+                    meta: {
+                        title: '用户管理'
+                    }
                 },
             ],
         },

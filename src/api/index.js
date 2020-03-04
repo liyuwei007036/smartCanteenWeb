@@ -3,7 +3,7 @@ import {Message} from 'element-ui'
 
 axios.defaults.timeout = 50000;
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://192.168.3.6:5001';
+axios.defaults.baseURL = 'http://192.168.3.11:5001';
 
 
 const reqList = []

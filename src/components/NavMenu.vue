@@ -2,7 +2,7 @@
   <el-row class="tac">
     <el-col :span="24">
       <el-menu class="el-menu-vertical-demo" unique-opened @open="handleOpen" @close="handleClose"
-        background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+        background-color="#101634" text-color="#fff" active-text-color="#2E6CFE">
         <el-submenu v-for="item in menu" :index="item.id" :key="item.id">
           <template slot="title">
             <span v-text="item.name"></span>
