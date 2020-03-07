@@ -23,6 +23,10 @@
     overflow: hidden;
   }
 
+  .el-menu{
+    border-right: none;
+  }
+
 </style>
 <script>
 import menu from '@/config/menu-config';

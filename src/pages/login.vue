@@ -1,25 +1,30 @@
 <template>
-    <el-row type="flex" justify="center">
-        <el-col :xs="12" :sm="8" :md="6" :lg="6" :xl="6" class="login-form">
-            <el-form ref="loginForm" :model="loginForm" :rules="rules">
-                <h3 class="title">欢迎登录</h3>
-                <el-form-item prop="account">
-                    <el-input type="text" v-model="loginForm.account" auto-complete="off" placeholder="账号"></el-input>
-                </el-form-item>
+    <div class="login-container">
+        <el-row type="flex" justify="center">
+            <el-col class="login-form">
+                <div class="login_header_bg">通服信息管理系统</div>
+                <div style="background-color:#fff;padding: 25px 70px 30px 74px;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;text-align: center">
+                    <el-form ref="loginForm" :model="loginForm" :rules="rules" label-width="55px" label-position="left"
+                             hide-required-asterisk>
+                        <el-form-item prop="account" label="用户名">
+                            <el-input type="text" v-model="loginForm.account" auto-complete="off" class="login-input"
+                                      placeholder="账号"></el-input>
+                        </el-form-item>
 
-                <el-form-item prop="password">
-                    <el-input type="password" v-model="loginForm.password" auto-complete="off"
-                              placeholder="密码"></el-input>
-                </el-form-item>
+                        <el-form-item prop="password" label="密码">
+                            <el-input type="password" v-model="loginForm.password" auto-complete="off"
+                                      class="login-input"
+                                      placeholder="密码"></el-input>
+                        </el-form-item>
 
-                <el-form-item>
-                    <el-button type="primary" style="width:100%;" @click="handleSubmit('loginForm')">登录
-                    </el-button>
-                </el-form-item>
+                        <el-button class="login-btn" style="width:100%;" @click="handleSubmit('loginForm')">登录
+                        </el-button>
 
-            </el-form>
-        </el-col>
-    </el-row>
+                    </el-form>
+                </div>
+            </el-col>
+        </el-row>
+    </div>
 </template>
 
 <script>
@@ -44,7 +49,7 @@
             async login() {
                 let res = await login(this.loginForm);
                 console.log(res)
-                if (res.code === 1000){
+                if (res.code === 1000) {
                     this.$message.success('登录成功');
                     this.$router.push({path: 'index'})
                 }
@@ -66,6 +71,53 @@
 
 <style scoped>
     .login-form {
-        margin-top: 100px;
+        width: 382px;
+        height: 320px;
+    }
+
+    .login-input /deep/ .el-input__inner {
+        background-color: #f2f2f2;
+        height: 32px;
+        line-height: 32px;
+        border-radius: 4px;
+        border: none;
+    }
+
+    .login-container {
+        min-height: 100%;
+        width: 100%;
+        background: url("../assets/login_bg.png");
+        background-size: cover;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .login_header_bg {
+        background: url("../assets/login_header_bg.png");
+        background-size: cover;
+        height: 105px;
+        line-height: 105px;
+        text-align: center;
+        font-size: 22px;
+        color: #fff;
+        letter-spacing: 0;
+    }
+
+    .login-btn {
+        background-image: linear-gradient(270deg, #2E6CFE 0%, #5185FF 100%);
+        border-radius: 4px;
+        font-size: 18px;
+        color: #FFFFFF;
+        letter-spacing: 0;
+        text-align: center;
+        width: 160px !important;
+        height: 40px;
+        margin: 25px 0 0;
+    }
+
+    .el-form-item__content {
+        margin: 0 auto;
     }
 </style>

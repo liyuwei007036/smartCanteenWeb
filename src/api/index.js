@@ -60,9 +60,9 @@ axios.interceptors.response.use(response => {
         allowRequest(response.config.url + '&' + response.config.method)
     }, 500)
     let data = response.data
-    if (data.code === 1000) {
+    if (data && data.code === 1000) {
         return data
-    } else if (data.code === 1002) {
+    } else if (data && data.code === 1002) {
         console.log('跳转登录页面')
     } else {
         Message({

@@ -1,6 +1,6 @@
 import axios from '@/api/index';
 
-let employeeList = (data) => {
+let list = (data) => {
     return axios({
         method: 'post',
         url: `/employee/list`,
@@ -8,7 +8,7 @@ let employeeList = (data) => {
     })
 }
 
-let employeeEdit = (data) => {
+let get = (data) => {
     return axios({
         method: 'get',
         url: `/employee/get/${data}`,
@@ -16,7 +16,7 @@ let employeeEdit = (data) => {
     })
 }
 
-let employeeUpdate = (data) => {
+let update = (data) => {
     return axios({
         method:'patch',
         url:`/employee/update`,
@@ -24,7 +24,7 @@ let employeeUpdate = (data) => {
     })
 }
 
-let employeeAdd = (data) => {
+let add = (data) => {
     return axios({
         method:'post',
         url:`/employee/add`,
@@ -32,9 +32,18 @@ let employeeAdd = (data) => {
     })
 }
 
+let deleted = (data) => {
+    return axios({
+        method:'delete',
+        url:`/employee/deleted/${data}`,
+        data
+    })
+}
+
 export {
-    employeeList,
-    employeeEdit,
-    employeeUpdate,
-    employeeAdd
+    list,
+    get,
+    update,
+    add,
+    deleted
 }

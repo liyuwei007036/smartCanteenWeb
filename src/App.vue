@@ -31,8 +31,10 @@
 </script>
 
 <style>
-    #app, .el-container {
+    #app, html, body {
         height: 100%;
+        padding: 0;
+        margin: 0;
     }
 
     .add-btn {
@@ -43,10 +45,6 @@
         font-size: 12px;
         padding: 0px 20px;
         font-weight: normal;
-    }
-
-    .search-btn {
-
     }
 
     .del-btn {
@@ -65,6 +63,7 @@
         background: #2E6CFE;
         height: 30px;
         width: 30px;
+        border-radius: 50%;
         text-align: center;
         padding: 0;
     }
@@ -74,8 +73,20 @@
         font-size: 14px;
     }
 
-    .option-menu{
+    .option-menu {
         margin: 0px 0 15px;
+    }
+
+    .delete-btn, .delete-btn:focus {
+        color: #DE302E;
+    }
+
+    .delete-btn:hover {
+        color: #ff302e;
+    }
+
+    .el-table td, .el-table th{
+        padding: 5px 0;
     }
 </style>
 

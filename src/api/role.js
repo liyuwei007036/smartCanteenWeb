@@ -3,7 +3,7 @@ import axios from '@/api/index';
 let list = (data) => {
     return axios({
         method: 'post',
-        url: `/user/list`,
+        url: `/role/list`,
         data
     })
 }
@@ -11,7 +11,7 @@ let list = (data) => {
 let get = (data) => {
     return axios({
         method: 'get',
-        url: `/user/get/${data}`,
+        url: `/role/get/${data}`,
         data
     })
 }
@@ -19,7 +19,7 @@ let get = (data) => {
 let update = (data) => {
     return axios({
         method:'patch',
-        url:`/user/update`,
+        url:`/role/update`,
         data
     })
 }
@@ -27,7 +27,7 @@ let update = (data) => {
 let add = (data) => {
     return axios({
         method:'post',
-        url:`/user/add`,
+        url:`/role/add`,
         data
     })
 }
@@ -35,7 +35,15 @@ let add = (data) => {
 let deleted = (data) => {
     return axios({
         method:'delete',
-        url:`/user/deleted/${data}`,
+        url:`/role/deleted/${data}`,
+        data
+    })
+}
+
+let listAll = (data) => {
+    return axios({
+        method:'get',
+        url:`/role/listAll`,
         data
     })
 }
@@ -46,5 +54,6 @@ export {
     get,
     update,
     add,
-    deleted
+    deleted,
+    listAll
 }

@@ -5,7 +5,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import origination from '@/pages/origination';
 import employeeList from '@/pages/employeeList';
-import userList from '@/pages/userList';
+import roleList from '@/pages/roleList';
+import roleAuth from '@/pages/roleAuth';
+import patchCard from '@/pages/patchCard';
 import index from '@/pages/index';
 import login from '@/pages/login';
 import home from '@/pages/home';
@@ -49,11 +51,25 @@ const router = new VueRouter({
                         title: '人员资料'
                     }
                 }, {
-                    path: '/userList',
-                    component: userList,
-                    name: 'userList',
+                    path: '/roleList',
+                    component: roleList,
+                    name: 'roleList',
                     meta: {
-                        title: '用户管理'
+                        title: '角色管理'
+                    }
+                },{
+                    path: '/roleAuth',
+                    component: roleAuth,
+                    name: 'roleAuth',
+                    meta: {
+                        title: '角色授权'
+                    }
+                },{
+                    path: '/patchCard',
+                    component: patchCard,
+                    name: 'patchCard',
+                    meta: {
+                        title: '遗失补办'
                     }
                 },
             ],

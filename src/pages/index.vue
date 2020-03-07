@@ -12,9 +12,9 @@
                     <vheader/>
                 </el-header>
                 <el-main>
-<!--                    <div class="main-content" style="margin-bottom: 10px;padding: 15px 20px">-->
-<!--                        <breadcrumb></breadcrumb>-->
-<!--                    </div>-->
+                    <!--                    <div class="main-content" style="margin-bottom: 10px;padding: 15px 20px">-->
+                    <!--                        <breadcrumb></breadcrumb>-->
+                    <!--                    </div>-->
                     <div class="main-content">
                         <router-view></router-view>
                     </div>
@@ -69,20 +69,18 @@
     }
 
     .el-main {
-        background: #f2f2f2;
+        background: #F1F2F5;
     }
 
     .main-content {
         background: #FFFFFF;
         box-shadow: 0 0 6px 0 #DFDFDF;
         border-radius: 6px;
-        border-radius: 6px;
         padding: 15px 20px 30px;
     }
 
     .logo {
         height: 100px;
-        border-right: solid 1px #e6e6e6;
         display: -webkit-flex;
         display: flex;
         align-items: center;
@@ -92,5 +90,9 @@
     .logo-img {
         width: 40px;
         height: 40px;
+    }
+
+    .el-container {
+        height: 100%;
     }
 </style>

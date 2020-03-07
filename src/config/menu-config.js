@@ -25,8 +25,8 @@ module.exports = [{
     name: '角色列表',
     componentName: 'roleList',
   }, {
-    name: '用户列表',
-    componentName: 'userList',
+    name: '角色授权',
+    componentName: 'roleAuth',
   }],
 }, {
   name: '消费管理',

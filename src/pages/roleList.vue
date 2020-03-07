@@ -1,63 +1,60 @@
 <template>
     <div>
-        <div class="search">
-            <el-input v-model="search.name" placeholder="请输入用户名" style="width:240px"></el-input>
-            <el-input v-model="search.account" placeholder="请输入账号" style="width:240px"></el-input>
-            <el-button type="primary" @click="serach">搜索</el-button>
-            <el-button type="primary" @click="addOrUpdateUser()">新增</el-button>
+
+        <div v-if="isSearchVisible" class="search" style="border-bottom: 1px solid #eaeaea;padding-bottom: 15px">
+            <el-input v-model="search.name" placeholder="请输入角色名称" style="width:240px"></el-input>
+            <el-button type="primary" @click="serach" icon="el-icon-search">搜索</el-button>
         </div>
 
-        <el-table
-                :data="tableData"
-                stripe
-                border
-                style="width: 100%">
-            <el-table-column
-                    type="index"
-                    label="序号"
-                    align="center"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="name"
-                    label="用户名"
-                    align="center"
-                    width="180">
-            </el-table-column>
-
-            <el-table-column
-                    prop="account"
-                    label="账号"
-                    align="center"
-                    width="180">
-            </el-table-column>
-
-            <el-table-column
-                    prop="origination"
-                    label="所属组织"
-                    align="center"
-                    width="180">
-            </el-table-column>
-
-            <el-table-column
-                    prop="createTime"
-                    label="创建时间"
-                    align="center"
-                    width="180">
-            </el-table-column>
-
-            <el-table-column
-                    prop="operation"
-                    label="操作"
-                    align="center"
-                    fixed="right"
-                    width="180">
-                <template slot-scope="scope">
-                    <el-button type="text" size="small" @click="addOrUpdateUser(scope.row.id)">编辑</el-button>
-                    <el-button type="text" size="small" @click="deleteUser(scope.row.id)">删除</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
+        <div class="option-menu">
+            <el-button type="primary" class="add-btn" @click="addOrUpdateRole()" icon="el-icon-plus">新增人员
+            </el-button>
+            <el-button type="danger" class="del-btn" @click="" icon="el-icon-delete">删除</el-button>
+            <el-button type="primary" class="search-btn" @click="isSearchVisible = !isSearchVisible"
+                       icon="el-icon-search"
+                       style="float: right;"></el-button>
+        </div>
+        <div>
+            <el-table
+                    :data="tableData"
+                    stripe
+                    border
+                    style="width: 100%">
+                <el-table-column
+                        type="index"
+                        label="序号"
+                        align="center"
+                        width="180px">
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="角色"
+                        align="center"
+                        width="">
+                </el-table-column>
+                <el-table-column
+                        prop="createTime"
+                        label="创建时间"
+                        align="center"
+                        width="">
+                </el-table-column>
+                <el-table-column
+                        prop="operation"
+                        label="操作"
+                        align="center"
+                        fixed="right"
+                        width="">
+                    <template slot-scope="scope">
+                        <el-button type="text" size="small"
+                                   @click="addOrUpdateRole(scope.row.id)">编辑
+                        </el-button>
+                        <el-button v-if="scope.row.canEdit == true" type="text" size="small" class="delete-btn"
+                                   @click="deleted(scope.row.id)">删除
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
 
         <div class="page" align="right">
             <el-pagination
@@ -77,49 +74,30 @@
                 :title="!form.id?'新增':'编辑'"
                 :close-on-click-modal="false"
                 :visible.sync="visible">
-            <el-form ref="form" :model="form">
-                <el-form-item prop="name" label="用户名">
-                    <el-input type="text" v-model="form.name" auto-complete="off" placeholder="姓名"></el-input>
-                </el-form-item>
-
-                <el-form-item prop="account" label="账号">
-                    <el-input type="text" v-model="form.account" auto-complete="off" placeholder="账号"></el-input>
-                </el-form-item>
-
-                <el-form-item prop="role" label="角色">
-                    <el-input type="text" v-model="form.role" auto-complete="off" placeholder="角色"></el-input>
-                </el-form-item>
-
-                <el-form-item prop="role" label="密码">
-                    <el-input type="text" v-model="form.password" auto-complete="off" placeholder="密码"></el-input>
-                </el-form-item>
-
-
-                <el-form-item prop="role" label="确认密码">
-                    <el-input type="text" v-model="form.checkPassword" auto-complete="off"
-                              placeholder="确认密码"></el-input>
-                </el-form-item>
-
-                <el-form-item>
-                    <el-button type="primary" style="width:100%;" @click="handleSubmit('form')">保存
-                    </el-button>
+            <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
+                <el-form-item prop="name" label="角色名称">
+                    <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="角色名称"></el-input>
                 </el-form-item>
 
             </el-form>
+            <span slot="footer" class="dialog-footer">
+<!--            <el-button @click="resetForm('form')">重 置</el-button>-->
+            <el-button type="primary" @click="handleSubmit('form')">保存</el-button>
+        </span>
 
         </el-dialog>
     </div>
 </template>
 
 <script>
-    import {list} from '@/api/user';
-    import {get} from '@/api/user';
-    import {update} from '@/api/user';
-    import {add} from '@/api/user';
-    import {deleted} from '@/api/user';
+    import {list} from '@/api/role';
+    import {get} from '@/api/role';
+    import {update} from '@/api/role';
+    import {add} from '@/api/role';
+    import {deleted} from '@/api/role';
 
     export default {
-        name: "userList",
+        name: "roleList",
         inject: ['reload'],
         data() {
             return {
@@ -127,27 +105,26 @@
                 total: 1,
                 tableName: '',
                 visible: false,
+                isSearchVisible: false,
                 tableData: [{
-                    account: '',
                     name: '',
-                    role: '',
-                    organization: '',
                     createTime: '',
                 }],
                 search: {
-                    account: '',
                     name: '',
                     page: 1,
                     size: 10
                 },
                 form: {
                     id: '',
-                    account: '',
                     name: '',
-                    role: '',
-                    password: '',
-                    checkPassword: ''
-                }
+                },
+                rules: {
+                    name: [
+                        {required: true, message: '请输入角色名称', trigger: 'blur'},
+                        {min: 1, max: 20, message: '长度在 1 到 20 个汉字或字符', trigger: 'blur'}
+                    ]
+                },
             }
         },
 
@@ -159,11 +136,11 @@
             //获取列表数据
             async getList() {
                 let res = await list(this.search);
-                console.log(res);
+                console.log(res)
                 if (res.code === 1000) {
                     this.total = res.data.total;
                     this.currentPage = res.data.currentPage;
-                    this.tableData = res.data.userList
+                    this.tableData = res.data.data
                 } else {
                     this.$message.error(res.msg);
                 }
@@ -175,19 +152,19 @@
             },
 
             // 新增/编辑触发弹窗
-            addOrUpdateUser(id) {
+            addOrUpdateRole(id) {
                 this.visible = true;
                 this.form = {};
                 this.form.id = id || 0;
                 this.$nextTick(() => {
                     if (this.form.id > 0) {
-                        this.getUser()
+                        this.getRole()
                     }
                 })
             },
 
             //获取用户数据
-            async getUser() {
+            async getRole() {
                 let res = await get(this.form.id);
                 console.log(res)
                 if (res.code === 1000) {
@@ -234,7 +211,6 @@
                 }
             },
 
-
             //删除用户
             async deleteUser(id) {
                 let res = await deleted(id)
@@ -243,6 +219,19 @@
                     this.$message.success('删除成功');
                     this.getList()
                 }
+            },
+
+            //点击删除按钮
+            async deleted(id) {
+                this.$confirm('确定删除该角色？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.deleteUser(id)
+                }).catch(() => {
+                    console.log('取消删除')
+                });
             },
 
             //分页
