@@ -1,30 +1,29 @@
 <template>
     <div>
-
         <div v-if="isSearchVisible" class="search" style="border-bottom: 1px solid #eaeaea;padding-bottom: 15px">
             <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
-                <el-input class="search_input" v-model="search.empName" placeholder="请输入姓名" clearable>
+                <el-input class="search_input" v-model="search.empName" placeholder="请输入姓名">
                     <template slot="prepend">姓名</template>
                 </el-input>
 
-                <el-input class="search_input" v-model="search.empNo" placeholder="请输入账号" clearable>
+                <el-input class="search_input" v-model="search.empNo" placeholder="请输入账号">
                     <template slot="prepend">账号</template>
                 </el-input>
 
-                <el-input class="search_input" v-model="search.cardNo" placeholder="请输入卡号" clearable>
+                <el-input class="search_input" v-model="search.cardNo" placeholder="请输入卡号">
                     <template slot="prepend">卡号</template>
                 </el-input>
 
-                <el-input class="search_input" v-model="search.operatorName" placeholder="请输入操作人姓名" clearable>
+                <el-input class="search_input" v-model="search.operatorName" placeholder="请输入操作人姓名">
                     <template slot="prepend">操作人</template>
                 </el-input>
 
             </div>
             <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
 
-                <el-select class="search_input" v-model="search.rechargeType" placeholder="请选择充值类型" clearable>
+                <el-select class="search_input" v-model="search.orderType" placeholder="请选择消费类型" clearable>
                     <el-option
-                            v-for="item in rechargeTypeList"
+                            v-for="item in orderTypeList"
                             :key="item.id"
                             :label="item.name"
                             :value="item.id">
@@ -34,13 +33,13 @@
                 <el-date-picker class="search_input"
                                 v-model="search.start"
                                 type="date"
-                                placeholder="记账开始时间" clearable>
+                                placeholder="消费开始时间" clearable>
                 </el-date-picker>
 
                 <el-date-picker class="search_input"
                                 v-model="search.end"
                                 type="date"
-                                placeholder="记账结束时间" clearable>
+                                placeholder="消费结束时间" clearable>
                 </el-date-picker>
 
             </div>
@@ -53,75 +52,91 @@
                        icon="el-icon-search"
                        style="float: right;"></el-button>
         </div>
-        <div>
-            <el-table
-                    :data="tableData"
-                    stripe
-                    border
-                    style="width: 100%">
-                <el-table-column
-                        type="index"
-                        label="序号"
-                        align="center">
-                </el-table-column>
-                <el-table-column
-                        prop="employeeName"
-                        label="姓名"
-                        align="center"
-                        width="">
-                </el-table-column>
-                <el-table-column
-                        prop="employeeNo"
-                        label="账号"
-                        align="center"
-                        width="">
-                </el-table-column>
-                <el-table-column
-                        prop="cardNo"
-                        label="卡号"
-                        align="center"
-                        width="">
-                </el-table-column>
-                <el-table-column
-                        prop="createTime"
-                        label="记账时间"
-                        align="center"
-                        width="">
-                </el-table-column>
-                <el-table-column
-                        prop="money"
-                        label="充值金额（元）"
-                        align="center"
-                        width="">
-                </el-table-column>
-                <el-table-column
-                        prop="balance"
-                        label="卡余额（元）"
-                        align="center"
-                        width="">
-                </el-table-column>
-                <el-table-column
-                        prop="type"
-                        label="充值类型"
-                        align="center"
-                        width="">
-                </el-table-column>
 
-                <el-table-column
-                        prop="creatorName"
-                        label="操作人"
-                        align="center"
-                        width="">
-                </el-table-column>
-            </el-table>
-        </div>
+        <el-table
+                :data="tableData"
+                stripe
+                border
+                style="width: 100%">
+            <el-table-column
+                    type="index"
+                    label="序号"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="employeeName"
+                    label="姓名"
+                    align="center"
+                    width="">
+            </el-table-column>
+            <el-table-column
+                    prop="employeeNo"
+                    label="账号"
+                    align="center"
+                    width="100px">
+            </el-table-column>
+            <el-table-column
+                    prop="cardNo"
+                    label="卡号"
+                    align="center"
+                    width="">
+            </el-table-column>
+            <el-table-column
+                    prop="createTime"
+                    label="消费时间"
+                    align="center"
+                    width="">
+            </el-table-column>
+            <el-table-column
+                    label="消费金额（元）"
+                    align="center"
+                    width=""
+                    prop="money"
+                    formatter="">
+            </el-table-column>
+            <el-table-column
+                    prop="balance"
+                    label="消费后卡余额（元）"
+                    align="center"
+                    width="">
+            </el-table-column>
+
+            <el-table-column
+                    prop="machineNo"
+                    label="终端编号"
+                    align="center"
+                    width="">
+            </el-table-column>
+
+
+            <el-table-column
+                    prop="type"
+                    label="消费方式"
+                    align="center"
+                    width="">
+            </el-table-column>
+
+            <el-table-column
+                    prop="channel"
+                    label="消费类型"
+                    align="center"
+                    width="">
+            </el-table-column>
+
+            <el-table-column
+                    prop="creatorName"
+                    label="操作人"
+                    align="center"
+                    width="">
+            </el-table-column>
+        </el-table>
 
         <div class="page" align="right">
             <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="currentPage"
-                    :page-sizes="[10,20,50,75,100]"
+                    :page-sizes="[10,20,50, 75, 100]"
                     :page-size="1"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="total">
@@ -132,10 +147,10 @@
 </template>
 
 <script>
-    import {list} from '@/api/recharge'
+    import {list} from '@/api/order'
 
     export default {
-        name: "rechargeList",
+        name: "consumeList",
         inject: ['reload'],
         data() {
             return {
@@ -150,16 +165,16 @@
                     start: "",
                     end: "",
                     money: 0,
-                    rechargeType: "",
+                    orderType: "",
                     operatorName: "",
                     page: 0,
                     size: 10,
                 },
-                rechargeTypeList: [{
+                orderTypeList: [{
                     name: '正常',
                     id: 1
                 }, {
-                    name: '退费',
+                    name: '补扣',
                     id: 2
                 }],
             }
@@ -179,7 +194,6 @@
             //获取列表数据
             async getList() {
                 let res = await list(this.search);
-                console.log(res)
                 if (res.code === 1000) {
                     this.total = res.data.total;
                     this.currentPage = res.data.currentPage;
@@ -198,7 +212,8 @@
             handleCurrentChange(val) {
                 this.search.page = val
                 this.getList();
-            }
+            },
+
         }
     }
 </script>

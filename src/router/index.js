@@ -10,6 +10,8 @@ import roleAuth from '@/pages/roleAuth';
 import patchCard from '@/pages/patchCard';
 import accountCancellation from '@/pages/accountCancellation';
 import rechargeList from '@/pages/rechargeList';
+import consumeList from '@/pages/consumeList';
+import cardList from '@/pages/cardList';
 import index from '@/pages/index';
 import login from '@/pages/login';
 import home from '@/pages/home';
@@ -85,7 +87,21 @@ const router = new VueRouter({
                     component: rechargeList,
                     name: 'rechargeList',
                     meta: {
-                        title: '充值补贴'
+                        title: '充值记录'
+                    }
+                },{
+                    path: '/cardList',
+                    component: cardList,
+                    name: 'cardList',
+                    meta: {
+                        title: '卡片管理'
+                    }
+                },{
+                    path: '/consumeList',
+                    component: consumeList,
+                    name: 'consumeList',
+                    meta: {
+                        title: '消费记录'
                     }
                 },
             ],

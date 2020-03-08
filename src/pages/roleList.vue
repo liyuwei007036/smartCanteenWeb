@@ -61,9 +61,8 @@
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="currentPage"
-                    :page-sizes="[50, 75, 100]"
+                    :page-sizes="[10,20,50,75,100]"
                     :page-size="1"
-                    hide-on-single-page
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="total">
             </el-pagination>
@@ -148,6 +147,7 @@
 
             //搜索
             serach() {
+                this.search.page = 1
                 this.getList()
             },
 
@@ -236,11 +236,13 @@
 
             //分页
             handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+                this.search.size = val
+                this.getList();
             },
 
             handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
+                this.search.page = val
+                this.getList();
             }
         }
     }

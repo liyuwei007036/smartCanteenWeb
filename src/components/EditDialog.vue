@@ -132,6 +132,17 @@
         inject: ['reload'],
         data() {
 
+            let validatePass2 = (rule, value, callback) => {
+                console.log(value)
+                if (value === '') {
+                    callback(new Error('请再次输入密码'))
+                } else if (value !== this.form.password) {
+                    callback(new Error('两次输入密码不一致!'))
+                } else {
+                    callback()
+                }
+            }
+
             return {
                 visible: false,
                 form: {
@@ -210,10 +221,16 @@
                         {required: true, message: '请输入身份证号', trigger: 'blur'},
                         {min: 18, max: 18, message: '身份证号为18位', trigger: 'blur'}],
                     mobile: [{required: true, message: '请输入手机号', trigger: 'blur'}],
+                    confirmPassword: [
+                        {validator: validatePass2, trigger: 'blur'}
+                    ]
                 },
+
             }
 
         },
+
+
         watch: {
             password: {
                 handler(n, o) {
@@ -222,6 +239,7 @@
             },
             confirmPassword: {
                 handler(n, o) {
+                    console.log(this.form.confirmPassword)
                     this.form.confirmPassword = n
                 }
             },
@@ -257,8 +275,8 @@
                     //初始化卡号，卡类型
                     this.form.cardId = 1
                     this.form.cardNo = '1111111111'
+                    this.form.originationId = '1'
                     this.form.type = 1
-
                 } else {
                     this.$message.error(res.msg);
                 }
@@ -280,7 +298,6 @@
                         if (this.form.id > 0) {
                             this.updateForm()  //编辑调更新接口
                         } else {
-                            this.form.originationId = '2'
                             this.addForm()   //新增调新增接口
                         }
                     } else {

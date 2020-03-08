@@ -41,8 +41,9 @@
         margin-bottom: 20px;
     }
 
-    .search > .search_input {
-        width: 200px;
+    .search .search_input {
+        width: 25%;
+        margin: 0 20px 0 0;
     }
 
     .add-btn {
@@ -105,11 +106,17 @@
 
     }
 
-    input[readonly] {
+    el-dialog input[readonly] {
         background-color: #f1f1f5
     }
 
-    .el-date-editor.el-input, .el-date-editor.el-input__inner {
+
+    .el-dialog__body .el-date-editor.el-input, .el-date-editor.el-input__inner {
+        width: 100%;
+    }
+
+
+    .select_normal {
         width: 100%;
     }
 </style>

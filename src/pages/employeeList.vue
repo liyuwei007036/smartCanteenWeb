@@ -1,10 +1,20 @@
 <template>
     <div>
         <div v-if="isSerachVisible" class="search" style="border-bottom: 1px solid #eaeaea;padding-bottom: 15px">
-            <el-input class="search_input" v-model="search.name" placeholder="请输入姓名"></el-input>
-            <el-input class="search_input" v-model="search.mobile" placeholder="请输入手机号"></el-input>
-            <el-input class="search_input" v-model="search.no" placeholder="请输入账号"></el-input>
-            <el-input class="search_input" v-model="search.idCard" placeholder="请输入卡号"></el-input>
+            <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
+                <el-input class="search_input" v-model="search.name" placeholder="请输入姓名">
+                    <template slot="prepend">姓名</template>
+                </el-input>
+                <el-input class="search_input" v-model="search.mobile" placeholder="请输入手机号">
+                    <template slot="prepend">手机号</template>
+                </el-input>
+                <el-input class="search_input" v-model="search.no" placeholder="请输入账号">
+                    <template slot="prepend">账号</template>
+                </el-input>
+                <el-input class="search_input" v-model="search.idCard" placeholder="请输入卡号">
+                    <template slot="prepend">卡号</template>
+                </el-input>
+            </div>
             <el-button type="primary" @click="serach" icon="el-icon-search">搜索</el-button>
         </div>
         <div class="option-menu">
@@ -105,13 +115,13 @@
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="currentPage"
-                    :page-sizes="[50, 75, 100]"
+                    :page-sizes="[10,20,50,75,100]"
                     :page-size="1"
-                    hide-on-single-page
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="total">
             </el-pagination>
         </div>
+
         <!--        新增编辑弹窗-->
         <editdialog v-if="isVisible" ref="addOrUpdate"></editdialog>
         <!--        查看弹窗-->
@@ -338,14 +348,20 @@
             },
 
             serach() {
+                this.search.page = 1
                 this.getList()
             },
+
+            //分页
             handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+                this.search.size = val
+                this.getList();
             },
+
             handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
-            },
+                this.search.page = val
+                this.getList();
+            }
 
         },
     }
