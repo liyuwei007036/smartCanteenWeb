@@ -48,6 +48,14 @@ let deleted = (data) => {
     })
 }
 
+let listAll = (data) => {
+    return axios({
+        method: 'get',
+        url: `/origination/listAll`,
+        data
+    })
+}
+
 
 
 export {
@@ -56,5 +64,6 @@ export {
     update,
     add,
     deleted,
-    get
+    get,
+    listAll
 }

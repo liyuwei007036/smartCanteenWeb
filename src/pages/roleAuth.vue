@@ -23,7 +23,7 @@
 </template>
 
 <script>
-    import {listAll} from '@/api/role';
+    import {listAllRole} from '@/api/role';
 
     export default {
         name: "roleAuth",
@@ -45,7 +45,7 @@
         methods: {
             //获取列表数据
             async getListAll() {
-                let res = await listAll();
+                let res = await listAllRole();
                 console.log(res)
                 if (res.code === 1000) {
 

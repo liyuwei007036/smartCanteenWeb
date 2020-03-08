@@ -40,7 +40,7 @@ let deleted = (data) => {
     })
 }
 
-let listAll = (data) => {
+let listAllRole = (data) => {
     return axios({
         method:'get',
         url:`/role/listAll`,
@@ -55,5 +55,5 @@ export {
     update,
     add,
     deleted,
-    listAll
+    listAllRole
 }

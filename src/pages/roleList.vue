@@ -7,7 +7,7 @@
         </div>
 
         <div class="option-menu">
-            <el-button type="primary" class="add-btn" @click="addOrUpdateRole()" icon="el-icon-plus">新增人员
+            <el-button type="primary" class="add-btn" @click="addOrUpdateRole()" icon="el-icon-plus">新增角色
             </el-button>
             <el-button type="danger" class="del-btn" @click="" icon="el-icon-delete">删除</el-button>
             <el-button type="primary" class="search-btn" @click="isSearchVisible = !isSearchVisible"
@@ -247,9 +247,6 @@
 </script>
 
 <style>
-    .search {
-        margin-bottom: 20px;
-    }
 
     .page {
         margin-top: 20px;

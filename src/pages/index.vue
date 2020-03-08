@@ -12,9 +12,9 @@
                     <vheader/>
                 </el-header>
                 <el-main>
-                    <!--                    <div class="main-content" style="margin-bottom: 10px;padding: 15px 20px">-->
-                    <!--                        <breadcrumb></breadcrumb>-->
-                    <!--                    </div>-->
+                    <div class="main-content" style="margin-bottom: 10px;padding: 15px 20px">
+                        <breadcrumb></breadcrumb>
+                    </div>
                     <div class="main-content">
                         <router-view></router-view>
                     </div>

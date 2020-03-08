@@ -1,9 +1,10 @@
 <template>
     <div>
         <div v-if="isSerachVisible" class="search" style="border-bottom: 1px solid #eaeaea;padding-bottom: 15px">
-            <el-input v-model="search.mobile" placeholder="请输入手机号" style="width:240px"></el-input>
-            <el-input v-model="search.name" placeholder="请输入姓名" style="width:240px"></el-input>
-            <el-input v-model="search.no" placeholder="请输入账号" style="width:240px"></el-input>
+            <el-input class="search_input" v-model="search.name" placeholder="请输入姓名"></el-input>
+            <el-input class="search_input" v-model="search.mobile" placeholder="请输入手机号"></el-input>
+            <el-input class="search_input" v-model="search.no" placeholder="请输入账号"></el-input>
+            <el-input class="search_input" v-model="search.idCard" placeholder="请输入卡号"></el-input>
             <el-button type="primary" @click="serach" icon="el-icon-search">搜索</el-button>
         </div>
         <div class="option-menu">
@@ -91,7 +92,9 @@
                     <template slot-scope="scope">
                         <el-button @click="getEmployee(scope.row.id)" type="text" size="small">查看</el-button>
                         <el-button type="text" size="small" @click="addOrUpdateEmployee(scope.row.id)">编辑</el-button>
-                        <el-button type="text" size="small" class="delete-btn" @click="deletedEmployee(scope.row.id)">删除</el-button>
+                        <el-button type="text" size="small" class="delete-btn" @click="deletedEmployee(scope.row.id)">
+                            删除
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -117,32 +120,71 @@
                 title="查看"
                 :close-on-click-modal="false"
                 :visible.sync="isShowVisible" width="40%">
-            <el-form ref="form1" :model="form1" disabled label-width="80px" label-position="left">
+            <el-form ref="form1" :model="form1" disabled label-width="100px" label-position="right">
+
                 <el-form-item prop="name" label="姓名">
                     <el-input type="text" v-model.trim="form1.name" auto-complete="off" placeholder="姓名"></el-input>
                 </el-form-item>
+
                 <el-form-item prop="no" label="账号">
                     <el-input type="text" v-model.trim="form1.no" auto-complete="off" placeholder=账号></el-input>
                 </el-form-item>
+
                 <el-form-item prop="idCard" label="身份证号">
                     <el-input type="text" v-model.trim="form1.idCard" auto-complete="off" placeholder="身份证号"></el-input>
                 </el-form-item>
+
                 <el-form-item prop="mobile" label="手机号">
                     <el-input type="text" v-model.trim="form1.mobile" auto-complete="off" placeholder="手机号"></el-input>
                 </el-form-item>
+
                 <el-form-item prop="password" label="卡密码">
-                    <el-input type="password" v-model.trim="form1.password" auto-complete="off" placeholder="密码"></el-input>
+                    <el-input type="password" v-model.trim="form1.password" auto-complete="off"
+                              placeholder="密码"></el-input>
                 </el-form-item>
+
                 <el-form-item prop="checkpassword" label="确认密码">
                     <el-input type="password" v-model.trim="form1.confirmPassword" auto-complete="off"
                               placeholder="请再次输入密码"></el-input>
                 </el-form-item>
+
+
+                <el-form-item prop="minimumBalance" label="卡最低余额">
+                    <el-input type="number" v-model.trim="form1.minimumBalance" auto-complete="off"
+                              placeholder="请输入卡最低余额"></el-input>
+                </el-form-item>
+
+                <el-form-item prop="validityTime" label="卡有效期">
+                    <el-date-picker
+                            v-model="form1.validityTime"
+                            type="date"
+                            placeholder="请选择卡有效期">
+                    </el-date-picker>
+                </el-form-item>
+
+                <el-form-item prop="openCardAmount" label="开卡存入金额">
+                    <el-input type="number" v-model.trim="form1.openCardAmount" auto-complete="off"
+                              placeholder="请输入开卡存入金额"></el-input>
+                </el-form-item>
+
+                <el-form-item prop="deposit" label="押金">
+                    <el-input type="number" v-model.trim="form1.deposit" auto-complete="off"
+                              placeholder="请输入押金"></el-input>
+                </el-form-item>
+
+
+                <el-form-item prop="expense" label="工本费">
+                    <el-input type="number" v-model.trim="form1.expense" auto-complete="off"
+                              placeholder="请输入工本费"></el-input>
+                </el-form-item>
+
                 <el-form-item prop="originationName" label="所属组织">
                     <el-input type="password" v-model.trim="form1.originationName" auto-complete="off"
                               placeholder="请选择组织"></el-input>
                 </el-form-item>
+
                 <el-form-item label="角色" prop="roles">
-                    <el-select v-model="form1.roles" placeholder="请选择角色">
+                    <el-select class="select_normal" v-model="form1.roles" multiple placeholder="请选择角色">
                         <el-option
                                 v-for="item in roleList"
                                 :key="item.id"
@@ -168,6 +210,7 @@
     import EditDialog from '@/components/EditDialog';
     import {get} from '@/api/employeeList';
     import {deleted} from '@/api/employeeList';
+    import {listAllRole} from '@/api/role';
 
     export default {
         components: {
@@ -213,11 +256,21 @@
                     confirmPassword: '',
                     originationId: 1,
                     originationName: "",
+                    cardId: '',
+                    cardNo: '11111',
                     roles: [],
+                    type: '',
+                    minimumBalance: '',
+                    validityTime: '',
+                    openCardAmount: '',
+                    deposit: '',
+                    expense: ''
                 },
-                roleList: [{
-                    id: 0, name: 'ceshi'
-                }],
+                roleList: [],
+                cardTypeList: [
+                    {id: 1, name: 1},
+                    {id: 2, name: 2}
+                ],
                 isVisible: false, //编辑新增弹窗
                 isShowVisible: false,//查看弹窗
                 isSerachVisible: false, //搜索
@@ -251,7 +304,7 @@
             getEmployee(id) {
                 this.isShowVisible = true;
                 this.form1.id = id;
-                console.log(this.form1.id)
+                this.getEmployeeRole()
                 this.$nextTick(() => {
                     this.showEmployee()
                 })
@@ -276,6 +329,14 @@
                 }
             },
 
+            //获取角色列表
+            async getEmployeeRole() {
+                let res = await listAllRole()
+                if (res.code === 1000) {
+                    this.roleList = res.data
+                }
+            },
+
             serach() {
                 this.getList()
             },
@@ -284,16 +345,13 @@
             },
             handleCurrentChange(val) {
                 console.log(`当前页: ${val}`);
-            }
+            },
+
         },
     }
 </script>
 
 <style>
-    .search {
-        margin-bottom: 20px;
-    }
-
     .page {
         margin-top: 20px;
     }

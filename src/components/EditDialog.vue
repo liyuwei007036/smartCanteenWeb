@@ -3,7 +3,7 @@
             :title="!form.id?'新增':'编辑'"
             :close-on-click-modal="false"
             :visible.sync="visible" width="40%">
-        <el-form ref="form" :model="form" :rules="rules" status-icon label-width="80px" label-position="left">
+        <el-form ref="form" :model="form" :rules="rules" status-icon label-width="100px" label-position="right">
             <el-form-item prop="name" label="姓名">
                 <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="姓名"></el-input>
             </el-form-item>
@@ -12,24 +12,72 @@
                           :readonly="isReadonly"></el-input>
             </el-form-item>
             <el-form-item prop="idCard" label="身份证号">
-                <el-input type="text" v-model.trim="form.idCard" auto-complete="off" placeholder="身份证号"></el-input>
+                <el-input type="text" v-model.trim="form.idCard" auto-complete="off" placeholder="身份证号"
+                          :readonly="isReadonly"></el-input>
             </el-form-item>
+
+
             <el-form-item prop="mobile" label="手机号">
-                <el-input type="text" v-model.trim="form.mobile" auto-complete="off" placeholder="手机号"></el-input>
+                <el-input type="mobile" v-model.trim="form.mobile" auto-complete="off" placeholder="手机号"></el-input>
             </el-form-item>
+
+            <el-form-item prop="cardNo" label="卡号">
+                <el-input type="number" v-model.trim="form.cardNo" auto-complete="off" placeholder="卡号"
+                          :readonly="isReadonly"></el-input>
+            </el-form-item>
+
+            <el-form-item label="卡类别">
+                <el-select class="select_normal" v-model="form.type" placeholder="请选择卡类别">
+                    <el-option
+                            v-for="item in cardTypeList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+
             <el-form-item prop="password" label="卡密码">
                 <el-input type="password" v-model.trim="password" auto-complete="off" placeholder="密码"></el-input>
             </el-form-item>
+
             <el-form-item prop="confirmPassword" label="确认密码">
                 <el-input type="password" v-model.trim="confirmPassword" auto-complete="off"
                           placeholder="请再次输入密码"></el-input>
             </el-form-item>
-            <el-form-item prop="originationName" label="所属组织">
-                <el-input type="password" v-model="form.originationName" auto-complete="off"
-                          placeholder="请选择组织"></el-input>
+
+            <el-form-item prop="minimumBalance" label="卡最低余额">
+                <el-input type="number" v-model.trim="form.minimumBalance" auto-complete="off"
+                          placeholder="请输入卡最低余额"></el-input>
             </el-form-item>
+
+            <el-form-item prop="validityTime" label="卡有效期">
+                <el-date-picker
+                        v-model="form.validityTime"
+                        type="date"
+                        placeholder="请选择卡有效期"
+                        value-format="yyyy-MM-dd HH:mm:ss">
+                </el-date-picker>
+            </el-form-item>
+
+            <el-form-item prop="openCardAmount" label="开卡存入金额">
+                <el-input type="number" v-model.trim="form.openCardAmount" auto-complete="off"
+                          placeholder="请输入开卡存入金额"></el-input>
+            </el-form-item>
+
+            <el-form-item prop="deposit" label="押金">
+                <el-input type="number" v-model.trim="form.deposit" auto-complete="off"
+                          placeholder="请输入押金"></el-input>
+            </el-form-item>
+
+
+            <el-form-item prop="expense" label="工本费">
+                <el-input type="number" v-model.trim="form.expense" auto-complete="off"
+                          placeholder="请输入工本费"></el-input>
+            </el-form-item>
+
             <el-form-item label="角色" prop="roles">
-                <el-select v-model="form.roles" placeholder="请选择角色">
+                <el-select class="select_normal" v-model="form.roles" multiple placeholder="请选择角色">
                     <el-option
                             v-for="item in roleList"
                             :key="item.id"
@@ -39,9 +87,33 @@
                 </el-select>
             </el-form-item>
 
+            <el-form-item prop="originationName" label="所属组织">
+                <el-input
+                        placeholder="请选择所属组织"
+                        class="width-220 selectTree-input"
+                        auto-complete="off"
+                        v-model="form.originationName"
+                        @click.native="changeSelectTree()">
+                </el-input>
+
+                <el-tree v-show="isShowSelect"
+                         empty-text="暂无数据"
+                         :highlight-current=true
+                         :default-expand-all=false
+                         :expand-on-click-node="true"
+                         :data="data"
+                         :filter-node-method="filterNode"
+                         @node-click="selectClassfy"
+                         class="width-220 selectTree-input objectTree"
+                         ref="selectTree">
+                </el-tree>
+
+            </el-form-item>
+
+
         </el-form>
         <span slot="footer" class="dialog-footer">
-            <el-button @click="resetForm('form')">重 置</el-button>
+<!--            <el-button @click="resetForm('form')">重 置</el-button>-->
             <el-button type="primary" @click="handleSubmit('form')">保存</el-button>
         </span>
 
@@ -52,6 +124,8 @@
     import {get} from '@/api/employeeList';
     import {update} from '@/api/employeeList';
     import {add} from '@/api/employeeList';
+    import {listAll} from '@/api/origination';
+    import {listAllRole} from '@/api/role';
 
     export default {
         name: "EditDialog",
@@ -70,14 +144,65 @@
                     confirmPassword: '',
                     originationId: 1,
                     originationName: "",
+                    cardId: '',
+                    cardNo: '11111',
                     roles: [],
+                    type: '',
+                    minimumBalance: '',
+                    validityTime: '',
+                    openCardAmount: '',
+                    deposit: '',
+                    expense: ''
                 },
-                roleList: [{
-                    id: 0, name: 'ceshi'
+                roleList: [],
+                cardTypeList: [
+                    {id: 1, name: 1},
+                    {id: 2, name: 2}
+                ],
+                data: [{
+                    label: '一级 1',
+                    children: [{
+                        label: '二级 1-1',
+                        children: [{
+                            label: '三级 1-1-1',
+                            children: []
+                        }]
+                    }]
+                }, {
+                    label: '一级 2',
+                    children: [{
+                        label: '二级 2-1',
+                        children: [{
+                            label: '三级 2-1-1',
+                            children: []
+                        }]
+                    }, {
+                        label: '二级 2-2',
+                        children: [{
+                            label: '三级 2-2-1',
+                            children: []
+                        }]
+                    }]
+                }, {
+                    label: '一级 3',
+                    children: [{
+                        label: '二级 3-1',
+                        children: [{
+                            label: '三级 3-1-1',
+                            children: []
+                        }]
+                    }, {
+                        label: '二级 3-2',
+                        children: [{
+                            label: '三级 3-2-1',
+                            children: []
+                        }]
+                    }]
                 }],
                 password: '',
                 confirmPassword: '',
-                isReadonly: false,
+                isReadonly: false, //是否只读
+                isShowSelect: false, //组织结构下拉树
                 rules: {
                     name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
                     no: [{required: true, message: '请输入账号', trigger: 'blur'}],
@@ -99,15 +224,25 @@
                 handler(n, o) {
                     this.form.confirmPassword = n
                 }
-            }
+            },
+            form: {
+                handler(form) {
+                    if (this.isShowSelect) {
+                        this.$refs.selectTree.filter(form.originationName);
+                    }
+                },
+                deep: true,//深度监听，重要
+            },
         },
         methods: {
             init(id) {
                 this.form = {};
                 this.form.id = id || 0;
                 this.visible = true;
+                this.getOrigination()  //获取组织结构
+                this.getEmployeeRole()  //获取角色下拉列表
                 this.$nextTick(() => {
-                    //编辑
+                    //编辑，获取用户信息，设置字段只读
                     if (this.form.id > 0) {
                         this.getEmployeeDetail()
                         this.isReadonly = true
@@ -119,9 +254,21 @@
                 let res = await get(this.form.id);
                 if (res.code === 1000) {
                     this.form = res.data
-                    this.form.originationId = 1
+                    //初始化卡号，卡类型
+                    this.form.cardId = 1
+                    this.form.cardNo = '1111111111'
+                    this.form.type = 1
+
                 } else {
                     this.$message.error(res.msg);
+                }
+            },
+
+            //获取角色列表
+            async getEmployeeRole() {
+                let res = await listAllRole()
+                if (res.code === 1000) {
+                    this.roleList = res.data
                 }
             },
 
@@ -131,13 +278,12 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         if (this.form.id > 0) {
-                            this.updateForm()
+                            this.updateForm()  //编辑调更新接口
                         } else {
-                            this.addForm()
+                            this.form.originationId = '2'
+                            this.addForm()   //新增调新增接口
                         }
                     } else {
-                        console.log(this.form.password)
-                        console.log(this.form.confirmPassword)
                         console.log('error submit!!');
                         return false;
                     }
@@ -165,6 +311,25 @@
                 }
             },
 
+            async getOrigination() { //获取组织数据
+                let res = await listAll();
+            },
+
+            selectClassfy(data) {
+                this.form.originationName = data.label;
+                this.isShowSelect = false;
+            },
+
+            //
+            changeSelectTree() {
+                this.isShowSelect = true;
+            },
+
+            filterNode(value, data) {
+                if (!value) return true;
+                return data.label.indexOf(value) !== -1;
+            },
+
             resetForm(formName) {
                 this.$refs[formName].resetFields();
             }
@@ -175,5 +340,7 @@
 </script>
 
 <style scoped>
-
+    .select_normal /deep/ input[readonly] {
+        background-color: #fff;
+    }
 </style>

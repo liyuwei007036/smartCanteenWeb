@@ -8,6 +8,8 @@ import employeeList from '@/pages/employeeList';
 import roleList from '@/pages/roleList';
 import roleAuth from '@/pages/roleAuth';
 import patchCard from '@/pages/patchCard';
+import accountCancellation from '@/pages/accountCancellation';
+import rechargeList from '@/pages/rechargeList';
 import index from '@/pages/index';
 import login from '@/pages/login';
 import home from '@/pages/home';
@@ -70,6 +72,20 @@ const router = new VueRouter({
                     name: 'patchCard',
                     meta: {
                         title: '遗失补办'
+                    }
+                },{
+                    path: '/accountCancellation',
+                    component: accountCancellation,
+                    name: 'accountCancellation',
+                    meta: {
+                        title: '销户退卡'
+                    }
+                },{
+                    path: '/rechargeList',
+                    component: rechargeList,
+                    name: 'rechargeList',
+                    meta: {
+                        title: '充值补贴'
                     }
                 },
             ],

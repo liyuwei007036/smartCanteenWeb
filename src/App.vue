@@ -37,6 +37,14 @@
         margin: 0;
     }
 
+    .search {
+        margin-bottom: 20px;
+    }
+
+    .search > .search_input {
+        width: 200px;
+    }
+
     .add-btn {
         background: #2E6CFE;
         border-radius: 15px;
@@ -85,8 +93,24 @@
         color: #ff302e;
     }
 
-    .el-table td, .el-table th{
+    .el-table td, .el-table th {
         padding: 5px 0;
+    }
+
+    .clearfix:after {
+        content: '\20';
+        display: block;
+        clear: both;
+        height: 0;
+
+    }
+
+    input[readonly] {
+        background-color: #f1f1f5
+    }
+
+    .el-date-editor.el-input, .el-date-editor.el-input__inner {
+        width: 100%;
     }
 </style>
 

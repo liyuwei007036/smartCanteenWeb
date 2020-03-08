@@ -1,12 +1,14 @@
 <template>
     <div>
-
-        <div v-if="isSearchVisible" class="search" style="border-bottom: 1px solid #eaeaea;padding-bottom: 15px">
+        <div v-if="isSerachVisible" class="search" style="border-bottom: 1px solid #eaeaea;padding-bottom: 15px">
+            <el-input class="search_input" v-model="search.name" placeholder="请输入姓名"></el-input>
+            <el-input class="search_input" v-model="search.mobile" placeholder="请输入手机号"></el-input>
+            <el-input class="search_input" v-model="search.no" placeholder="请输入账号"></el-input>
+            <el-input class="search_input" v-model="search.idCard" placeholder="请输入卡号"></el-input>
             <el-button type="primary" @click="serach" icon="el-icon-search">搜索</el-button>
         </div>
-
-        <div class="option-menu">
-            <el-button type="primary" class="search-btn" @click="isSearchVisible = !isSearchVisible"
+        <div class="option-menu clearfix">
+            <el-button type="primary" class="search-btn" @click="isSerachVisible = !isSerachVisible"
                        icon="el-icon-search"
                        style="float: right;"></el-button>
         </div>
@@ -34,43 +36,49 @@
                         width="">
                 </el-table-column>
                 <el-table-column
-                        prop="no"
+                        prop="idCard"
                         label="卡号"
                         align="center"
                         width="">
                 </el-table-column>
                 <el-table-column
-                        prop="no"
+                        prop="originationName"
                         label="所属组织"
                         align="center"
                         width="">
                 </el-table-column>
                 <el-table-column
-                        prop="no"
-                        label="是否发卡"
+                        prop=""
+                        label="押金"
                         align="center"
                         width="">
                 </el-table-column>
                 <el-table-column
-                        prop="no"
-                        label="卡类别"
+                        prop=""
+                        label="赠送清零（元）"
                         align="center"
                         width="">
                 </el-table-column>
                 <el-table-column
-                        prop="no"
-                        label="卡状态"
+                        prop=""
+                        label="卡余额（元）"
                         align="center"
                         width="">
                 </el-table-column>
                 <el-table-column
-                        prop="no"
+                        prop=""
+                        label="补贴余额（元）"
+                        align="center"
+                        width="">
+                </el-table-column>
+                <el-table-column
+                        prop=""
                         label="账户状态"
                         align="center"
                         width="">
                 </el-table-column>
                 <el-table-column
-                        prop="no"
+                        prop=""
                         label="受理时间"
                         align="center"
                         width="">
@@ -83,10 +91,7 @@
                         width="">
                     <template slot-scope="scope">
                         <el-button type="text" size="small"
-                                   @click="addOrUpdateRole(scope.row.id)">挂失
-                        </el-button>
-                        <el-button type="text" size="small"
-                                   @click="deleteUser(scope.row.id)">补办
+                                   @click="cancelAccount(scope.row.id)">销户退卡
                         </el-button>
                     </template>
                 </el-table-column>
@@ -105,19 +110,27 @@
                     :total="total">
             </el-pagination>
         </div>
+
     </div>
 </template>
 
 <script>
     export default {
-        name: "patchCard",
+        name: "accountCancellation",
         inject: ['reload'],
         data() {
             return {
                 isSearchVisible: false,
+                isSerachVisible: false,
                 currentPage: 1,
                 total: 1,
                 tableData: [],
+                search: {
+                    name: '',
+                    mobile: '',
+                    no: '',
+                    idCard: ''
+                }
             }
         },
         methods: {
