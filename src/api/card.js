@@ -8,6 +8,24 @@ let list = (data) => {
     })
 }
 
+let beforeGetCard = (data) => {
+    return axios({
+        method: 'get',
+        url: `/icCard/before/get/card`,
+        data
+    })
+}
+
+let getCard = (data) => {
+    return axios({
+        method: 'get',
+        url: `/icCard/get/card`,
+        data
+    })
+}
+
 export {
     list,
+    beforeGetCard,
+    getCard
 }

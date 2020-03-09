@@ -106,9 +106,9 @@
 
     }
 
-    el-dialog input[readonly] {
-        background-color: #f1f1f5
-    }
+    /*.el-dialog__body input[readonly] {*/
+    /*    background-color: #f1f1f5*/
+    /*}*/
 
 
     .el-dialog__body .el-date-editor.el-input, .el-date-editor.el-input__inner {

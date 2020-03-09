@@ -2,7 +2,8 @@
     <el-dialog
             :title="!form.id?'新增':'编辑'"
             :close-on-click-modal="false"
-            :visible.sync="visible" width="40%">
+            :visible.sync="visible" width="40%"
+            @closed="handleClose">
         <el-form ref="form" :model="form" :rules="rules" status-icon label-width="100px" label-position="right">
             <el-form-item prop="name" label="姓名">
                 <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="姓名"></el-input>
@@ -23,7 +24,9 @@
 
             <el-form-item prop="cardNo" label="卡号">
                 <el-input type="number" v-model.trim="form.cardNo" auto-complete="off" placeholder="卡号"
-                          :readonly="isReadonly"></el-input>
+                          :readonly="isReadonly">
+                    <el-button slot="append" v-if="!isReadonly" @click="readCard()">点击读卡</el-button>
+                </el-input>
             </el-form-item>
 
             <el-form-item label="卡类别">
@@ -126,6 +129,8 @@
     import {add} from '@/api/employeeList';
     import {listAll} from '@/api/origination';
     import {listAllRole} from '@/api/role';
+    import {beforeGetCard} from '@/api/card';
+    import {getCard} from '@/api/card';
 
     export default {
         name: "EditDialog",
@@ -133,7 +138,6 @@
         data() {
 
             let validatePass2 = (rule, value, callback) => {
-                console.log(value)
                 if (value === '') {
                     callback(new Error('请再次输入密码'))
                 } else if (value !== this.form.password) {
@@ -214,6 +218,9 @@
                 confirmPassword: '',
                 isReadonly: false, //是否只读
                 isShowSelect: false, //组织结构下拉树
+                timer: 0,
+                t: null,
+                searchCardNo: '',
                 rules: {
                     name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
                     no: [{required: true, message: '请输入账号', trigger: 'blur'}],
@@ -221,6 +228,9 @@
                         {required: true, message: '请输入身份证号', trigger: 'blur'},
                         {min: 18, max: 18, message: '身份证号为18位', trigger: 'blur'}],
                     mobile: [{required: true, message: '请输入手机号', trigger: 'blur'}],
+                    // password: [
+                    //     {pattern: /^[a-zA-Z0-9]{6,20}$/, message: '请输入手机号'}
+                    // ],
                     confirmPassword: [
                         {validator: validatePass2, trigger: 'blur'}
                     ]
@@ -251,6 +261,11 @@
                 },
                 deep: true,//深度监听，重要
             },
+            searchCardNo: {
+                handler(n, o) {
+                    this.form.cardNo = n
+                }
+            }
         },
         methods: {
             init(id) {
@@ -260,6 +275,7 @@
                 this.getOrigination()  //获取组织结构
                 this.getEmployeeRole()  //获取角色下拉列表
                 this.$nextTick(() => {
+                    this.form.originationId = '1'
                     //编辑，获取用户信息，设置字段只读
                     if (this.form.id > 0) {
                         this.getEmployeeDetail()
@@ -274,8 +290,6 @@
                     this.form = res.data
                     //初始化卡号，卡类型
                     this.form.cardId = 1
-                    this.form.cardNo = '1111111111'
-                    this.form.originationId = '1'
                     this.form.type = 1
                 } else {
                     this.$message.error(res.msg);
@@ -293,6 +307,7 @@
 
             // 提交表单
             handleSubmit(formName) {
+                console.log(this.form.password)
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         if (this.form.id > 0) {
@@ -328,6 +343,45 @@
                 }
             },
 
+            //读卡
+            readCard() {
+                console.log('正在读卡')
+                this.beforeGetCardNo()
+            },
+
+            async beforeGetCardNo() { //获取卡号
+                if (this.timer > 0) {
+                    console.log("已点击！！！")
+                    return
+                } else {
+                    let res = await beforeGetCard()
+                    if (res.code === 1000) {
+                        this.t = setInterval(this.getCardNo, 1000);
+                    }
+                }
+            },
+
+            async getCardNo() { //获取卡号
+                this.timer++;
+                if (this.timer > 10) {
+                    clearInterval(this.t)
+                    this.timer = 0
+                    return
+                }
+                let res = await getCard()
+                if (res && res.code === 1000) {
+                    let rno = res.data
+                    if (rno && rno.length > 0) {
+                        this.form.cardNo = rno
+                        console.log(this.form.cardNo)
+                        this.$forceUpdate();
+                        clearInterval(this.t)
+                    }
+
+                }
+            },
+
+
             async getOrigination() { //获取组织数据
                 let res = await listAll();
             },
@@ -335,6 +389,10 @@
             selectClassfy(data) {
                 this.form.originationName = data.label;
                 this.isShowSelect = false;
+            },
+
+            handleClose() {
+                this.$refs.form.resetFields()
             },
 
             //

@@ -59,7 +59,7 @@
                 </el-table-column>
 
                 <el-table-column
-                        prop="idCard"
+                        prop="cardNo"
                         label="卡号"
                         align="center"
                         width="180">
