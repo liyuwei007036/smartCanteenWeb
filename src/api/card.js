@@ -24,8 +24,17 @@ let getCard = (data) => {
     })
 }
 
+let loss = (data) => {
+    return axios({
+        method: 'put',
+        url: `/icCard/report/loss/${data}`,
+        data
+    })
+}
+
 export {
     list,
     beforeGetCard,
-    getCard
+    getCard,
+    loss
 }

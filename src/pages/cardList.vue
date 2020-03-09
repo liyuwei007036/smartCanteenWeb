@@ -145,13 +145,20 @@
                         label="操作"
                         align="center"
                         fixed="right"
-                        width="">
+                        width="150px">
                     <template slot-scope="scope">
                         <el-button type="text" size="small"
                                    @click="recharge(scope.row.id)">充值
                         </el-button>
-                        <el-button type="text" size="small"
-                                   @click="cancelAccount(scope.row.id)">销户退卡
+                        <el-button type="text" size="small" v-if="scope.row.status=='激活'" class="warning-btn"
+                                   @click="lossAccounnt(scope.row.id)">挂失
+                        </el-button>
+                        <el-button type="text" size="small" v-if="scope.row.accountStatus=='挂失'" class="green-btn"
+                                   @click="replaceAccounnt(scope.row.empId)">补卡
+                        </el-button>
+
+                        <el-button type="text" size="small" v-if="scope.row.accountStatus!='已退卡'" class="delete-btn"
+                                   @click="cancelAccounnt(scope.row.id)">销户
                         </el-button>
                     </template>
                 </el-table-column>
@@ -230,20 +237,121 @@
 
         </el-dialog>
 
+        <!--        补卡弹窗-->
+
+        <el-dialog
+                title="补卡"
+                :close-on-click-modal="false"
+                :visible.sync="isReplaceVisible" width="40%"
+                @closed="handleClose">
+            <el-form ref="form" :model="replaceForm" :rules="replaceRules" status-icon label-width="100px"
+                     label-position="right">
+                <el-form-item prop="name" label="姓名">
+                    <el-input type="text" v-model.trim="replaceForm.name" auto-complete="off"
+                              placeholder="姓名" :readonly="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="no" label="账号">
+                    <el-input type="text" v-model.trim="replaceForm.no" auto-complete="off" placeholder=账号
+                              :readonly="true"></el-input>
+                </el-form-item>
+                <el-form-item prop="idCard" label="身份证号">
+                    <el-input type="text" v-model.trim="replaceForm.idCard" auto-complete="off" placeholder="身份证号"
+                              :readonly="true"></el-input>
+                </el-form-item>
+
+
+                <el-form-item prop="mobile" label="手机号">
+                    <el-input type="mobile" v-model.trim="replaceForm.mobile" auto-complete="off"
+                              placeholder="手机号" :readonly="true"></el-input>
+                </el-form-item>
+
+                <el-form-item prop="cardNo" label="卡号">
+                    <el-input type="number" v-model.trim="replaceForm.cardNo" auto-complete="off" placeholder="卡号"
+                              :readonly="true">
+                        <el-button slot="append" @click="readCard()">点击读卡</el-button>
+                    </el-input>
+                </el-form-item>
+
+                <el-form-item label="卡类别">
+                    <el-select class="select_normal" v-model="replaceForm.type" placeholder="请选择卡类别" :readonly="true">
+                        <el-option
+                                v-for="item in cardTypeList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item prop="minimumBalance" label="卡最低余额">
+                    <el-input type="number" v-model.trim="replaceForm.minimumBalance" auto-complete="off"
+                              :readonly="true"
+                              placeholder="请输入卡最低余额"></el-input>
+                </el-form-item>
+
+                <el-form-item prop="validityTime" label="卡有效期">
+                    <el-date-picker
+                            v-model="replaceForm.validityTime"
+                            type="date"
+                            placeholder="请选择卡有效期"
+                            value-format="yyyy-MM-dd HH:mm:ss">
+                    </el-date-picker>
+                </el-form-item>
+
+                <el-form-item prop="openCardAmount" label="开卡存入金额">
+                    <el-input type="number" v-model.trim="replaceForm.openCardAmount" auto-complete="off"
+                              :readonly="true"
+                              placeholder="请输入开卡存入金额"></el-input>
+                </el-form-item>
+
+                <el-form-item prop="deposit" label="押金">
+                    <el-input type="number" v-model.trim="replaceForm.deposit" auto-complete="off" :readonly="true"
+                              placeholder="请输入押金"></el-input>
+                </el-form-item>
+
+
+                <el-form-item prop="expense" label="工本费">
+                    <el-input type="number" v-model.trim="replaceForm.expense" auto-complete="off" :readonly="true"
+                              placeholder="请输入工本费"></el-input>
+                </el-form-item>
+
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="handleSubmitReplace('form')">保存</el-button>
+        </span>
+
+        </el-dialog>
     </div>
 </template>
 
 <script>
     import {list} from '@/api/card';
     import {recharge} from '@/api/recharge';
+    import {loss} from '@/api/card';
+    import {get} from '@/api/employeeList';
+    import {beforeGetCard} from '@/api/card';
+    import {getCard} from '@/api/card';
+
 
     export default {
         name: "cardList",
         inject: ['reload'],
         data() {
+
+            let validatePass2 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'))
+                } else if (value !== this.replaceForm.password) {
+                    callback(new Error('两次输入密码不一致!'))
+                } else {
+                    callback()
+                }
+            }
+
             return {
                 isSearchVisible: false,
                 visible: false,
+                isReplaceVisible: false,
                 isShow: true,
                 currentPage: 1,
                 total: 1,
@@ -283,11 +391,35 @@
                     name: '已补卡',
                     id: '5'
                 }],
-                form: {
+                form: { //充值弹窗
                     cardIds: [],
                     money: '',
                     rechargeType: ''
                 },
+                replaceForm: {
+                    id: '',
+                    name: '',
+                    no: '',
+                    idCard: '',
+                    mobile: '',
+                    password: '',
+                    confirmPassword: '',
+                    originationId: 1,
+                    originationName: "",
+                    cardId: '',
+                    cardNo: '11111',
+                    type: '',
+                    minimumBalance: '',
+                    validityTime: '',
+                    openCardAmount: '',
+                    deposit: '',
+                    expense: '',
+                    empId: ''
+                },
+                cardTypeList: [
+                    {id: 1, name: 1},
+                    {id: 2, name: 2}
+                ],
                 multipleSelection: [],
                 rechargeTypeList: [{
                     name: '正常',
@@ -315,6 +447,20 @@
                 rules: {
                     rechargeType: [{required: true, message: '请选择充值类型', trigger: 'blur'}],
                     money: [{required: true, message: '请选择或输入充值金额', trigger: 'blur'}],
+                },
+                replaceRules: {
+                    name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
+                    no: [{required: true, message: '请输入账号', trigger: 'blur'}],
+                    idCard: [
+                        {required: true, message: '请输入身份证号', trigger: 'blur'},
+                        {min: 18, max: 18, message: '身份证号为18位', trigger: 'blur'}],
+                    mobile: [{required: true, message: '请输入手机号', trigger: 'blur'}],
+                    // password: [
+                    //     {pattern: /^[a-zA-Z0-9]{6,20}$/, message: '请输入手机号'}
+                    // ],
+                    confirmPassword: [
+                        {validator: validatePass2, trigger: 'blur'}
+                    ]
                 },
             }
         },
@@ -392,6 +538,113 @@
                 console.log(this.multipleSelection)
             },
 
+            //点击挂失按钮
+            lossAccounnt(id) {
+                this.$confirm('确定挂失该卡片？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.loss(id)
+                }).catch(() => {
+                    console.log('取消删除')
+                });
+            },
+
+            //挂失
+            async loss(id) {
+                let res = await loss(id)
+                console.log(res)
+                if (res.code === 1000) {
+                    this.$message.success('挂失成功');
+                    this.getList()
+                }
+            },
+
+            //补卡
+            replaceAccounnt(id) {
+                this.isReplaceVisible = true
+                this.replaceForm = {};
+                this.replaceForm.empId = id
+                this.$nextTick(() => {
+                    this.getUser()
+                })
+            },
+
+            //获取用户数据
+            async getUser() {
+                let res = await get(this.replaceForm.empId);
+                console.log(res)
+                if (res.code === 1000) {
+                    this.replaceForm = res.data
+                } else {
+                    this.$message.error(res.msg);
+                }
+            },
+
+            //读卡
+            readCard() {
+                console.log('正在读卡')
+                this.beforeGetCardNo()
+            },
+
+            async beforeGetCardNo() { //获取卡号
+                if (this.timer > 0) {
+                    console.log("已点击！！！")
+                    return
+                } else {
+                    let res = await beforeGetCard()
+                    if (res.code === 1000) {
+                        this.t = setInterval(this.getCardNo, 1000);
+                    }
+                }
+            },
+
+            async getCardNo() { //获取卡号
+                this.timer++;
+                if (this.timer > 10) {
+                    clearInterval(this.t)
+                    this.timer = 0
+                    return
+                }
+                let res = await getCard()
+                if (res && res.code === 1000) {
+                    let rno = res.data
+                    if (rno && rno.length > 0) {
+                        this.replaceForm.cardNo = rno
+                        console.log(this.replaceForm.cardNo)
+                        this.$forceUpdate();
+                        clearInterval(this.t)
+                    }
+
+                }
+            },
+
+            //点击销户按钮
+            cancelAccounnt(id) {
+                this.$confirm('是否确定销户？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.cancel(id)
+                }).catch(() => {
+                    console.log('取消删除')
+                });
+            },
+
+            //销户
+            async cancel(id) {
+                let res = await cancel(id)
+                console.log(res)
+                if (res.code === 1000) {
+                    this.$message.success('销户成功');
+                    this.getList()
+                }
+            },
+
+
+
             //分页
             handleSizeChange(val) {
                 this.search.size = val
@@ -401,7 +654,11 @@
             handleCurrentChange(val) {
                 this.search.page = val
                 this.getList();
-            }
+            },
+
+            handleClose() {
+                this.$refs.replaceForm.resetFields()
+            },
         }
     }
 </script>

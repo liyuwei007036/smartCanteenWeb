@@ -18,14 +18,6 @@ module.exports = [{
             name: '卡片列表',
             componentName: 'cardList',
         },
-        {
-            name: '遗失补办',
-            componentName: 'patchCard',
-        },
-        {
-            name: '销户退卡',
-            componentName: 'accountCancellation',
-        },
     ],
 }, {
     name: '角色管理',

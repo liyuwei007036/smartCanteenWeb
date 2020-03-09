@@ -384,10 +384,13 @@
 
             async getOrigination() { //获取组织数据
                 let res = await listAll();
+                console.log(res)
+                this.data = res.data
             },
 
             selectClassfy(data) {
                 this.form.originationName = data.label;
+                this.form.originationId = data.id;
                 this.isShowSelect = false;
             },
 

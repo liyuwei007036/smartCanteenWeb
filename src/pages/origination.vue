@@ -17,7 +17,7 @@
                     prop="name"
                     label="组织名称"
                     width="220"
-                    align="center">
+                    align="left">
             </el-table-column>
             <el-table-column
                     prop="code"

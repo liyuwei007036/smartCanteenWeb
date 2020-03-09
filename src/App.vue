@@ -94,6 +94,22 @@
         color: #ff302e;
     }
 
+    .green-btn, .green-btn:focus {
+        color: #67C23A;
+    }
+
+    .green-btn:hover {
+        color: #71ca38;
+    }
+
+    .warning-btn, .warning-btn:focus {
+        color: #E6A23C;
+    }
+
+    .warning-btn:hover {
+        color: #E6A23C;
+    }
+
     .el-table td, .el-table th {
         padding: 5px 0;
     }

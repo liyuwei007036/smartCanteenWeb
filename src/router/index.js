@@ -7,8 +7,6 @@ import origination from '@/pages/origination';
 import employeeList from '@/pages/employeeList';
 import roleList from '@/pages/roleList';
 import roleAuth from '@/pages/roleAuth';
-import patchCard from '@/pages/patchCard';
-import accountCancellation from '@/pages/accountCancellation';
 import rechargeList from '@/pages/rechargeList';
 import consumeList from '@/pages/consumeList';
 import cardList from '@/pages/cardList';
@@ -67,20 +65,6 @@ const router = new VueRouter({
                     name: 'roleAuth',
                     meta: {
                         title: '角色授权'
-                    }
-                },{
-                    path: '/patchCard',
-                    component: patchCard,
-                    name: 'patchCard',
-                    meta: {
-                        title: '遗失补办'
-                    }
-                },{
-                    path: '/accountCancellation',
-                    component: accountCancellation,
-                    name: 'accountCancellation',
-                    meta: {
-                        title: '销户退卡'
                     }
                 },{
                     path: '/rechargeList',
