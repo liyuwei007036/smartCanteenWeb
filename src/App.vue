@@ -122,9 +122,9 @@
 
     }
 
-    /*.el-dialog__body input[readonly] {*/
-    /*    background-color: #f1f1f5*/
-    /*}*/
+    .dialog .el-dialog__body input[readonly] {
+        background-color: #f1f1f5
+    }
 
 
     .el-dialog__body .el-date-editor.el-input, .el-date-editor.el-input__inner {
@@ -134,6 +134,16 @@
 
     .select_normal {
         width: 100%;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none !important;
+        margin: 0;
+    }
+
+    input[type="number"] {
+        -moz-appearance: textfield;
     }
 </style>
 

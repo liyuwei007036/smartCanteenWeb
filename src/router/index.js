@@ -17,7 +17,7 @@ import home from '@/pages/home';
 Vue.use(VueRouter); // 调用一个这个方法
 const router = new VueRouter({
     mode: 'history',
-    base: '/utils/',
+    base: '/',
     routes: [
         {
             path: '/',

@@ -148,17 +148,13 @@
                         width="150px">
                     <template slot-scope="scope">
                         <el-button type="text" size="small"
-                                   @click="recharge(scope.row.id)">充值
+                                   @click="recharge(scope.row.id)" v-if="scope.row.status != '禁止'">充值
                         </el-button>
                         <el-button type="text" size="small" v-if="scope.row.status=='激活'" class="warning-btn"
                                    @click="lossAccounnt(scope.row.id)">挂失
                         </el-button>
                         <el-button type="text" size="small" v-if="scope.row.accountStatus=='挂失'" class="green-btn"
                                    @click="replaceAccounnt(scope.row.empId)">补卡
-                        </el-button>
-
-                        <el-button type="text" size="small" v-if="scope.row.accountStatus!='已退卡'" class="delete-btn"
-                                   @click="cancelAccounnt(scope.row.id)">销户
                         </el-button>
                     </template>
                 </el-table-column>
@@ -244,7 +240,7 @@
                 :close-on-click-modal="false"
                 :visible.sync="isReplaceVisible" width="40%"
                 @closed="handleClose">
-            <el-form ref="form" :model="replaceForm" :rules="replaceRules" status-icon label-width="100px"
+            <el-form ref="replaceForm" :model="replaceForm" :rules="replaceRules" status-icon label-width="100px"
                      label-position="right">
                 <el-form-item prop="name" label="姓名">
                     <el-input type="text" v-model.trim="replaceForm.name" auto-complete="off"
@@ -317,7 +313,7 @@
 
             </el-form>
             <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="handleSubmitReplace('form')">保存</el-button>
+            <el-button type="primary" @click="handleSubmit1('replaceForm')">保存</el-button>
         </span>
 
         </el-dialog>
@@ -331,23 +327,12 @@
     import {get} from '@/api/employeeList';
     import {beforeGetCard} from '@/api/card';
     import {getCard} from '@/api/card';
-
+    import {patch} from '@/api/card';
 
     export default {
         name: "cardList",
         inject: ['reload'],
         data() {
-
-            let validatePass2 = (rule, value, callback) => {
-                if (value === '') {
-                    callback(new Error('请再次输入密码'))
-                } else if (value !== this.replaceForm.password) {
-                    callback(new Error('两次输入密码不一致!'))
-                } else {
-                    callback()
-                }
-            }
-
             return {
                 isSearchVisible: false,
                 visible: false,
@@ -407,7 +392,7 @@
                     originationId: 1,
                     originationName: "",
                     cardId: '',
-                    cardNo: '11111',
+                    cardNo: '',
                     type: '',
                     minimumBalance: '',
                     validityTime: '',
@@ -449,18 +434,7 @@
                     money: [{required: true, message: '请选择或输入充值金额', trigger: 'blur'}],
                 },
                 replaceRules: {
-                    name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
-                    no: [{required: true, message: '请输入账号', trigger: 'blur'}],
-                    idCard: [
-                        {required: true, message: '请输入身份证号', trigger: 'blur'},
-                        {min: 18, max: 18, message: '身份证号为18位', trigger: 'blur'}],
-                    mobile: [{required: true, message: '请输入手机号', trigger: 'blur'}],
-                    // password: [
-                    //     {pattern: /^[a-zA-Z0-9]{6,20}$/, message: '请输入手机号'}
-                    // ],
-                    confirmPassword: [
-                        {validator: validatePass2, trigger: 'blur'}
-                    ]
+                    cardNo: [{required: true, message: '必须填写卡号', trigger: 'blur'}],
                 },
             }
         },
@@ -620,30 +594,29 @@
                 }
             },
 
-            //点击销户按钮
-            cancelAccounnt(id) {
-                this.$confirm('是否确定销户？', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.cancel(id)
-                }).catch(() => {
-                    console.log('取消删除')
+
+            handleSubmit1(formName) {
+                console.log(this.$refs[formName])
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.patchForm();
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
                 });
+
             },
 
-            //销户
-            async cancel(id) {
-                let res = await cancel(id)
+            async patchForm() {
+                let res = await patch(this.replaceForm)
                 console.log(res)
                 if (res.code === 1000) {
-                    this.$message.success('销户成功');
-                    this.getList()
+                    this.$message.success('补卡成功');
+                    this.visible = false;
+                    this.reload()
                 }
             },
-
-
 
             //分页
             handleSizeChange(val) {

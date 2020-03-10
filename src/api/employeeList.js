@@ -35,7 +35,7 @@ let add = (data) => {
 let deleted = (data) => {
     return axios({
         method:'delete',
-        url:`/employee/deleted/${data}`,
+        url:`/icCard/deleted/${data}`,
         data
     })
 }

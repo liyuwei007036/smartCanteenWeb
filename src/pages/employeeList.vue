@@ -1,3 +1,4 @@
+<script src="../api/role.js"></script>
 <template>
     <div>
         <div v-if="isSerachVisible" class="search" style="border-bottom: 1px solid #eaeaea;padding-bottom: 15px">
@@ -20,7 +21,7 @@
         <div class="option-menu">
             <el-button type="primary" class="add-btn" @click="addOrUpdateEmployee()" icon="el-icon-plus">新增人员
             </el-button>
-            <el-button type="danger" class="del-btn" @click="addOrUpdateEmployee()" icon="el-icon-delete">删除</el-button>
+            <!--            <el-button type="danger" class="del-btn" @click="addOrUpdateEmployee()" icon="el-icon-delete">删除</el-button>-->
             <el-button type="primary" class="search-btn" @click="isSerachVisible = !isSerachVisible"
                        icon="el-icon-search"
                        style="float: right;"></el-button>
@@ -35,62 +36,69 @@
                         type="index"
                         label="序号"
                         align="center"
-                        width="180">
+                        width="100">
                 </el-table-column>
                 <el-table-column
                         prop="name"
                         label="姓名"
                         align="center"
-                        width="180">
+                        width="100">
                 </el-table-column>
 
                 <el-table-column
                         prop="no"
                         label="账号"
                         align="center"
-                        width="180">
+                        width="100">
                 </el-table-column>
 
                 <el-table-column
                         prop="mobile"
                         label="手机号"
                         align="center"
-                        width="180">
+                        width="140">
                 </el-table-column>
 
                 <el-table-column
                         prop="cardNo"
                         label="卡号"
                         align="center"
-                        width="180">
+                        width="140">
                 </el-table-column>
 
                 <el-table-column
-                        prop="cardType"
-                        label="卡类别"
+                        prop="type"
+                        label="卡类型"
                         align="center"
-                        width="180">
+                        width="140">
                 </el-table-column>
 
                 <el-table-column
-                        prop="organization"
+                        prop="originationName"
                         label="所属组织"
                         align="center"
-                        width="180">
+                        width="140">
                 </el-table-column>
 
                 <el-table-column
-                        prop="cardPeriod"
+                        prop="validityTime"
                         label="卡有效期"
                         align="center"
-                        width="180">
+                        width="140">
+                </el-table-column>
+
+                <el-table-column
+                        prop="status"
+                        label="状态"
+                        align="center"
+                        width="100">
                 </el-table-column>
 
                 <el-table-column
                         prop="createTime"
                         label="创建时间"
                         align="center"
-                        width="180">
+                        width="140">
                 </el-table-column>
 
                 <el-table-column
@@ -101,9 +109,12 @@
                         width="180">
                     <template slot-scope="scope">
                         <el-button @click="getEmployee(scope.row.id)" type="text" size="small">查看</el-button>
-                        <el-button type="text" size="small" @click="addOrUpdateEmployee(scope.row.id)">编辑</el-button>
-                        <el-button type="text" size="small" class="delete-btn" @click="deletedEmployee(scope.row.id)">
-                            删除
+                        <el-button v-if="scope.row.status == '在职'" type="text" size="small"
+                                   @click="addOrUpdateEmployee(scope.row.id)">编辑
+                        </el-button>
+                        <el-button v-if="scope.row.status == '在职'" type="text" size="small" class="delete-btn"
+                                   @click="deletedEmployee(scope.row.id)">
+                            销户
                         </el-button>
                     </template>
                 </el-table-column>
@@ -124,8 +135,8 @@
 
         <!--        新增编辑弹窗-->
         <editdialog v-if="isVisible" ref="addOrUpdate"></editdialog>
-        <!--        查看弹窗-->
 
+        <!--        查看弹窗-->
         <el-dialog
                 title="查看"
                 :close-on-click-modal="false"
@@ -148,16 +159,16 @@
                     <el-input type="text" v-model.trim="form1.mobile" auto-complete="off" placeholder="手机号"></el-input>
                 </el-form-item>
 
+
+                <el-form-item prop="cardNo" label="卡号">
+                    <el-input type="number" v-model.trim="form1.cardNo" auto-complete="off" placeholder="卡号">
+                    </el-input>
+                </el-form-item>
+
                 <el-form-item prop="password" label="卡密码">
                     <el-input type="password" v-model.trim="form1.password" auto-complete="off"
                               placeholder="密码"></el-input>
                 </el-form-item>
-
-                <el-form-item prop="checkpassword" label="确认密码">
-                    <el-input type="password" v-model.trim="form1.confirmPassword" auto-complete="off"
-                              placeholder="请再次输入密码"></el-input>
-                </el-form-item>
-
 
                 <el-form-item prop="minimumBalance" label="卡最低余额">
                     <el-input type="number" v-model.trim="form1.minimumBalance" auto-complete="off"
@@ -189,7 +200,7 @@
                 </el-form-item>
 
                 <el-form-item prop="originationName" label="所属组织">
-                    <el-input type="password" v-model.trim="form1.originationName" auto-complete="off"
+                    <el-input type="text" v-model.trim="form1.originationName" auto-complete="off"
                               placeholder="请选择组织"></el-input>
                 </el-form-item>
 
@@ -223,6 +234,7 @@
     import {listAllRole} from '@/api/role';
 
     export default {
+        inject: ['reload'],
         components: {
             editdialog: EditDialog
         },
@@ -231,16 +243,7 @@
                 currentPage: 1,
                 total: 1,
                 tableName: '',
-                tableData: [{
-                    name: '',
-                    no: '',
-                    idCard: '',
-                    cardType: '',
-                    organization: '',
-                    cardPeriod: '',
-                    createTime: '',
-                    mobile: ''
-                }],
+                tableData: [],
                 search: {
                     mobile: "",
                     name: "",
@@ -267,7 +270,7 @@
                     originationId: 1,
                     originationName: "",
                     cardId: '',
-                    cardNo: '11111',
+                    cardNo: '',
                     roles: [],
                     type: '',
                     minimumBalance: '',
@@ -329,13 +332,25 @@
                 }
             },
 
-            //删除员工
-            async deletedEmployee(id) {
+            //点击销户按钮
+            deletedEmployee(id) {
+                this.$confirm('确定销户？该操作不可撤销', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.deleted(id)
+                }).catch(() => {
+                    console.log('取消销户')
+                });
+            },
+
+            //销户
+            async deleted(id) {
                 let res = await deleted(id)
                 console.log(res)
                 if (res.code === 1000) {
-                    this.$message.success('删除成功');
-                    this.getList()
+                    this.reload()
                 }
             },
 
@@ -351,6 +366,7 @@
                 this.search.page = 1
                 this.getList()
             },
+
 
             //分页
             handleSizeChange(val) {

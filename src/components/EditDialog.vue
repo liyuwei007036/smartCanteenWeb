@@ -1,5 +1,5 @@
 <template>
-    <el-dialog
+    <el-dialog class="dialog"
             :title="!form.id?'新增':'编辑'"
             :close-on-click-modal="false"
             :visible.sync="visible" width="40%"
@@ -17,14 +17,13 @@
                           :readonly="isReadonly"></el-input>
             </el-form-item>
 
-
             <el-form-item prop="mobile" label="手机号">
-                <el-input type="mobile" v-model.trim="form.mobile" auto-complete="off" placeholder="手机号"></el-input>
+                <el-input type="mobile" v-model.trim="form.mobile" auto-complete="off" placeholder="手机号" ></el-input>
             </el-form-item>
 
             <el-form-item prop="cardNo" label="卡号">
                 <el-input type="number" v-model.trim="form.cardNo" auto-complete="off" placeholder="卡号"
-                          :readonly="isReadonly">
+                          :readonly="isReadonly" @mousewheel.native.prevent readOnly="true">
                     <el-button slot="append" v-if="!isReadonly" @click="readCard()">点击读卡</el-button>
                 </el-input>
             </el-form-item>
@@ -51,7 +50,7 @@
 
             <el-form-item prop="minimumBalance" label="卡最低余额">
                 <el-input type="number" v-model.trim="form.minimumBalance" auto-complete="off"
-                          placeholder="请输入卡最低余额"></el-input>
+                          placeholder="请输入卡最低余额" @mousewheel.native.prevent></el-input>
             </el-form-item>
 
             <el-form-item prop="validityTime" label="卡有效期">
@@ -65,18 +64,18 @@
 
             <el-form-item prop="openCardAmount" label="开卡存入金额">
                 <el-input type="number" v-model.trim="form.openCardAmount" auto-complete="off"
-                          placeholder="请输入开卡存入金额"></el-input>
+                          placeholder="请输入开卡存入金额" @mousewheel.native.prevent></el-input>
             </el-form-item>
 
             <el-form-item prop="deposit" label="押金">
                 <el-input type="number" v-model.trim="form.deposit" auto-complete="off"
-                          placeholder="请输入押金"></el-input>
+                          placeholder="请输入押金" @mousewheel.native.prevent></el-input>
             </el-form-item>
 
 
             <el-form-item prop="expense" label="工本费">
                 <el-input type="number" v-model.trim="form.expense" auto-complete="off"
-                          placeholder="请输入工本费"></el-input>
+                          placeholder="请输入工本费" @mousewheel.native.prevent></el-input>
             </el-form-item>
 
             <el-form-item label="角色" prop="roles">
@@ -157,7 +156,7 @@
                     mobile: '',
                     password: '',
                     confirmPassword: '',
-                    originationId: 1,
+                    originationId: '',
                     originationName: "",
                     cardId: '',
                     cardNo: '11111',
@@ -174,46 +173,7 @@
                     {id: 1, name: 1},
                     {id: 2, name: 2}
                 ],
-                data: [{
-                    label: '一级 1',
-                    children: [{
-                        label: '二级 1-1',
-                        children: [{
-                            label: '三级 1-1-1',
-                            children: []
-                        }]
-                    }]
-                }, {
-                    label: '一级 2',
-                    children: [{
-                        label: '二级 2-1',
-                        children: [{
-                            label: '三级 2-1-1',
-                            children: []
-                        }]
-                    }, {
-                        label: '二级 2-2',
-                        children: [{
-                            label: '三级 2-2-1',
-                            children: []
-                        }]
-                    }]
-                }, {
-                    label: '一级 3',
-                    children: [{
-                        label: '二级 3-1',
-                        children: [{
-                            label: '三级 3-1-1',
-                            children: []
-                        }]
-                    }, {
-                        label: '二级 3-2',
-                        children: [{
-                            label: '三级 3-2-1',
-                            children: []
-                        }]
-                    }]
-                }],
+                data: [],
                 password: '',
                 confirmPassword: '',
                 isReadonly: false, //是否只读
@@ -288,9 +248,6 @@
                 let res = await get(this.form.id);
                 if (res.code === 1000) {
                     this.form = res.data
-                    //初始化卡号，卡类型
-                    this.form.cardId = 1
-                    this.form.type = 1
                 } else {
                     this.$message.error(res.msg);
                 }
@@ -356,7 +313,7 @@
                 } else {
                     let res = await beforeGetCard()
                     if (res.code === 1000) {
-                        this.t = setInterval(this.getCardNo, 1000);
+                        this.t = setInterval(this.getCardNo, 2000);
                     }
                 }
             },

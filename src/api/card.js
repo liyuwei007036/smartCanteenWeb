@@ -24,6 +24,14 @@ let getCard = (data) => {
     })
 }
 
+let patch = (data) => {
+    return axios({
+        method: 'post',
+        url: `/icCard/patch`,
+        data
+    })
+}
+
 let loss = (data) => {
     return axios({
         method: 'put',
@@ -36,5 +44,6 @@ export {
     list,
     beforeGetCard,
     getCard,
-    loss
+    loss,
+    patch
 }
