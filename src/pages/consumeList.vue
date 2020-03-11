@@ -91,8 +91,7 @@
                     label="消费金额（元）"
                     align="center"
                     width=""
-                    prop="money"
-                    formatter="">
+                    prop="money">
             </el-table-column>
             <el-table-column
                     prop="balance"

@@ -69,7 +69,8 @@
                 <el-table-column
                         type="selection"
                         width="55"
-                        align="center">
+                        align="center"
+                        :selectable="handleDisable">
                 </el-table-column>
                 <el-table-column
                         type="index"
@@ -148,8 +149,15 @@
                         width="150px">
                     <template slot-scope="scope">
                         <el-button type="text" size="small"
-                                   @click="recharge(scope.row.id)" v-if="scope.row.status != '禁止'">充值
+                                   @click="recharge(scope.row.id,scope.row.empId ,scope.row.currentBalance)"
+                                   v-if="scope.row.status != '禁止'">充值
                         </el-button>
+
+                        <el-button type="text" size="small"
+                                   @click="deduction(scope.row.id,scope.row.empId,scope.row.currentBalance)"
+                                   v-if="scope.row.status != '禁止'">补扣
+                        </el-button>
+
                         <el-button type="text" size="small" v-if="scope.row.status=='激活'" class="warning-btn"
                                    @click="lossAccounnt(scope.row.id)">挂失
                         </el-button>
@@ -174,23 +182,23 @@
         </div>
 
         <!--        充值弹窗-->
-        <el-dialog
-                title="充值"
-                :close-on-click-modal="false"
-                :visible.sync="visible">
+        <el-dialog class="dialog"
+                   title="充值"
+                   :close-on-click-modal="false"
+                   :visible.sync="visible">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
                 <el-form-item prop="name" label="姓名" v-if="isShow">
-                    <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="用户姓名"
+                    <el-input type="text" v-model.trim="name" auto-complete="off" placeholder="用户姓名"
                               :readonly='true'></el-input>
                 </el-form-item>
 
-                <el-form-item prop="idCard" label="账号" v-if="isShow">
-                    <el-input type="text" v-model.trim="form.idCard" auto-complete="off" placeholder="账号"
+                <el-form-item prop="no" label="账号" v-if="isShow">
+                    <el-input type="text" v-model.trim="no" auto-complete="off" placeholder="账号"
                               :readonly='true'></el-input>
                 </el-form-item>
 
-                <el-form-item prop="cardNo" label="余额" v-if="isShow">
-                    <el-input type="text" v-model.trim="form.cardNo" auto-complete="off" placeholder="卡号"
+                <el-form-item prop="currentBalance" label="余额" v-if="isShow">
+                    <el-input type="text" v-model.trim="currentBalance" auto-complete="off" placeholder="余额"
                               :readonly='true'></el-input>
                 </el-form-item>
 
@@ -233,13 +241,48 @@
 
         </el-dialog>
 
+        <!--        补扣弹窗-->
+        <el-dialog class="dialog"
+                   title="补扣"
+                   :close-on-click-modal="false"
+                   :visible.sync="isDeductionVisible">
+            <el-form ref="deductionForm" :model="deductionForm" :rules="deductionRules" label-width="80px"
+                     label-position="left">
+                <el-form-item prop="name" label="姓名">
+                    <el-input type="text" v-model.trim="name" auto-complete="off" placeholder="用户姓名"
+                              :readonly='true'></el-input>
+                </el-form-item>
+
+                <el-form-item prop="no" label="账号">
+                    <el-input type="text" v-model.trim="no" auto-complete="off" placeholder="账号"
+                              :readonly='true'></el-input>
+                </el-form-item>
+
+                <el-form-item prop="currentBalance" label="余额">
+                    <el-input type="text" v-model.trim="currentBalance" auto-complete="off" placeholder="余额"
+                              :readonly='true'></el-input>
+                </el-form-item>
+
+                <el-form-item label="补扣金额" prop="money">
+
+                    <el-input type="text" v-model.trim="deductionForm.money" auto-complete="off"
+                              placeholder="请输入补扣金额"></el-input>
+                </el-form-item>
+
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="handleDeductionSubmit('deductionForm')">保存</el-button>
+        </span>
+
+        </el-dialog>
+
         <!--        补卡弹窗-->
 
-        <el-dialog
-                title="补卡"
-                :close-on-click-modal="false"
-                :visible.sync="isReplaceVisible" width="40%"
-                @closed="handleClose">
+        <el-dialog class="dialog"
+                   title="补卡"
+                   :close-on-click-modal="false"
+                   :visible.sync="isReplaceVisible" width="40%"
+                   @closed="handleClose">
             <el-form ref="replaceForm" :model="replaceForm" :rules="replaceRules" status-icon label-width="100px"
                      label-position="right">
                 <el-form-item prop="name" label="姓名">
@@ -321,13 +364,9 @@
 </template>
 
 <script>
-    import {list} from '@/api/card';
+    import {list, loss, beforeGetCard, getCard, patch, deduction} from '@/api/card';
     import {recharge} from '@/api/recharge';
-    import {loss} from '@/api/card';
     import {get} from '@/api/employeeList';
-    import {beforeGetCard} from '@/api/card';
-    import {getCard} from '@/api/card';
-    import {patch} from '@/api/card';
 
     export default {
         name: "cardList",
@@ -337,10 +376,14 @@
                 isSearchVisible: false,
                 visible: false,
                 isReplaceVisible: false,
+                isDeductionVisible: false,
                 isShow: true,
                 currentPage: 1,
                 total: 1,
                 tableData: [],
+                name: '',
+                no: '',
+                currentBalance: '',
                 search: {
                     accountStatus: "",
                     cardNo: "",
@@ -401,6 +444,10 @@
                     expense: '',
                     empId: ''
                 },
+                deductionForm: {
+                    cardId: '',
+                    money: ''
+                },
                 cardTypeList: [
                     {id: 1, name: 1},
                     {id: 2, name: 2}
@@ -436,6 +483,9 @@
                 replaceRules: {
                     cardNo: [{required: true, message: '必须填写卡号', trigger: 'blur'}],
                 },
+                deductionRules: {
+                    money: [{required: true, message: '请输入补扣金额', trigger: 'blur'}],
+                },
             }
         },
 
@@ -463,16 +513,16 @@
             },
 
             //充值
-            recharge(id) {
+            recharge(id, empId, currentBalance) {
                 this.visible = true;
                 this.isShow = true;
                 this.form.cardIds.push(id);
-                console.log(this.form.cardIds)
+                this.getUserInfo(empId)
+                this.currentBalance = currentBalance
             },
 
             //批量充值
             patchRecharge() {
-                console.log()
                 if (this.multipleSelection.length > 0) {
                     this.visible = true;
                     this.isShow = false;
@@ -506,6 +556,37 @@
                     this.reload()
                 }
             },
+
+            //补扣
+            deduction(id, empId, currentBalance) {
+                this.isDeductionVisible = true;
+                this.deductionForm.cardId = id;
+                this.getUserInfo(empId)
+                this.currentBalance = currentBalance
+            },
+
+            // 提交表单
+            handleDeductionSubmit(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.addDeductionForm();
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+
+            //保存数据
+            async addDeductionForm() {
+                let res = await deduction(this.deductionForm)
+                if (res.code === 1000) {
+                    this.$message.success('保存成功');
+                    this.visible = false;
+                    this.reload()
+                }
+            },
+
 
             handleSelectionChange(val) {
                 this.multipleSelection = val;
@@ -618,6 +699,19 @@
                 }
             },
 
+
+            //获取用户数据
+            async getUserInfo(empId) {
+                let res = await get(empId);
+                console.log(res)
+                if (res.code === 1000) {
+                    this.name = res.data.name
+                    this.no = res.data.no
+                } else {
+                    this.$message.error(res.msg);
+                }
+            },
+
             //分页
             handleSizeChange(val) {
                 this.search.size = val
@@ -632,10 +726,23 @@
             handleClose() {
                 this.$refs.replaceForm.resetFields()
             },
+
+            // 处理表格数据,卡片为禁止的不允许充值
+            // 有两个参数返回,表格的每一行对象和当前索引
+            handleDisable(row, index) {
+                // 函数需要一个返回值,true为可选,false为不可选择
+                if (row.status === '禁止') {
+                    return false
+                } else {
+                    return true
+                }
+            }
         }
     }
 </script>
 
 <style scoped>
-
+    .select_normal /deep/ input[readonly] {
+        background-color: #fff;
+    }
 </style>

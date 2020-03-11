@@ -89,11 +89,7 @@
 </template>
 
 <script>
-    import {list} from '@/api/role';
-    import {get} from '@/api/role';
-    import {update} from '@/api/role';
-    import {add} from '@/api/role';
-    import {deleted} from '@/api/role';
+    import {list,get,update,add,deleted} from '@/api/role';
 
     export default {
         name: "roleList",

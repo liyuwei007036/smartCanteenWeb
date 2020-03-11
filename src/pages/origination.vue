@@ -5,14 +5,14 @@
             </el-button>
         </div>
 
-        <el-table
-                :data="tableData"
-                style="width: 100%"
-                row-key="id"
-                border
-                lazy
-                :load="load"
-                :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+        <el-table :indent="16"
+                  :data="tableData"
+                  style="width: 100%"
+                  row-key="id"
+                  border
+                  lazy
+                  :load="load"
+                  :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
             <el-table-column
                     prop="name"
                     label="组织名称"
@@ -51,10 +51,12 @@
                 :visible.sync="visible">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
                 <el-form-item prop="name" label="组织名称">
-                    <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="组织名称" clearable></el-input>
+                    <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="组织名称"
+                              clearable></el-input>
                 </el-form-item>
                 <el-form-item prop="code" label="组织编码">
-                    <el-input type="text" v-model.trim="form.code" auto-complete="off" placeholder="组织编码" clearable></el-input>
+                    <el-input type="text" v-model.trim="form.code" auto-complete="off" placeholder="组织编码"
+                              clearable></el-input>
                 </el-form-item>
                 <el-form-item prop="description" label="备注">
                     <el-input type="textarea" v-model.trim="form.description" auto-complete="off" clearable
@@ -72,12 +74,7 @@
     </div>
 </template>
 <script>
-    import {getRoot} from '@/api/origination';
-    import {getNodes} from '@/api/origination';
-    import {get} from '@/api/origination';
-    import {update} from '@/api/origination';
-    import {add} from '@/api/origination';
-    import {deleted} from '@/api/origination';
+    import {getRoot, getNodes, get, update, add, deleted} from '@/api/origination';
 
     export default {
         inject: ['reload'],
@@ -151,7 +148,9 @@
 
             // 点击编辑按钮
             editNodes(id) {
+                // this.$refs.form.resetFields()
                 this.visible = true;
+                this.isUpdate = true;
                 this.form = {};
                 this.form.id = id;
                 this.$nextTick(() => {
@@ -187,6 +186,7 @@
 
             //更新数据
             async updateNode() {
+
                 let res = await update(this.form)
                 if (res.code === 1000) {
                     this.$message.success('保存成功');
@@ -207,6 +207,7 @@
 
             //点击新增按钮
             addNodes(id) {
+                // this.$refs.form.resetFields()
                 this.isUpdate = false;
                 this.visible = true;
                 this.form = {};

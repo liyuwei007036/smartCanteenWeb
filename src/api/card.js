@@ -40,10 +40,19 @@ let loss = (data) => {
     })
 }
 
+let deduction = (data) => {
+    return axios({
+        method: 'post',
+        url: `/icCard/deduction`,
+        data
+    })
+}
+
 export {
     list,
     beforeGetCard,
     getCard,
     loss,
-    patch
+    patch,
+    deduction
 }

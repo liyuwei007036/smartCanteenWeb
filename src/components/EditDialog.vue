@@ -1,9 +1,9 @@
 <template>
     <el-dialog class="dialog"
-            :title="!form.id?'新增':'编辑'"
-            :close-on-click-modal="false"
-            :visible.sync="visible" width="40%"
-            @closed="handleClose">
+               :title="!form.id?'新增':'编辑'"
+               :close-on-click-modal="false"
+               :visible.sync="visible" width="40%"
+               @closed="handleClose">
         <el-form ref="form" :model="form" :rules="rules" status-icon label-width="100px" label-position="right">
             <el-form-item prop="name" label="姓名">
                 <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="姓名"></el-input>
@@ -14,11 +14,11 @@
             </el-form-item>
             <el-form-item prop="idCard" label="身份证号">
                 <el-input type="text" v-model.trim="form.idCard" auto-complete="off" placeholder="身份证号"
-                          :readonly="isReadonly"></el-input>
+                          :readonly="isReadonly" maxlength="18"></el-input>
             </el-form-item>
 
             <el-form-item prop="mobile" label="手机号">
-                <el-input type="mobile" v-model.trim="form.mobile" auto-complete="off" placeholder="手机号" ></el-input>
+                <el-input type="mobile" v-model.trim="form.mobile" auto-complete="off" placeholder="手机号" maxlength="11"></el-input>
             </el-form-item>
 
             <el-form-item prop="cardNo" label="卡号">
@@ -39,12 +39,22 @@
                 </el-select>
             </el-form-item>
 
-            <el-form-item prop="password" label="卡密码">
-                <el-input type="password" v-model.trim="password" auto-complete="off" placeholder="密码"></el-input>
+            <el-form-item prop="password1" label="卡密码">
+                <el-input type="password" v-model.trim="form.password1" auto-complete="off" placeholder="密码"></el-input>
             </el-form-item>
 
-            <el-form-item prop="confirmPassword" label="确认密码">
-                <el-input type="password" v-model.trim="confirmPassword" auto-complete="off"
+            <el-form-item prop="confirmPassword1" label="确认密码">
+                <el-input type="password" v-model.trim="form.confirmPassword1" auto-complete="off"
+                          placeholder="请再次输入密码"></el-input>
+            </el-form-item>
+
+
+            <el-form-item prop="password" label="卡密码" hidden>
+                <el-input type="password" v-model.trim="form.password" auto-complete="off" placeholder="密码"></el-input>
+            </el-form-item>
+
+            <el-form-item prop="confirmPassword" label="确认密码" hidden>
+                <el-input type="password" v-model.trim="form.confirmPassword" auto-complete="off"
                           placeholder="请再次输入密码"></el-input>
             </el-form-item>
 
@@ -106,9 +116,12 @@
                          :data="data"
                          :filter-node-method="filterNode"
                          @node-click="selectClassfy"
+                         @input='changeDicPid'
+                         @close='changeDicPid'
                          class="width-220 selectTree-input objectTree"
                          ref="selectTree">
                 </el-tree>
+
 
             </el-form-item>
 
@@ -137,14 +150,30 @@
         data() {
 
             let validatePass2 = (rule, value, callback) => {
+                console.log(value)
+                console.log(this.form.password1)
                 if (value === '') {
                     callback(new Error('请再次输入密码'))
-                } else if (value !== this.form.password) {
+                } else if (value !== this.form.password1) {
                     callback(new Error('两次输入密码不一致!'))
                 } else {
                     callback()
                 }
             }
+
+            let checkPhone = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('手机号不能为空'));
+                } else {
+                    const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+                    console.log(reg.test(value));
+                    if (reg.test(value)) {
+                        callback();
+                    } else {
+                        return callback(new Error('请输入正确的手机号'));
+                    }
+                }
+            };
 
             return {
                 visible: false,
@@ -156,10 +185,12 @@
                     mobile: '',
                     password: '',
                     confirmPassword: '',
+                    password1: '',
+                    confirmPassword1: '',
                     originationId: '',
                     originationName: "",
                     cardId: '',
-                    cardNo: '11111',
+                    cardNo: '',
                     roles: [],
                     type: '',
                     minimumBalance: '',
@@ -187,40 +218,30 @@
                     idCard: [
                         {required: true, message: '请输入身份证号', trigger: 'blur'},
                         {min: 18, max: 18, message: '身份证号为18位', trigger: 'blur'}],
-                    mobile: [{required: true, message: '请输入手机号', trigger: 'blur'}],
-                    // password: [
-                    //     {pattern: /^[a-zA-Z0-9]{6,20}$/, message: '请输入手机号'}
-                    // ],
-                    confirmPassword: [
+                    mobile: [
+                        {validator: checkPhone, trigger: 'blur'}
+                    ],
+                    password1: [
+                        // {required: true, message: '请输入身份证号', trigger: 'blur'},
+                    ],
+                    confirmPassword1: [
                         {validator: validatePass2, trigger: 'blur'}
-                    ]
+                    ],
+                    // originationName: [{required: true, message: '请选择组织结构', trigger: 'blur'},]
                 },
-
             }
-
         },
 
-
         watch: {
-            password: {
-                handler(n, o) {
-                    this.form.password = n
-                }
-            },
-            confirmPassword: {
-                handler(n, o) {
-                    console.log(this.form.confirmPassword)
-                    this.form.confirmPassword = n
-                }
-            },
             form: {
-                handler(form) {
-                    if (this.isShowSelect) {
-                        this.$refs.selectTree.filter(form.originationName);
-                    }
+                handler: function (val) {
+                    console.log(val.confirmPassword1)
+                    this.form.confirmPassword = this.form.confirmPassword1
+                    this.form.password = this.form.password1
                 },
-                deep: true,//深度监听，重要
+                deep: true //对象的深度验证
             },
+
             searchCardNo: {
                 handler(n, o) {
                     this.form.cardNo = n
@@ -235,14 +256,14 @@
                 this.getOrigination()  //获取组织结构
                 this.getEmployeeRole()  //获取角色下拉列表
                 this.$nextTick(() => {
-                    this.form.originationId = '1'
                     //编辑，获取用户信息，设置字段只读
                     if (this.form.id > 0) {
                         this.getEmployeeDetail()
                         this.isReadonly = true
                     }
                 })
-            },
+            }
+            ,
 
             async getEmployeeDetail() { //获取员工数据
                 let res = await get(this.form.id);
@@ -251,7 +272,8 @@
                 } else {
                     this.$message.error(res.msg);
                 }
-            },
+            }
+            ,
 
             //获取角色列表
             async getEmployeeRole() {
@@ -259,12 +281,12 @@
                 if (res.code === 1000) {
                     this.roleList = res.data
                 }
-            },
+            }
+            ,
 
 
             // 提交表单
             handleSubmit(formName) {
-                console.log(this.form.password)
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         if (this.form.id > 0) {
@@ -278,7 +300,8 @@
                     }
                 });
 
-            },
+            }
+            ,
 
             //更新数据
             async updateForm() {
@@ -288,7 +311,8 @@
                     this.visible = false;
                     this.reload()
                 }
-            },
+            }
+            ,
 
             //保存数据
             async addForm() {
@@ -298,17 +322,17 @@
                     this.visible = false;
                     this.reload()
                 }
-            },
+            }
+            ,
 
             //读卡
             readCard() {
-                console.log('正在读卡')
                 this.beforeGetCardNo()
-            },
+            }
+            ,
 
             async beforeGetCardNo() { //获取卡号
                 if (this.timer > 0) {
-                    console.log("已点击！！！")
                     return
                 } else {
                     let res = await beforeGetCard()
@@ -316,7 +340,8 @@
                         this.t = setInterval(this.getCardNo, 2000);
                     }
                 }
-            },
+            }
+            ,
 
             async getCardNo() { //获取卡号
                 this.timer++;
@@ -330,40 +355,52 @@
                     let rno = res.data
                     if (rno && rno.length > 0) {
                         this.form.cardNo = rno
-                        console.log(this.form.cardNo)
                         this.$forceUpdate();
                         clearInterval(this.t)
                     }
 
                 }
-            },
+            }
+            ,
 
 
             async getOrigination() { //获取组织数据
                 let res = await listAll();
-                console.log(res)
                 this.data = res.data
-            },
+            }
+            ,
 
             selectClassfy(data) {
                 this.form.originationName = data.label;
                 this.form.originationId = data.id;
                 this.isShowSelect = false;
-            },
+                // console.log("Wwww")
+                // this.$nextTick(()=>{
+                //     this.$refs['form'].validateField('originationName')
+                // })
+            }
+            ,
+
+            changeDicPid(val) {
+            }
+            ,
 
             handleClose() {
                 this.$refs.form.resetFields()
-            },
+            }
+            ,
 
             //
             changeSelectTree() {
                 this.isShowSelect = true;
-            },
+            }
+            ,
 
             filterNode(value, data) {
                 if (!value) return true;
                 return data.label.indexOf(value) !== -1;
-            },
+            }
+            ,
 
             resetForm(formName) {
                 this.$refs[formName].resetFields();

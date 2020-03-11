@@ -56,7 +56,7 @@
                         prop="mobile"
                         label="手机号"
                         align="center"
-                        width="140">
+                        width="120">
                 </el-table-column>
 
                 <el-table-column
@@ -70,7 +70,7 @@
                         prop="type"
                         label="卡类型"
                         align="center"
-                        width="140">
+                        width="100">
                 </el-table-column>
 
                 <el-table-column
@@ -98,7 +98,7 @@
                         prop="createTime"
                         label="创建时间"
                         align="center"
-                        width="140">
+                        width="">
                 </el-table-column>
 
                 <el-table-column
@@ -227,10 +227,8 @@
 </template>
 
 <script>
-    import {list} from '@/api/employeeList';
+    import {list,get,deleted} from '@/api/employeeList';
     import EditDialog from '@/components/EditDialog';
-    import {get} from '@/api/employeeList';
-    import {deleted} from '@/api/employeeList';
     import {listAllRole} from '@/api/role';
 
     export default {

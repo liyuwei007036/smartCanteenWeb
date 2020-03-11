@@ -46,6 +46,7 @@ axios.interceptors.request.use(config => {
     stopRepeatRequest(config.url + '&' + config.method, cancel, '${config.url} request cancel')
     // config.headers = buildHeaders() || {}
     config.headers['content-type'] = 'application/json'
+    config.headers['x-smart-token'] = sessionStorage.getItem('x-smart-token')
     // config.headers['X-lang-Id'] = localStorage.getItem(LANG.LOCALE)
     return config
 }, err => {
@@ -55,6 +56,10 @@ axios.interceptors.request.use(config => {
 let loginURL = '/employee/login'
 // 响应拦截器
 axios.interceptors.response.use(response => {
+    if (response.headers['x-smart-token']) {
+        sessionStorage.setItem('x-smart-token', response.headers['x-smart-token'])
+    }
+
     //增加延迟，相同请求不得在短时间内重复发送
     setTimeout(() => {
         allowRequest(response.config.url + '&' + response.config.method)
@@ -62,7 +67,7 @@ axios.interceptors.response.use(response => {
     let data = response.data
     if (data && data.code === 1000) {
         return data
-    } else if (data && data.code === 1002) {
+    } else if (data && data.code === 1022) {
         console.log('跳转登录页面')
     } else {
         Message({
@@ -88,25 +93,11 @@ axios.interceptors.response.use(response => {
             allowRequest(error.response.config.url + '&' + error.response.config.method)
         }, 500)
     }
+    Message.error('操作太快')
+    return {
+        code:0
+    }
 })
-
-// axios.interceptors.request.use(config => config,
-//     error => Promise.error(error));
-
-
-// 响应拦截器
-// axios.interceptors.response.use(
-//     (response) => {
-//         // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
-//         // 否则的话抛出错误
-//         if (response.status === 200 && response.data.code === 1000) {
-//             return response;
-//         } else {
-//
-//         }
-//     },
-//     error => Promise.reject(error.response),
-// );
 
 
 export default axios;

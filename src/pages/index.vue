@@ -12,7 +12,7 @@
                     <vheader/>
                 </el-header>
                 <el-main>
-                    <div class="main-content" style="margin-bottom: 10px;padding: 15px 20px">
+                    <div class="breadcrumb" style="margin-bottom: 10px;padding: 15px 20px">
                         <breadcrumb></breadcrumb>
                     </div>
                     <div class="main-content">
@@ -72,7 +72,7 @@
         background: #F1F2F5;
     }
 
-    .main-content {
+    .main-content,.breadcrumb {
         background: #FFFFFF;
         box-shadow: 0 0 6px 0 #DFDFDF;
         border-radius: 6px;
@@ -95,4 +95,6 @@
     .el-container {
         height: 100%;
     }
+
+
 </style>
