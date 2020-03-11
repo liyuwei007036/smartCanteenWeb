@@ -114,6 +114,7 @@
                     id: '',
                     name: '',
                 },
+                permissions: [],
                 rules: {
                     name: [
                         {required: true, message: '请输入角色名称', trigger: 'blur'},
@@ -131,7 +132,6 @@
             //获取列表数据
             async getList() {
                 let res = await list(this.search);
-                console.log(res)
                 if (res.code === 1000) {
                     this.total = res.data.total;
                     this.currentPage = res.data.currentPage;
@@ -140,6 +140,7 @@
                     this.$message.error(res.msg);
                 }
             },
+
 
             //搜索
             serach() {

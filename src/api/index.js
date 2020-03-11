@@ -1,9 +1,10 @@
 import axios from 'axios';
 import {Message} from 'element-ui'
+import router from "../router";
 
 axios.defaults.timeout = 50000;
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://demo.lumia.live:5001';
+axios.defaults.baseURL = 'http://127.0.0.1:5001';
 
 
 const reqList = []
@@ -53,7 +54,6 @@ axios.interceptors.request.use(config => {
     return Promise.reject(err)
 })
 
-let loginURL = '/employee/login'
 // 响应拦截器
 axios.interceptors.response.use(response => {
     if (response.headers['x-smart-token']) {
@@ -68,7 +68,11 @@ axios.interceptors.response.use(response => {
     if (data && data.code === 1000) {
         return data
     } else if (data && data.code === 1022) {
-        console.log('跳转登录页面')
+        router.push({
+            name: `login`
+        })
+    } else if (data && data.code === 1012) {
+        return {code: 0}
     } else {
         Message({
             message: data.msg,
