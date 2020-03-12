@@ -48,8 +48,8 @@
         methods: {
             async login() {
                 let res = await login(this.loginForm);
-                console.log(res)
                 if (res.code === 1000) {
+                    sessionStorage.setItem("user", JSON.stringify(res.data))
                     this.$message.success('登录成功');
                     this.$router.push({path: 'index'})
                 }

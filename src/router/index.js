@@ -34,7 +34,8 @@ const router = new VueRouter({
                     name: 'home',
                     component: home,
                     meta: {
-                        title: '首页'
+                        title: '首页',
+                        auths: []
                     }
                 },
                 {
@@ -42,7 +43,8 @@ const router = new VueRouter({
                     component: origination,
                     name: 'origination',
                     meta: {
-                        title: '组织结构'
+                        title: '组织结构',
+                        auths: ['origination:view']
                     }
                 },
                 {
@@ -50,42 +52,49 @@ const router = new VueRouter({
                     component: employeeList,
                     name: 'employeeList',
                     meta: {
-                        title: '人员资料'
+                        title: '人员资料',
+                        auths: ['employee']
+
                     }
                 }, {
                     path: '/roleList',
                     component: roleList,
                     name: 'roleList',
                     meta: {
-                        title: '角色管理'
+                        title: '角色管理',
+                        auths: ['role']
                     }
-                },{
+                }, {
                     path: '/roleAuth',
                     component: roleAuth,
                     name: 'roleAuth',
                     meta: {
-                        title: '角色授权'
+                        title: '角色授权',
+                        auths: ['role:authorization']
                     }
-                },{
+                }, {
                     path: '/rechargeList',
                     component: rechargeList,
                     name: 'rechargeList',
                     meta: {
-                        title: '充值记录'
+                        title: '充值记录',
+                        auths: ['recharge:listlog'],
                     }
-                },{
+                }, {
                     path: '/cardList',
                     component: cardList,
                     name: 'cardList',
                     meta: {
-                        title: '卡片管理'
+                        title: '卡片管理',
+                        auths: ['icCard'],
                     }
-                },{
+                }, {
                     path: '/consumeList',
                     component: consumeList,
                     name: 'consumeList',
                     meta: {
-                        title: '消费记录'
+                        title: '消费记录',
+                        auths: ['order:list'],
                     }
                 },
             ],
@@ -93,5 +102,41 @@ const router = new VueRouter({
 
     ],
 });
+
+router.beforeEach((to, from, next) => {
+    if (to === from) {
+        console.log(to === from)
+        return;
+    }
+    const hasAuth = function (needAuths, haveAuths) {
+        if (needAuths === undefined || needAuths.length === 0) {
+            return true
+        } else {
+            for (let i in needAuths) {
+                if (haveAuths.includes(needAuths[i])){
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+    let $user
+    try {
+        $user = JSON.parse(sessionStorage.getItem('user'))
+    } catch (e) {
+
+    }
+    let permissions = []
+    if ($user) {
+        permissions = $user.powers || [];
+    }
+    if (!hasAuth(to.meta.auths, permissions)) {
+        //没有权限重定位到其他页面，往往是401页面
+        // next({replace: true, name: 'otherRouteName'})
+        console.log('权限不足', to.meta.auths)
+    }
+    //权限校验通过,跳转至对应路由
+    next();
+})
 
 export default router;

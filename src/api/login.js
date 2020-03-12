@@ -8,7 +8,15 @@ let login = (data) => {
     })
 }
 
+let loginOut = () => {
+    return axios({
+        method: 'delete',
+        url: `/employee/loginout`
+    })
+}
+
 
 export {
-    login
+    login,
+    loginOut
 }

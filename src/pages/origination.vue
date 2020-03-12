@@ -1,11 +1,12 @@
 <template>
     <div>
         <div class="option-menu">
-            <el-button type="primary" class="add-btn" @click="addNodes()" icon="el-icon-plus">新增组织
+            <el-button type="primary" class="add-btn" @click="addNodes()" icon="el-icon-plus"
+                       v-acl="['origination:add']">新增组织
             </el-button>
         </div>
 
-        <el-table :indent="16"
+        <el-table :indent="16" v-acl="['origination:view']"
                   :data="tableData"
                   style="width: 100%"
                   row-key="id"
@@ -37,9 +38,14 @@
                     align="center"
                     width="180">
                 <template slot-scope="scope">
-                    <el-button @click="addNodes(scope.row.id)" type="text" size="small">新增</el-button>
-                    <el-button type="text" size="small" @click="editNodes(scope.row.id)">编辑</el-button>
-                    <el-button type="text" size="small" class="delete-btn" @click="deleted(scope.row.id)">删除</el-button>
+                    <el-button @click="addNodes(scope.row.id)" type="text" size="small" v-acl="['origination:add']">新增
+                    </el-button>
+                    <el-button type="text" size="small" @click="editNodes(scope.row.id)" v-acl="['origination:update']">
+                        编辑
+                    </el-button>
+                    <el-button type="text" size="small" class="delete-btn" @click="deleted(scope.row.id)"
+                               v-acl="['origination:deleted']">删除
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>

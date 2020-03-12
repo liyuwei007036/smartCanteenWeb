@@ -36,7 +36,6 @@
             };
         },
         beforeCreate() {
-            console.log('index');
         },
         components: {
             navmenu: NavMenu,

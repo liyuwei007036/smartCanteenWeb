@@ -109,7 +109,9 @@
                         this.roleList.push({name: el.name, id: el.id});
                     })
                     this.roleId = parseInt(sessionStorage.getItem("x-permisson_id")) || null
-                    this.getRolePermissions()
+                    if (this.roleId) {
+                        this.getRolePermissions()
+                    }
                 } else {
                     this.$message.error(res.msg);
                 }

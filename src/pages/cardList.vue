@@ -48,11 +48,11 @@
 
             </div>
 
-            <el-button type="primary" @click="serach" icon="el-icon-search">搜索</el-button>
+            <el-button type="primary" @click="serach" icon="el-icon-search" v-acl="['icCard:list']">搜索</el-button>
         </div>
 
         <div class="option-menu clearfix">
-            <el-button type="primary" class="add-btn" @click="patchRecharge()" icon="el-icon-plus">批量充值
+            <el-button type="primary" class="add-btn" @click="patchRecharge()" icon="el-icon-plus" v-acl="['recharge:recharge']">批量充值
             </el-button>
             <el-button type="primary" class="search-btn" @click="isSearchVisible = !isSearchVisible"
                        icon="el-icon-search"
@@ -148,20 +148,20 @@
                         fixed="right"
                         width="150px">
                     <template slot-scope="scope">
-                        <el-button type="text" size="small"
+                        <el-button type="text" size="small" v-acl="['recharge:recharge']"
                                    @click="recharge(scope.row.id,scope.row.empId ,scope.row.currentBalance)"
-                                   v-if="scope.row.status != '禁止'">充值
+                                   v-if="scope.row.status !== '禁止'">充值
                         </el-button>
 
-                        <el-button type="text" size="small"
+                        <el-button type="text" size="small" v-acl="['icCard:deduction']"
                                    @click="deduction(scope.row.id,scope.row.empId,scope.row.currentBalance)"
-                                   v-if="scope.row.status != '禁止'">补扣
+                                   v-if="scope.row.status !== '禁止'">补扣
                         </el-button>
 
-                        <el-button type="text" size="small" v-if="scope.row.status=='激活'" class="warning-btn"
+                        <el-button type="text" size="small" v-if="scope.row.status==='激活'" class="warning-btn" v-acl="['icCard:loss']"
                                    @click="lossAccounnt(scope.row.id)">挂失
                         </el-button>
-                        <el-button type="text" size="small" v-if="scope.row.accountStatus=='挂失'" class="green-btn"
+                        <el-button type="text" size="small" v-if="scope.row.accountStatus==='挂失'" class="green-btn" v-acl="['icCard:patch']"
                                    @click="replaceAccounnt(scope.row.empId)">补卡
                         </el-button>
                     </template>

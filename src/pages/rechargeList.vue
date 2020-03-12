@@ -45,13 +45,13 @@
 
             </div>
 
-            <el-button type="primary" @click="serach" icon="el-icon-search">搜索</el-button>
+            <el-button v-acl="['recharge:listlog']" type="primary" @click="serach" icon="el-icon-search">搜索</el-button>
         </div>
 
         <div class="option-menu clearfix">
             <el-button type="primary" class="search-btn" @click="isSearchVisible = !isSearchVisible"
                        icon="el-icon-search"
-                       style="float: right;"></el-button>
+                       style="float: right;"/>
         </div>
         <div>
             <el-table

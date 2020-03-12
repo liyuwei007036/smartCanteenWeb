@@ -1,4 +1,3 @@
-<script src="../api/role.js"></script>
 <template>
     <div>
         <div v-if="isSerachVisible" class="search" style="border-bottom: 1px solid #eaeaea;padding-bottom: 15px">
@@ -19,12 +18,13 @@
             <el-button type="primary" @click="serach" icon="el-icon-search">搜索</el-button>
         </div>
         <div class="option-menu">
-            <el-button type="primary" class="add-btn" @click="addOrUpdateEmployee()" icon="el-icon-plus">新增人员
+            <el-button type="primary" class="add-btn" @click="addOrUpdateEmployee()" icon="el-icon-plus"
+                       v-acl="['employee:add']">新增人员
             </el-button>
-            <!--            <el-button type="danger" class="del-btn" @click="addOrUpdateEmployee()" icon="el-icon-delete">删除</el-button>-->
-            <el-button type="primary" class="search-btn" @click="isSerachVisible = !isSerachVisible"
+            <el-button v-acl="['employee:view']" type="primary" class="search-btn"
+                       @click="isSerachVisible = !isSerachVisible"
                        icon="el-icon-search"
-                       style="float: right;"></el-button>
+                       style="float: right;"/>
         </div>
         <div>
             <el-table
@@ -108,11 +108,14 @@
                         fixed="right"
                         width="180">
                     <template slot-scope="scope">
-                        <el-button @click="getEmployee(scope.row.id)" type="text" size="small">查看</el-button>
-                        <el-button v-if="scope.row.status == '在职'" type="text" size="small"
+                        <el-button v-acl="['employee:view']" @click="getEmployee(scope.row.id)" type="text"
+                                   size="small">查看
+                        </el-button>
+                        <el-button v-if="scope.row.status === '在职'" type="text" size="small" v-acl="['employee:update']"
                                    @click="addOrUpdateEmployee(scope.row.id)">编辑
                         </el-button>
-                        <el-button v-if="scope.row.status == '在职'" type="text" size="small" class="delete-btn"
+                        <el-button v-if="scope.row.status === '在职'" type="text" size="small" class="delete-btn"
+                                   v-acl="['icCard:deleted']"
                                    @click="deletedEmployee(scope.row.id)">
                             销户
                         </el-button>
@@ -134,7 +137,7 @@
         </div>
 
         <!--        新增编辑弹窗-->
-        <editdialog v-if="isVisible" ref="addOrUpdate"></editdialog>
+        <editdialog v-if="isVisible" ref="addOrUpdate"/>
 
         <!--        查看弹窗-->
         <el-dialog
@@ -185,23 +188,23 @@
 
                 <el-form-item prop="openCardAmount" label="开卡存入金额">
                     <el-input type="number" v-model.trim="form1.openCardAmount" auto-complete="off"
-                              placeholder="请输入开卡存入金额"></el-input>
+                              placeholder="请输入开卡存入金额"/>
                 </el-form-item>
 
                 <el-form-item prop="deposit" label="押金">
                     <el-input type="number" v-model.trim="form1.deposit" auto-complete="off"
-                              placeholder="请输入押金"></el-input>
+                              placeholder="请输入押金"/>
                 </el-form-item>
 
 
                 <el-form-item prop="expense" label="工本费">
                     <el-input type="number" v-model.trim="form1.expense" auto-complete="off"
-                              placeholder="请输入工本费"></el-input>
+                              placeholder="请输入工本费"/>
                 </el-form-item>
 
                 <el-form-item prop="originationName" label="所属组织">
                     <el-input type="text" v-model.trim="form1.originationName" auto-complete="off"
-                              placeholder="请选择组织"></el-input>
+                              placeholder="请选择组织"/>
                 </el-form-item>
 
                 <el-form-item label="角色" prop="roles">
@@ -225,9 +228,8 @@
 
     </div>
 </template>
-
 <script>
-    import {list,get,deleted} from '@/api/employeeList';
+    import {deleted, get, list} from '@/api/employeeList';
     import EditDialog from '@/components/EditDialog';
     import {listAllRole} from '@/api/role';
 

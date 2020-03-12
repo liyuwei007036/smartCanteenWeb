@@ -33,7 +33,6 @@
                 if (!this.isHome(matched[0])) {
                     matched = [{path: "/", meta: {title: "首页"}}].concat(matched);
                 }
-                console.log(matched)
                 this.breadList = matched;
             }
         },
