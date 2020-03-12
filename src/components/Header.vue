@@ -88,7 +88,13 @@
             },
             getCurrentUser() {
                 try {
-                    return JSON.parse(sessionStorage.getItem('user'))
+                    let user = sessionStorage.getItem('user');
+                    if (!user) {
+                        router.push({
+                            name: `login`
+                        })
+                    }
+                    return JSON.parse(user)
                 } catch (e) {
                     return {}
                 }

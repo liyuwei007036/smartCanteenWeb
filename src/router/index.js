@@ -28,6 +28,7 @@ const router = new VueRouter({
             path: '/index',
             component: index,
             name: 'index',
+            auths: [],
             children: [
                 {
                     path: '/home',

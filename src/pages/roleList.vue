@@ -7,12 +7,12 @@
         </div>
 
         <div class="option-menu">
-            <el-button type="primary" class="add-btn" @click="addOrUpdateRole()" icon="el-icon-plus">新增角色
+            <el-button type="primary"  v-acl="['role:add']" class="add-btn" @click="addOrUpdateRole()" icon="el-icon-plus">新增角色
             </el-button>
-            <el-button type="danger" class="del-btn" @click="" icon="el-icon-delete">删除</el-button>
+            <el-button type="danger" class="del-btn" @click="" icon="el-icon-delete" v-acl="['role:deleted']">删除</el-button>
             <el-button type="primary" class="search-btn" @click="isSearchVisible = !isSearchVisible"
                        icon="el-icon-search"
-                       style="float: right;"></el-button>
+                       style="float: right;"/>
         </div>
         <div>
             <el-table
@@ -45,10 +45,10 @@
                         fixed="right"
                         width="">
                     <template slot-scope="scope">
-                        <el-button type="text" size="small"
+                        <el-button type="text" size="small"  v-acl="['role:update']"
                                    @click="addOrUpdateRole(scope.row.id)">编辑
                         </el-button>
-                        <el-button v-if="scope.row.canEdit == true" type="text" size="small" class="delete-btn"
+                        <el-button v-if="scope.row.canEdit == true" type="text" size="small" class="delete-btn" v-acl="['role:deleted']"
                                    @click="deleted(scope.row.id)">删除
                         </el-button>
                     </template>

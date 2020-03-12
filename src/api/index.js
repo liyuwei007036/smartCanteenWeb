@@ -4,7 +4,7 @@ import router from "../router";
 
 axios.defaults.timeout = 50000;
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://127.0.0.1:5001';
+axios.defaults.baseURL = 'http://demo.lumia.live:5001';
 
 
 const reqList = []
@@ -97,9 +97,8 @@ axios.interceptors.response.use(response => {
             allowRequest(error.response.config.url + '&' + error.response.config.method)
         }, 500)
     }
-    Message.error('操作太快')
     return {
-        code:0
+        code: 0
     }
 })
 

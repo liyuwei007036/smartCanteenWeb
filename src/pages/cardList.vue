@@ -52,7 +52,8 @@
         </div>
 
         <div class="option-menu clearfix">
-            <el-button type="primary" class="add-btn" @click="patchRecharge()" icon="el-icon-plus" v-acl="['recharge:recharge']">批量充值
+            <el-button type="primary" class="add-btn" @click="patchRecharge()" icon="el-icon-plus"
+                       v-acl="['recharge:recharge']">批量充值
             </el-button>
             <el-button type="primary" class="search-btn" @click="isSearchVisible = !isSearchVisible"
                        icon="el-icon-search"
@@ -66,11 +67,11 @@
                     border
                     style="width: 100%"
                     @selection-change="handleSelectionChange">
-                <el-table-column
-                        type="selection"
-                        width="55"
-                        align="center"
-                        :selectable="handleDisable">
+                <el-table-column v-acl="['recharge:recharge']"
+                    type="selection"
+                    width="55"
+                    align="center"
+                    :selectable="handleDisable">
                 </el-table-column>
                 <el-table-column
                         type="index"
@@ -158,10 +159,12 @@
                                    v-if="scope.row.status !== '禁止'">补扣
                         </el-button>
 
-                        <el-button type="text" size="small" v-if="scope.row.status==='激活'" class="warning-btn" v-acl="['icCard:loss']"
+                        <el-button type="text" size="small" v-if="scope.row.status==='激活'" class="warning-btn"
+                                   v-acl="['icCard:loss']"
                                    @click="lossAccounnt(scope.row.id)">挂失
                         </el-button>
-                        <el-button type="text" size="small" v-if="scope.row.accountStatus==='挂失'" class="green-btn" v-acl="['icCard:patch']"
+                        <el-button type="text" size="small" v-if="scope.row.accountStatus==='挂失'" class="green-btn"
+                                   v-acl="['icCard:patch']"
                                    @click="replaceAccounnt(scope.row.empId)">补卡
                         </el-button>
                     </template>

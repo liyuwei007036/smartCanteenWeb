@@ -1,10 +1,10 @@
 module.exports = [{
     name: '人员管理',
     id: 'personnelManagement',
-    auths: ['employee:view', 'origination:view'],
+    auths: ['employee'],
     sub: [{
         name: '组织管理',
-        auths: ['origination:view'],
+        auths: ['originationManagement'],
         componentName: 'origination',
     },
         {
@@ -16,7 +16,7 @@ module.exports = [{
 }, {
     name: '卡片管理',
     id: 'cardManagemant',
-    auths: ['icCard'],
+    auths: ['icCard:list'],
     sub: [
         {
             name: '卡片列表',
@@ -27,7 +27,7 @@ module.exports = [{
 }, {
     name: '角色管理',
     id: 'roleManagement',
-    auths: ['role'],
+    auths: ['role:authorization', 'role:list'],
     sub: [{
         name: '角色列表',
         auths: ['role:list'],
@@ -40,7 +40,7 @@ module.exports = [{
 }, {
     name: '消费管理',
     id: 'consumptionManagement',
-    auths: ['order'],
+    auths: ['recharge:listlog', 'order:list'],
     sub: [{
         name: '充值记录',
         componentName: 'rechargeList',

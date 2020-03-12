@@ -29,9 +29,10 @@
             <div>
                 <el-tree
                         :data="permissions"
-                        show-checkbox
+                        :show-checkbox="true"
                         default-expand-all
                         node-key="code"
+                        :default-checked-keys="checked"
                         ref="tree"
                         highlight-current
                         :props="defaultProps">
@@ -51,7 +52,7 @@
 
 <script>
     import {listAllRole} from '@/api/role';
-    import {permission, addPermission, getRolePermission} from '@/api/permission'
+    import {addPermission, getRolePermission, permission} from '@/api/permission'
 
     export default {
         name: "roleAuth",
@@ -61,6 +62,7 @@
                     id: '',
                     name: ''
                 },
+                checked: [],
                 roleId: '',
                 roleList: [],
                 permissions: [],
@@ -78,8 +80,12 @@
         methods: {
             async getCheckedKeys() {
                 let data = {
-                    permissions: this.$refs.tree.getCheckedKeys(),
+                    permissions: this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys()),
                     id: this.roleId
+                }
+                if(parseInt(this.roleId) < 1){
+                    this.$message.error('请选择角色')
+                    return
                 }
                 let res = await addPermission(data)
                 if (res.code === 1000) {
@@ -98,12 +104,11 @@
                 sessionStorage.setItem("x-permisson_id", this.roleId)
                 this.$refs.tree.setCheckedKeys([]);
                 let res = await getRolePermission(this.roleId)
-                this.$refs.tree.setCheckedKeys(res.data || []);
+                this.checked = res.data || []
             },
             //获取列表数据
             async getListAll() {
                 let res = await listAllRole();
-                console.log(res)
                 if (res.code === 1000) {
                     res.data.forEach(el => {
                         this.roleList.push({name: el.name, id: el.id});
