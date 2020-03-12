@@ -18,12 +18,13 @@
             </el-form-item>
 
             <el-form-item prop="mobile" label="手机号">
-                <el-input type="mobile" v-model.trim="form.mobile" auto-complete="off" placeholder="手机号" maxlength="11"></el-input>
+                <el-input type="mobile" v-model.trim="form.mobile" auto-complete="off" placeholder="手机号"
+                          maxlength="11"></el-input>
             </el-form-item>
 
             <el-form-item prop="cardNo" label="卡号">
                 <el-input type="number" v-model.trim="form.cardNo" auto-complete="off" placeholder="卡号"
-                          :readonly="isReadonly" @mousewheel.native.prevent readOnly="true">
+                          @mousewheel.native.prevent readOnly="true">
                     <el-button slot="append" v-if="!isReadonly" @click="readCard()">点击读卡</el-button>
                 </el-input>
             </el-form-item>
@@ -215,10 +216,10 @@
                 rules: {
                     name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
                     no: [{required: true, message: '请输入账号', trigger: 'blur'}],
-                    idCard: [
-                        {required: true, message: '请输入身份证号', trigger: 'blur'},
-                        {min: 18, max: 18, message: '身份证号为18位', trigger: 'blur'}],
+                    cardNo: [
+                        {required: true, message: '请读卡', trigger: 'blur'}],
                     mobile: [
+                        {required: true, message: '请输入手机号', trigger: 'blur'},
                         {validator: checkPhone, trigger: 'blur'}
                     ],
                     password1: [
@@ -262,8 +263,7 @@
                         this.isReadonly = true
                     }
                 })
-            }
-            ,
+            },
 
             async getEmployeeDetail() { //获取员工数据
                 let res = await get(this.form.id);
@@ -272,8 +272,7 @@
                 } else {
                     this.$message.error(res.msg);
                 }
-            }
-            ,
+            },
 
             //获取角色列表
             async getEmployeeRole() {
@@ -281,8 +280,7 @@
                 if (res.code === 1000) {
                     this.roleList = res.data
                 }
-            }
-            ,
+            },
 
 
             // 提交表单
@@ -300,8 +298,7 @@
                     }
                 });
 
-            }
-            ,
+            },
 
             //更新数据
             async updateForm() {
@@ -311,8 +308,7 @@
                     this.visible = false;
                     this.reload()
                 }
-            }
-            ,
+            },
 
             //保存数据
             async addForm() {
@@ -322,14 +318,12 @@
                     this.visible = false;
                     this.reload()
                 }
-            }
-            ,
+            },
 
             //读卡
             readCard() {
                 this.beforeGetCardNo()
-            }
-            ,
+            },
 
             async beforeGetCardNo() { //获取卡号
                 if (this.timer > 0) {
@@ -340,8 +334,7 @@
                         this.t = setInterval(this.getCardNo, 2000);
                     }
                 }
-            }
-            ,
+            },
 
             async getCardNo() { //获取卡号
                 this.timer++;
@@ -360,47 +353,33 @@
                     }
 
                 }
-            }
-            ,
+            },
 
 
             async getOrigination() { //获取组织数据
                 let res = await listAll();
                 this.data = res.data
-            }
-            ,
+            },
 
             selectClassfy(data) {
                 this.form.originationName = data.label;
                 this.form.originationId = data.id;
                 this.isShowSelect = false;
-                // console.log("Wwww")
-                // this.$nextTick(()=>{
-                //     this.$refs['form'].validateField('originationName')
-                // })
-            }
-            ,
-
-            changeDicPid(val) {
-            }
-            ,
+            },
 
             handleClose() {
                 this.$refs.form.resetFields()
-            }
-            ,
+            },
 
             //
             changeSelectTree() {
                 this.isShowSelect = true;
-            }
-            ,
+            },
 
             filterNode(value, data) {
                 if (!value) return true;
                 return data.label.indexOf(value) !== -1;
-            }
-            ,
+            },
 
             resetForm(formName) {
                 this.$refs[formName].resetFields();

@@ -265,7 +265,7 @@
 
                 <el-form-item label="补扣金额" prop="money">
 
-                    <el-input type="text" v-model.trim="deductionForm.money" auto-complete="off"
+                    <el-input type="number" v-model.trim="deductionForm.money" auto-complete="off"  @mousewheel.native.prevent
                               placeholder="请输入补扣金额"></el-input>
                 </el-form-item>
 
