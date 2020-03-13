@@ -15,21 +15,21 @@
                 <el-form ref="changePasswordform" :model="changePasswordform" :rules="rules" label-width="80px"
                          label-position="left">
                     <el-form-item prop="oldPassword" label="原密码">
-                        <el-input type="text" v-model.trim="changePasswordform.oldPassword" auto-complete="off"
-                                  placeholder="原密码"></el-input>
+                        <el-input type="password" v-model.trim="changePasswordform.oldPassword" auto-complete="off"
+                                  placeholder="原密码"/>
                     </el-form-item>
                     <el-form-item prop="newPassword" label="新密码">
-                        <el-input type="text" v-model.trim="changePasswordform.newPassword" auto-complete="off"
-                                  placeholder="新密码"></el-input>
+                        <el-input type="password" v-model.trim="changePasswordform.newPassword" auto-complete="off"
+                                  placeholder="新密码"/>
                     </el-form-item>
                     <el-form-item prop="confirmPassword" label="确认密码">
-                        <el-input type="text" v-model.trim="changePasswordform.confirmPassword" auto-complete="off"
-                                  placeholder="确认密码"></el-input>
+                        <el-input type="password" v-model.trim="changePasswordform.confirmPassword" auto-complete="off"
+                                  placeholder="确认密码"/>
                     </el-form-item>
 
                 </el-form>
                 <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="handleChangeSubmit('changePasswordform')">保存</el-button>
+            <el-button type="primary" @click="handleChangeSubmit()">保存</el-button>
         </span>
 
             </el-dialog>
@@ -38,7 +38,7 @@
 </template>
 <script>
     import router from "../router";
-    import {loginOut} from "../api/login";
+    import {changePassword, loginOut} from "../api/login";
 
     export default {
         data() {
@@ -63,12 +63,15 @@
                 rules: {
                     oldPassword: [
                         {required: true, message: '请输入原密码', trigger: 'blur'},
+                        {min: 1, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
                     ],
                     newPassword: [
                         {required: true, message: '请输入新密码', trigger: 'blur'},
+                        {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
                     ],
                     confirmPassword: [
                         {required: true, message: '请输入确认密码', trigger: 'blur'},
+                        {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'},
                         {validator: validatePass2, trigger: 'blur'}
                     ],
                 },
@@ -101,10 +104,25 @@
             },
             changePassword() {
                 this.isChangePasswordVisible = true
+
             },
-            async handleChangeSubmit() {
-                 let res = await changepwd()
-                console.log(res)
+            async doChangePassword() {
+                let res = await changePassword(this.changePasswordform)
+                if (res.code === 1000) {
+                    this.$message.success('操作成功')
+                }
+            },
+            handleChangeSubmit() {
+                this.$refs['changePasswordform'].validate((valid) => {
+                    if (valid) {
+                        this.doChangePassword()
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+
+
             }
         }
     }

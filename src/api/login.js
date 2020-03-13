@@ -15,8 +15,17 @@ let loginOut = () => {
     })
 }
 
+let changePassword = (data) => {
+    return axios({
+        method: 'post',
+        url: `/employee/changePassword`,
+        data
+    })
+}
+
 
 export {
     login,
-    loginOut
+    loginOut,
+    changePassword
 }
