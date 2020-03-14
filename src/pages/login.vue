@@ -24,6 +24,9 @@
                 </div>
             </el-col>
         </el-row>
+        <div style="position:absolute;bottom:10px;display: flex;justify-content: center;align-items: center;height: 30px;color: #999999;font-size: 13px;background-color: transparent">
+            copyright &copy; 2019-2029南京镀尔墨科技有限公司
+        </div>
     </div>
 </template>
 

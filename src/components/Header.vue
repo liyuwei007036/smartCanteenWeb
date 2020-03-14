@@ -1,5 +1,9 @@
 <template>
     <div>
+        <div style="float: left;display: flex;align-items: center">
+            <el-image :src="require('@/assets/logo-lion.png')" style="width: 50px;height:50px"/>
+            <span>通服信息管理系统</span>
+        </div>
         <div class="demonstration">
             <el-image :src="require('@/assets/header-icon.png')" class="header-img"/>
             <span class="user-name">欢迎您：{{user.name}}</span>&nbsp;| &nbsp;
