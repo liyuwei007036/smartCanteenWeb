@@ -5,18 +5,18 @@
                 <div class="logo">
                     <el-image :src="require('@/assets/logo-lion.png')" class="logo-img"/>
                 </div>
-                <navmenu></navmenu>
+                <navmenu/>
             </el-aside>
             <el-container>
                 <el-header class="header">
                     <vheader/>
                 </el-header>
                 <el-main>
-<!--                    <div class="breadcrumb" style="margin-bottom: 10px;padding: 15px 20px">-->
-<!--                        <breadcrumb></breadcrumb>-->
-<!--                    </div>-->
+                    <!--                    <div class="breadcrumb" style="margin-bottom: 10px;padding: 15px 20px">-->
+                    <!--                        <breadcrumb></breadcrumb>-->
+                    <!--                    </div>-->
                     <div class="main-content">
-                        <router-view></router-view>
+                        <router-view/>
                     </div>
                 </el-main>
             </el-container>
@@ -27,7 +27,6 @@
 <script>
     import Header from '@/components/Header';
     import NavMenu from '@/components/NavMenu';
-    import BreadCrumb from '@/components/breadcrumb';//面包屑
 
     export default {
         data() {
@@ -40,10 +39,10 @@
         components: {
             navmenu: NavMenu,
             vheader: Header,
-            breadcrumb: BreadCrumb,
         },
         mounted() {
             this.goHome()
+            console.log(this.$ViewportSize)
         },
         methods: {
             goHome() {
@@ -71,7 +70,7 @@
         background: #F1F2F5;
     }
 
-    .main-content,.breadcrumb {
+    .main-content {
         background: #FFFFFF;
         box-shadow: 0 0 6px 0 #DFDFDF;
         border-radius: 6px;
