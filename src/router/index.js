@@ -13,6 +13,7 @@ import cardList from '@/pages/cardList';
 import index from '@/pages/index';
 import login from '@/pages/login';
 import home from '@/pages/home';
+import error from '@/pages/error';
 // 使用插件, 用use
 Vue.use(VueRouter); // 调用一个这个方法
 const router = new VueRouter({
@@ -23,6 +24,14 @@ const router = new VueRouter({
             path: '/',
             name: 'login',
             component: login,
+        },
+        {
+            path: '/error',
+            component: error,
+            name: 'error',
+            meta: {
+                title: 'error',
+            }
         },
         {
             path: '/index',
@@ -114,7 +123,7 @@ router.beforeEach((to, from, next) => {
             return true
         } else {
             for (let i in needAuths) {
-                if (haveAuths.includes(needAuths[i])){
+                if (haveAuths.includes(needAuths[i])) {
                     return true;
                 }
             }

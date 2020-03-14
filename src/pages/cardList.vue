@@ -66,80 +66,83 @@
                     stripe
                     border
                     style="width: 100%"
+                    max-height="550"
                     @selection-change="handleSelectionChange">
                 <el-table-column v-acl="['recharge:recharge']"
                     type="selection"
-                    width="55"
+                    width="50"
                     align="center"
                     :selectable="handleDisable">
                 </el-table-column>
                 <el-table-column
                         type="index"
                         label="序号"
-                        align="center">
+                        align="center"
+                        width="80">
                 </el-table-column>
                 <el-table-column
                         prop="empName"
                         label="姓名"
                         align="center"
-                        width="">
+                        width="120">
                 </el-table-column>
                 <el-table-column
                         prop="empNo"
                         label="账号"
                         align="center"
-                        width="">
+                        width="120">
                 </el-table-column>
                 <el-table-column
                         prop="mobile"
                         label="手机号"
                         align="center"
-                        width="">
+                        width="120">
                 </el-table-column>
                 <el-table-column
                         prop="cardNo"
                         label="卡号"
                         align="center"
-                        width="">
+                        width="120">
                 </el-table-column>
 
                 <el-table-column
                         prop="cardType"
                         label="卡类型"
                         align="center"
-                        width="">
+                        width="80">
                 </el-table-column>
 
                 <el-table-column
                         prop="deposit"
                         label="押金"
                         align="center"
-                        width="">
+                        width="80">
                 </el-table-column>
 
                 <el-table-column
                         prop="currentBalance"
                         label="卡余额（元）"
                         align="center"
-                        width="">
+                        width="80">
                 </el-table-column>
                 <el-table-column
                         prop="status"
                         label="卡状态"
                         align="center"
-                        width="">
+                        width="120">
                 </el-table-column>
                 <el-table-column
                         prop="accountStatus"
                         label="账户状态"
                         align="center"
-                        width="">
+                        width="120">
                 </el-table-column>
                 <el-table-column
                         prop="validityTime"
                         label="卡有效期"
                         align="center"
-                        width="">
+                        width="140"
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
 
                 <el-table-column
@@ -147,7 +150,7 @@
                         label="操作"
                         align="center"
                         fixed="right"
-                        width="150px">
+                        width="180">
                     <template slot-scope="scope">
                         <el-button type="text" size="small" v-acl="['recharge:recharge']"
                                    @click="recharge(scope.row.id,scope.row.empId ,scope.row.currentBalance)"
