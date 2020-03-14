@@ -88,7 +88,7 @@
                 let res = await loginOut()
                 if (res) {
                     await router.push({
-                        name: `login`
+                        path: '/login'
                     })
                     sessionStorage.clear()
                 }
@@ -96,6 +96,7 @@
             getCurrentUser() {
                 try {
                     let user = sessionStorage.getItem('user');
+                    console.log(user)
                     if (!user) {
                         router.push({
                             name: `login`
@@ -103,7 +104,9 @@
                     }
                     return JSON.parse(user)
                 } catch (e) {
-                    return {}
+                    router.push({
+                        name: `login`
+                    })
                 }
             },
             changePassword() {

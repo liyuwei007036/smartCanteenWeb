@@ -83,7 +83,7 @@
                     permissions: this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys()),
                     id: this.roleId
                 }
-                if (parseInt(this.roleId) < 1) {
+                if (!parseInt(this.roleId) || parseInt(this.roleId) < 1) {
                     this.$message.error('请选择角色')
                     return
                 }

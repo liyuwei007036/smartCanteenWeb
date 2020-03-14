@@ -115,46 +115,51 @@ const router = new VueRouter({
                         title: '消费记录',
                         auths: ['order:list'],
                     }
-                },
+                }, {
+                    path: "*", // 此处需特别注意置于最底部
+                    redirect: "/404"
+                }
             ],
-        }, {
-            path: "*", // 此处需特别注意置于最底部
-            redirect: "/404"
-        }
-
+        },
     ],
 });
 
 router.beforeEach((to, from, next) => {
-    console.log(to, from)
-    const hasAuth = function (needAuths, haveAuths) {
-        if (needAuths === undefined || needAuths.length === 0) {
-            return true
-        } else {
-            for (let i in needAuths) {
-                if (haveAuths.includes(needAuths[i])) {
-                    return true;
-                }
-            }
-            return false;
+    if (to.name === 'login') {
+        next();
+    } else {
+        let $user
+        try {
+            $user = JSON.parse(sessionStorage.getItem('user'))
+        } catch (e) {
+
         }
+        let permissions = []
+        if ($user) {
+            permissions = $user.powers || [];
+        } else {
+            next({replace: true, name: 'login'})
+            next();
+            return
+        }
+        if (!hasAuth(to.meta.auths, permissions)) {
+            //没有权限重定位到其他页面，往往是401页面
+            router.push({name: 'error'})
+        }
+        //权限校验通过,跳转至对应路由
+        next();
     }
-    let $user
-    try {
-        $user = JSON.parse(sessionStorage.getItem('user'))
-    } catch (e) {
-
-    }
-    let permissions = []
-    if ($user) {
-        permissions = $user.powers || [];
-    }
-    if (!hasAuth(to.meta.auths, permissions)) {
-        //没有权限重定位到其他页面，往往是401页面
-        next({replace: true, name: 'error'})
-    }
-    //权限校验通过,跳转至对应路由
-    next();
 })
-
+const hasAuth = function (needAuths, haveAuths) {
+    if (needAuths === undefined || needAuths.length === 0) {
+        return true
+    } else {
+        for (let i in needAuths) {
+            if (haveAuths.includes(needAuths[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
 export default router;

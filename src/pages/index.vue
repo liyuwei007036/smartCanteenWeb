@@ -42,7 +42,13 @@
         methods: {
             goHome() {
                 if (this.$router.currentRoute.name === 'index') {
-                    this.$router.push('/home')
+                    this.$router.push({
+                        name: 'home'
+                    })
+                }else {
+                    this.$router.push({
+                        name: 'index'
+                    })
                 }
             }
         }

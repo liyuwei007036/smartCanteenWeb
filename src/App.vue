@@ -7,7 +7,6 @@
     export default {
         name: 'app',
         beforeCreate() {
-            console.log('create');
         },
         provide() {
             return {
@@ -63,7 +62,6 @@
         background: #fff;
         border: 1px solid #DE302E;
         color: #DE302E;
-        border-radius: 15px;
         border-radius: 15px;
         height: 30px;
         font-size: 12px;
