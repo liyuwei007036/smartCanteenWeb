@@ -27,15 +27,15 @@
                 权限分类
             </div>
             <div>
-                <el-tree
-                        :data="permissions"
-                        :show-checkbox="true"
-                        default-expand-all
-                        node-key="code"
-                        :default-checked-keys="checked"
-                        ref="tree"
-                        highlight-current
-                        :props="defaultProps">
+                <el-tree style="height: 400px;overflow-y: auto;overflow-x: hidden"
+                         :data="permissions"
+                         :show-checkbox="true"
+                         default-expand-all
+                         node-key="code"
+                         :default-checked-keys="checked"
+                         ref="tree"
+                         highlight-current
+                         :props="defaultProps">
                 </el-tree>
             </div>
 
@@ -83,7 +83,7 @@
                     permissions: this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys()),
                     id: this.roleId
                 }
-                if(parseInt(this.roleId) < 1){
+                if (parseInt(this.roleId) < 1) {
                     this.$message.error('请选择角色')
                     return
                 }

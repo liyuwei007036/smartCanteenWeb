@@ -2,9 +2,11 @@
     <el-row class="tac">
         <el-col :span="24">
             <el-menu class="el-menu-vertical-demo" unique-opened @open="handleOpen" @close="handleClose"
-                     background-color="#101634" text-color="#fff" active-text-color="#2E6CFE">
+                     background-color="#101634" text-color="#fff" active-text-color="#2E6CFE"
+                     :default-active="currentMenu">
                 <el-submenu v-for="item in menu" :index="item.id" :key="item.id" v-acl="item.auths">
                     <template slot="title">
+                        <i :class="item.icon"/>
                         <span v-text="item.name"/>
                     </template>
                     <el-menu-item-group class="over-hide" v-for="sub in item.sub" :key="sub.componentName"
@@ -36,6 +38,7 @@
         data() {
             return {
                 menu,
+                currentMenu: this.$route.name,
             };
         },
         methods: {

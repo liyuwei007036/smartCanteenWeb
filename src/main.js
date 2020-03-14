@@ -16,6 +16,7 @@ Vue.prototype.$user = {
     name: '',
     powers: []
 }
+Vue.prototype.$ViewportSize = document.documentElement.clientHeight;
 //main.js
 Vue.directive('acl', aclDirective); //全局注册指令
 

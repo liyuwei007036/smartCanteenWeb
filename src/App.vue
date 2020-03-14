@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <router-view v-if="isRouterAlive"></router-view>
+        <router-view v-if="isRouterAlive"/>
     </div>
 </template>
 <script>
@@ -37,6 +37,10 @@
         margin: 0;
     }
 
+    .el-table--striped .el-table__body tr.el-table__row--striped.current-row td, .el-table__body tr.current-row > td, .el-table__body tr.hover-row.current-row > td, .el-table__body tr.hover-row.el-table__row--striped.current-row > td, .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row > td {
+        background-color: #aecaff
+    }
+
     .search {
         margin-bottom: 20px;
     }
@@ -48,7 +52,6 @@
 
     .add-btn {
         background: #2E6CFE;
-        border-radius: 15px;
         border-radius: 15px;
         height: 30px;
         font-size: 12px;
