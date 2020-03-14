@@ -1,14 +1,14 @@
 <template>
     <div class="http404">
         <div class="pic-404">
-            <el-image :src="require('@/assets/404.png')"/>
+            <el-image :src="require('@/assets/403.gif')"/>
         </div>
         <div class="bullshit">
             <div class="bullshit__oops">对不起!</div>
 
-            <div class="bullshit__headline">您访问的地址不存在
+            <div class="bullshit__headline">您没有权限访问该页面
             </div>
-            <div class="bullshit__info">请检查您输入的链接地址是否有误
+            <div class="bullshit__info">如有需要，请联系管理员
             </div>
             <a href="/home" class="bullshit__return-home">返回首页</a></div>
     </div>
@@ -32,7 +32,6 @@
     .pic-404 {
         position: relative;
         float: left;
-        width: 600px;
         overflow: hidden;
     }
 

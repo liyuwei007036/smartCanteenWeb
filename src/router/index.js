@@ -14,6 +14,7 @@ import index from '@/pages/index';
 import login from '@/pages/login';
 import home from '@/pages/home';
 import error from '@/pages/error';
+import error403 from '@/pages/error403';
 // 使用插件, 用use
 Vue.use(VueRouter); // 调用一个这个方法
 const router = new VueRouter({
@@ -31,6 +32,14 @@ const router = new VueRouter({
             name: 'error',
             meta: {
                 title: 'error',
+            }
+        },
+        {
+            path: '/error403',
+            component: error403,
+            name: 'error403',
+            meta: {
+                title: 'error403',
             }
         },
         {
