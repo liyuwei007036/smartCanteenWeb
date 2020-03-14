@@ -42,7 +42,6 @@
                         prop="operation"
                         label="操作"
                         align="center"
-                        fixed="right"
                         width="">
                     <template slot-scope="scope">
                         <el-button type="text" size="small"  v-acl="['role:update']"

@@ -121,7 +121,7 @@
 
                 <el-table-column
                         prop="currentBalance"
-                        label="卡余额（元）"
+                        label="卡余额"
                         align="center"
                         width="80">
                 </el-table-column>
@@ -149,7 +149,6 @@
                         prop="operation"
                         label="操作"
                         align="center"
-                        fixed="right"
                         width="180">
                     <template slot-scope="scope">
                         <el-button type="text" size="small" v-acl="['recharge:recharge']"

@@ -37,62 +37,62 @@
                         type="index"
                         label="序号"
                         align="center"
-                        width="80">
+                        style="width:9%">
                 </el-table-column>
                 <el-table-column
                         prop="name"
                         label="姓名"
                         align="center"
-                        width="120">
+                        style="width:9%">
                 </el-table-column>
 
                 <el-table-column
                         prop="no"
                         label="账号"
                         align="center"
-                        width="120">
+                        style="width:9%">
                 </el-table-column>
 
                 <el-table-column
                         prop="mobile"
                         label="手机号"
                         align="center"
-                        width="120">
+                        style="width:9%">
                 </el-table-column>
 
                 <el-table-column
                         prop="cardNo"
                         label="卡号"
                         align="center"
-                        width="120">
+                        style="width:9%">
                 </el-table-column>
 
                 <el-table-column
                         prop="type"
                         label="卡类型"
                         align="center"
-                        width="80">
+                        style="width:9%">
                 </el-table-column>
 
                 <el-table-column
                         prop="originationName"
                         label="所属组织"
                         align="center"
-                        width="140">
+                        style="width:9%">
                 </el-table-column>
 
                 <el-table-column
                         prop="status"
                         label="状态"
                         align="center"
-                        width="100">
+                        style="width:9%">
                 </el-table-column>
 
                 <el-table-column
                         prop="validityTime"
                         label="卡有效期"
                         align="center"
-                        width="140"
+                        style="width:9%"
                         :show-overflow-tooltip='true'>
                 </el-table-column>
 
@@ -100,7 +100,7 @@
                         prop="createTime"
                         label="创建时间"
                         align="center"
-                        width="140"
+                        style="width:9%"
                         :show-overflow-tooltip='true'>
                 </el-table-column>
 
@@ -108,8 +108,7 @@
                         prop="operation"
                         label="操作"
                         align="center"
-                        fixed="right"
-                        width="180">
+                        style="width:10%">
                     <template slot-scope="scope">
                         <el-button v-acl="['employee:view']" @click="getEmployee(scope.row.id)" type="text"
                                    size="small">查看

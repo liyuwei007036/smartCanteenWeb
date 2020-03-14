@@ -88,14 +88,14 @@
                     width="">
             </el-table-column>
             <el-table-column
-                    label="消费金额（元）"
+                    label="消费金额"
                     align="center"
                     width=""
                     prop="money">
             </el-table-column>
             <el-table-column
                     prop="balance"
-                    label="消费后卡余额（元）"
+                    label="消费后卡余额"
                     align="center"
                     width="">
             </el-table-column>
