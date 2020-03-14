@@ -31,25 +31,26 @@
                     :data="tableData"
                     stripe
                     border
-                    style="width: 100%">
+                    style="width: 100%"
+                    max-height="550">
                 <el-table-column
                         type="index"
                         label="序号"
                         align="center"
-                        width="100">
+                        width="80">
                 </el-table-column>
                 <el-table-column
                         prop="name"
                         label="姓名"
                         align="center"
-                        width="100">
+                        width="120">
                 </el-table-column>
 
                 <el-table-column
                         prop="no"
                         label="账号"
                         align="center"
-                        width="100">
+                        width="120">
                 </el-table-column>
 
                 <el-table-column
@@ -63,26 +64,19 @@
                         prop="cardNo"
                         label="卡号"
                         align="center"
-                        width="140">
+                        width="120">
                 </el-table-column>
 
                 <el-table-column
                         prop="type"
                         label="卡类型"
                         align="center"
-                        width="100">
+                        width="80">
                 </el-table-column>
 
                 <el-table-column
                         prop="originationName"
                         label="所属组织"
-                        align="center"
-                        width="140">
-                </el-table-column>
-
-                <el-table-column
-                        prop="validityTime"
-                        label="卡有效期"
                         align="center"
                         width="140">
                 </el-table-column>
@@ -95,10 +89,19 @@
                 </el-table-column>
 
                 <el-table-column
+                        prop="validityTime"
+                        label="卡有效期"
+                        align="center"
+                        width="140"
+                        :show-overflow-tooltip='true'>
+                </el-table-column>
+
+                <el-table-column
                         prop="createTime"
                         label="创建时间"
                         align="center"
-                        width="">
+                        width="140"
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
 
                 <el-table-column
