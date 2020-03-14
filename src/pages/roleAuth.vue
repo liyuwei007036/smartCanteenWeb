@@ -39,10 +39,8 @@
                 </el-tree>
             </div>
 
-            <div>
-                <div class="buttons">
-                    <el-button @click="getCheckedKeys">保存</el-button>
-                </div>
+            <div class="buttons">
+                <el-button type="primary" @click="getCheckedKeys">保存</el-button>
             </div>
         </div>
 
@@ -124,3 +122,11 @@
         }
     }
 </script>
+<style scoped>
+    /deep/.buttons {
+        text-align: center;
+        padding: 10px 0 0 0;
+        border-top: 1px solid #eee;
+        margin: 10px 0 0 0;
+    }
+</style>
