@@ -1,5 +1,5 @@
 <template>
-    <el-dialog class="dialog"
+    <el-dialog class="dialog abow_dialog"
                :title="!form.id?'新增':'编辑'"
                :close-on-click-modal="false"
                :visible.sync="visible" width="40%"
@@ -117,8 +117,6 @@
                          :data="data"
                          :filter-node-method="filterNode"
                          @node-click="selectClassfy"
-                         @input='changeDicPid'
-                         @close='changeDicPid'
                          class="width-220 selectTree-input objectTree"
                          ref="selectTree">
                 </el-tree>
@@ -126,12 +124,12 @@
 
             </el-form-item>
 
-
+            <el-button type="primary" @click="handleSubmit('form')" >保存</el-button>
         </el-form>
-        <span slot="footer" class="dialog-footer">
-<!--            <el-button @click="resetForm('form')">重 置</el-button>-->
-            <el-button type="primary" @click="handleSubmit('form')">保存</el-button>
-        </span>
+<!--        <span slot="footer" class="dialog-footer">-->
+<!--&lt;!&ndash;            <el-button @click="resetForm('form')">重 置</el-button>&ndash;&gt;-->
+
+<!--        </span>-->
 
     </el-dialog>
 </template>
