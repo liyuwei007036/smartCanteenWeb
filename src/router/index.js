@@ -27,20 +27,9 @@ const router = new VueRouter({
             component: login,
         },
         {
-            path: '/404',
-            component: error,
-            name: 'error',
-            meta: {
-                title: 'error',
-            }
-        },
-        {
-            path: '/error403',
-            component: error403,
+            path: '/403',
             name: 'error403',
-            meta: {
-                title: 'error403',
-            }
+            component: error403,
         },
         {
             path: '/',
@@ -115,12 +104,14 @@ const router = new VueRouter({
                         title: '消费记录',
                         auths: ['order:list'],
                     }
-                }, {
-                    path: "*", // 此处需特别注意置于最底部
-                    redirect: "/404"
-                }
+                },
             ],
         },
+        {
+            path: "*",
+            component: error,
+            name: '404',
+        }
     ],
 });
 
@@ -144,7 +135,7 @@ router.beforeEach((to, from, next) => {
         }
         if (!hasAuth(to.meta.auths, permissions)) {
             //没有权限重定位到其他页面，往往是401页面
-            router.push({name: 'error'})
+            router.push({name: 'error403'})
         }
         //权限校验通过,跳转至对应路由
         next();

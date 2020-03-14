@@ -69,7 +69,7 @@ axios.interceptors.response.use(response => {
         return data
     } else if (data && data.code === 1022) {
         router.push({
-            name: `login`
+            path: '/login'
         })
     } else if (data && data.code === 1012) {
         return {code: 0}

@@ -46,9 +46,7 @@
                         name: 'home'
                     })
                 }else {
-                    this.$router.push({
-                        name: 'index'
-                    })
+
                 }
             }
         }
