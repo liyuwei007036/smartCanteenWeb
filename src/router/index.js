@@ -22,12 +22,12 @@ const router = new VueRouter({
     base: '/',
     routes: [
         {
-            path: '/',
+            path: '/login',
             name: 'login',
             component: login,
         },
         {
-            path: '/error',
+            path: '/404',
             component: error,
             name: 'error',
             meta: {
@@ -43,7 +43,7 @@ const router = new VueRouter({
             }
         },
         {
-            path: '/index',
+            path: '/',
             component: index,
             name: 'index',
             auths: [],
@@ -117,16 +117,16 @@ const router = new VueRouter({
                     }
                 },
             ],
-        },
+        }, {
+            path: "*", // 此处需特别注意置于最底部
+            redirect: "/404"
+        }
 
     ],
 });
 
 router.beforeEach((to, from, next) => {
-    if (to === from) {
-        console.log(to === from)
-        return;
-    }
+    console.log(to, from)
     const hasAuth = function (needAuths, haveAuths) {
         if (needAuths === undefined || needAuths.length === 0) {
             return true
@@ -151,8 +151,7 @@ router.beforeEach((to, from, next) => {
     }
     if (!hasAuth(to.meta.auths, permissions)) {
         //没有权限重定位到其他页面，往往是401页面
-        // next({replace: true, name: 'otherRouteName'})
-        console.log('权限不足', to.meta.auths)
+        next({replace: true, name: 'error'})
     }
     //权限校验通过,跳转至对应路由
     next();
