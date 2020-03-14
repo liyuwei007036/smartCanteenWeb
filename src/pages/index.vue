@@ -1,22 +1,17 @@
 <template>
     <div id="app" direction="horizontal">
+
         <el-container>
-            <el-aside width="200px" class="menu">
-                <div class="logo">
-                    <el-image :src="require('@/assets/logo-lion.png')" class="logo-img"/>
-                </div>
-                <navmenu/>
-            </el-aside>
+            <el-header class="header">
+                <vheader/>
+            </el-header>
             <el-container>
-                <el-header class="header">
-                    <vheader/>
-                </el-header>
+                <el-aside width="200px" class="menu">
+                    <navmenu></navmenu>
+                </el-aside>
                 <el-main>
-                    <!--                    <div class="breadcrumb" style="margin-bottom: 10px;padding: 15px 20px">-->
-                    <!--                        <breadcrumb></breadcrumb>-->
-                    <!--                    </div>-->
                     <div class="main-content">
-                        <router-view/>
+                        <router-view></router-view>
                     </div>
                 </el-main>
             </el-container>
