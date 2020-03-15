@@ -1,10 +1,11 @@
 import axios from 'axios';
 import {Message} from 'element-ui'
 import router from "../router";
+import {HTTP_URL} from '@/config/global'
 
 axios.defaults.timeout = 50000;
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://nexus.51mypc.cn:83/vue';
+axios.defaults.baseURL = HTTP_URL;
 
 
 const reqList = []

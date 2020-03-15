@@ -134,19 +134,15 @@
 </template>
 
 <script>
-    import {get} from '@/api/employeeList';
-    import {update} from '@/api/employeeList';
-    import {add} from '@/api/employeeList';
+    import {get, add, update} from '@/api/employeeList';
     import {listAll} from '@/api/origination';
     import {listAllRole} from '@/api/role';
-    import {beforeGetCard} from '@/api/card';
-    import {getCard} from '@/api/card';
+    import {SOCKET_URL} from '@/config/global'
 
     export default {
         name: "EditDialog",
         inject: ['reload'],
         data() {
-
             let validatePass2 = (rule, value, callback) => {
                 console.log(value)
                 console.log(this.form.password1)
@@ -240,14 +236,45 @@
                 },
                 deep: true //对象的深度验证
             },
-
-            searchCardNo: {
-                handler(n, o) {
-                    this.form.cardNo = n
-                }
-            }
+        },
+        created() {
+        },
+        destroyed() {
+            let token = sessionStorage.getItem('x-smart-token') || 'x';
+            this.send({token: token, start: true})
+            this.onClose()
         },
         methods: {
+            initWebSocket() { //初始化weosocket
+                const wsUri = SOCKET_URL + this.$route.name
+                this.websock = new WebSocket(wsUri);
+                this.websock.onmessage = this.onMessage;
+                this.websock.onopen = this.onOpen;
+                this.websock.onerror = this.onMessage;
+                this.websock.onclose = this.onClose;
+            },
+            onOpen() { //连接建立之后执行send方法发送数据
+                console.log("'onOpen")
+                let token = sessionStorage.getItem('x-smart-token') || 'x';
+
+                this.send({token: token, start: true});
+            },
+            onError() {//连接建立失败重连
+                this.initWebSocket();
+            },
+            onMessage(e) { //数据接收
+                console.log("'接受数据", e)
+                this.form.cardNo = e.data
+                this.$forceUpdate();
+            },
+            send(Data) {//
+                console.log('数据发送', Data)
+                this.websock.send(JSON.stringify(Data));
+            },
+            onClose(e) {  //关闭
+                console.log('断开连接', e);
+            },
+
             init(id) {
                 this.form = {};
                 this.form.id = id || 0;
@@ -322,42 +349,9 @@
 
             //读卡
             readCard() {
-                this.beforeGetCardNo()
+                this.initWebSocket();
+                this.$message.success('正在读卡中');
             },
-
-            async beforeGetCardNo() { //获取卡号
-                if (this.timer > 0) {
-                    return
-                } else {
-                    let res = await beforeGetCard()
-                    if (res.code === 1000) {
-                        this.status_text = '正在读卡'
-                        this.t = setInterval(this.getCardNo, 2000);
-                    }
-                }
-            },
-
-            async getCardNo() { //获取卡号
-                this.timer++;
-                if (this.timer > 10) {
-                    clearInterval(this.t)
-                    this.timer = 0
-                    this.status_text = '点击读卡'
-                    return
-                }
-                let res = await getCard()
-                if (res && res.code === 1000) {
-                    let rno = res.data
-                    if (rno && rno.length > 0) {
-                        this.form.cardNo = rno
-                        this.$forceUpdate();
-                        this.status_text = '读卡成功'
-                        clearInterval(this.t)
-                    }
-
-                }
-            },
-
 
             async getOrigination() { //获取组织数据
                 let res = await listAll();
@@ -371,6 +365,9 @@
             },
 
             handleClose() {
+                let token = sessionStorage.getItem('x-smart-token') || 'x';
+                this.send({token: token, start: false})
+                this.onClose()
                 this.$refs.form.resetFields()
             },
 

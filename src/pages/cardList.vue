@@ -416,6 +416,8 @@
     import {list, loss, beforeGetCard, getCard, patch, deduction} from '@/api/card';
     import {recharge} from '@/api/recharge';
     import {get} from '@/api/employeeList';
+    import {SOCKET_URL} from '@/config/global'
+
 
     export default {
         name: "cardList",
@@ -537,13 +539,41 @@
                 },
             }
         },
-
         mounted: function () {
             this.getList();
             this.maxHeight = this.$ViewportSize - 260
         },
 
         methods: {
+            initWebSocket() { //初始化weosocket
+                const wsUri = SOCKET_URL + this.$route.name
+                this.websock = new WebSocket(wsUri);
+                this.websock.onmessage = this.onMessage;
+                this.websock.onopen = this.onOpen;
+                this.websock.onerror = this.onMessage;
+                this.websock.onclose = this.onClose;
+            },
+            onOpen() { //连接建立之后执行send方法发送数据
+                console.log("'onOpen")
+                let token = sessionStorage.getItem('x-smart-token') || 'x';
+
+                this.send({token: token, start: true});
+            },
+            onError() {//连接建立失败重连
+                this.initWebSocket();
+            },
+            onMessage(e) { //数据接收
+                console.log("'接受数据", e)
+                this.replaceForm.cardNo = e.data
+                this.$forceUpdate();
+            },
+            send(Data) {//
+                console.log('数据发送', Data)
+                this.websock.send(JSON.stringify(Data));
+            },
+            onClose(e) {  //关闭
+                console.log('断开连接', e);
+            },
             serach() {
                 this.search.page = 1
                 this.getList();
@@ -688,42 +718,9 @@
 
             //读卡
             readCard() {
-                console.log('正在读卡')
-                this.beforeGetCardNo()
+                this.initWebSocket();
+                this.$message.success('正在读卡中');
             },
-
-            async beforeGetCardNo() { //获取卡号
-                if (this.timer > 0) {
-                    console.log("已点击！！！")
-                    return
-                } else {
-                    let res = await beforeGetCard()
-                    if (res.code === 1000) {
-                        this.t = setInterval(this.getCardNo, 1000);
-                    }
-                }
-            },
-
-            async getCardNo() { //获取卡号
-                this.timer++;
-                if (this.timer > 10) {
-                    clearInterval(this.t)
-                    this.timer = 0
-                    return
-                }
-                let res = await getCard()
-                if (res && res.code === 1000) {
-                    let rno = res.data
-                    if (rno && rno.length > 0) {
-                        this.replaceForm.cardNo = rno
-                        console.log(this.replaceForm.cardNo)
-                        this.$forceUpdate();
-                        clearInterval(this.t)
-                    }
-
-                }
-            },
-
 
             handleSubmit1(formName) {
                 console.log(this.$refs[formName])
@@ -773,6 +770,9 @@
             },
 
             handleClose() {
+                let token = sessionStorage.getItem('x-smart-token') || 'x';
+                this.send({token: token, start: false})
+                this.onClose()
                 this.$refs.replaceForm.resetFields()
             },
 
