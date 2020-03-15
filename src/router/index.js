@@ -116,6 +116,11 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    // localStorage.clear();
+    console.log(from.name)
+    if (from.name != 'null' && from.name != null) {
+        localStorage.clear();
+    }
     if (to.name === 'login') {
         next();
     } else {

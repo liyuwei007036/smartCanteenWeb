@@ -2,13 +2,13 @@
     <div id="app" direction="horizontal">
 
         <el-container>
-            <el-header class="header">
-                <vheader/>
-            </el-header>
+            <el-aside width="200px" class="menu">
+                <navmenu></navmenu>
+            </el-aside>
             <el-container>
-                <el-aside width="200px" class="menu">
-                    <navmenu></navmenu>
-                </el-aside>
+                <el-header class="header">
+                    <vheader/>
+                </el-header>
                 <el-main>
                     <div class="main-content">
                         <router-view></router-view>
@@ -37,7 +37,6 @@
         },
         mounted() {
             this.goHome()
-            console.log(this.$ViewportSize)
         },
         methods: {
             goHome() {
@@ -45,7 +44,7 @@
                     this.$router.push({
                         name: 'home'
                     })
-                }else {
+                } else {
 
                 }
             }
@@ -62,7 +61,7 @@
 
     .menu {
         height: 100%;
-        background: #101634;
+        background: #171F45;
     }
 
     .el-main {
@@ -93,7 +92,7 @@
         height: 100%;
     }
 
-    .el-pagination{
+    .el-pagination {
         padding: 10px 0;
     }
 

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div style="float: left;display: flex;align-items: center">
-            <el-image :src="require('@/assets/logo-lion.png')" style="width: 50px;height:50px"/>
+<!--            <el-image :src="require('@/assets/logo-lion.png')" style="width: 50px;height:50px"/>-->
             <span>通服信息管理系统</span>
         </div>
         <div class="demonstration">
