@@ -86,7 +86,7 @@
         </div>
 
         <!--        弹窗-->
-        <el-dialog
+        <el-dialog class="dialog"
                 :title="!form.id?'新增':'编辑'"
                 :close-on-click-modal="false"
                 :visible.sync="visible"
@@ -98,7 +98,7 @@
 
             </el-form>
             <span slot="footer" class="dialog-footer">
-<!--            <el-button @click="resetForm('form')">重 置</el-button>-->
+                <el-button class="dialog-btn-reset" @click="resetForm('form')">重 置</el-button>
             <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit('form')">保存</el-button>
         </span>
 
@@ -257,7 +257,11 @@
             handleCurrentChange(val) {
                 this.search.page = val
                 this.getList();
-            }
+            },
+
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
         }
     }
 </script>

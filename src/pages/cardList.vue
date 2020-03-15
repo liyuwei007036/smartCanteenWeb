@@ -148,32 +148,21 @@
                 </el-table-column>
 
                 <el-table-column
-                        prop="deposit"
-                        label="押金"
-                        align="center"
-                        width="80"
-                        :show-overflow-tooltip='true'>
-                </el-table-column>
-
-                <el-table-column
                         prop="currentBalance"
                         label="卡余额"
                         align="center"
-                        width="80"
                         :show-overflow-tooltip='true'>
                 </el-table-column>
                 <el-table-column
                         prop="status"
                         label="卡状态"
                         align="center"
-                        width="120"
                         :show-overflow-tooltip='true'>
                 </el-table-column>
                 <el-table-column
                         prop="accountStatus"
                         label="账户状态"
                         align="center"
-                        width="120"
                         :show-overflow-tooltip='true'>
                 </el-table-column>
                 <el-table-column
@@ -785,6 +774,10 @@
                 } else {
                     return true
                 }
+            },
+
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
             },
 
         }
