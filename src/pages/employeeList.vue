@@ -294,7 +294,7 @@
         mounted: function () {
             this.maxHeight = this.$ViewportSize - 260
             let setSearch = JSON.parse(localStorage.getItem('search'))
-            if (setSearch != 'null' && setSearch != null) {
+            if (setSearch !== 'null' && setSearch != null) {
                 this.search = setSearch
                 console.log(111)
                 this.getList();
@@ -385,7 +385,6 @@
                 localStorage.setItem('search', JSON.stringify(this.search))
             },
 
-
             //分页
             handleSizeChange(val) {
                 this.search.size = val
@@ -399,7 +398,8 @@
 
             toggleSearch() {
                 this.isSerachVisible = !this.isSerachVisible
-            }
+            },
+
 
         },
     }
