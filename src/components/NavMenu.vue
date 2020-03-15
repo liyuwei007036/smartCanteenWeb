@@ -16,7 +16,7 @@
                     </template>
                     <el-menu-item-group class="over-hide" v-for="sub in item.sub" :key="sub.componentName"
                                         v-acl="sub.auths">
-                        <el-menu-item :index="sub.componentName" style="background-color: #101634; padding-left: 60px"
+                        <el-menu-item :index="sub.componentName" style="background-color: #101634; padding-left: 54px"
                                       v-text="sub.name" @click="click(sub.componentName)">
                         </el-menu-item>
                     </el-menu-item-group>

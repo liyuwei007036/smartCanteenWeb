@@ -16,8 +16,8 @@
                   :stripe="true"
                   :default-expand-all="true"
                   :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-                  style="width: 100%"
-                  max-height="maxHeight"
+                  style="width: 100%; overflow-y: auto"
+                  :max-height="maxHeight"
                   :header-cell-style="{
                     'background-color': '#F2F6FC',
                     'color':'#333333',
@@ -28,12 +28,7 @@
                     width=""
                     align="left">
             </el-table-column>
-            <el-table-column
-                    prop="code"
-                    label="组织编码"
-                    width=""
-                    align="center">
-            </el-table-column>
+
             <el-table-column
                     prop="description"
                     label="备注"
@@ -70,10 +65,7 @@
                     <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="组织名称"
                               clearable></el-input>
                 </el-form-item>
-                <el-form-item prop="code" label="组织编码">
-                    <el-input type="text" v-model.trim="form.code" auto-complete="off" placeholder="组织编码"
-                              clearable></el-input>
-                </el-form-item>
+
                 <el-form-item prop="description" label="备注">
                     <el-input type="textarea" v-model.trim="form.description" auto-complete="off" clearable
                               placeholder="备注"></el-input>
@@ -81,7 +73,7 @@
 
             </el-form>
             <span slot="footer" class="dialog-footer" style="text-align: center">
-<!--            <el-button @click="resetForm('form')">重 置</el-button>-->
+            <el-button class="dialog-btn-reset" @click="resetForm('form')">重 置</el-button>
             <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit('form')">保存</el-button>
         </span>
 
@@ -99,13 +91,12 @@
                 visible: false,
                 isUpdate: true,
                 tableData: [],
+                maxHeight: 1000,
                 childrenTableData: [{
                     name: '',
-                    code: '',
                     description: ''
                 }],
                 form: {
-                    code: "",
                     description: "",
                     id: '',
                     name: "",
@@ -116,9 +107,6 @@
                         {required: true, message: '请输入组织名称', trigger: 'blur'},
                         {min: 1, max: 20, message: '长度在 1 到 20 个汉字或字符', trigger: 'blur'}
                     ],
-                    code: [
-                        {required: true, message: '请输入组织编码', trigger: 'blur'},
-                    ],
                     description: [
                         {min: 1, max: 255, message: '长度在 1 到 255 个汉字或字符', trigger: 'blur'}
                     ]
@@ -127,6 +115,7 @@
         },
         mounted() {
             this.root();
+            this.maxHeight = this.$ViewportSize - 260
         },
         methods: {
 

@@ -8,7 +8,7 @@
             </div>
             <el-form ref="form" :model="form" label-width="140px" style="padding-top:  15px">
                 <el-form-item label="授权角色对象：">
-                    <el-select v-model="roleId" placeholder="请选择角色" @change="getRolePermissions">
+                    <el-select v-model="roleId" placeholder="请选择角色" @change="getRolePermissions" style="width: 220px">
                         <el-option
                                 v-for="item in roleList"
                                 :key="item.id"

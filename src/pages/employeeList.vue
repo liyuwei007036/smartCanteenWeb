@@ -292,7 +292,7 @@
             }
         },
         mounted: function () {
-            this.maxHeight = this.$ViewportSize - 240
+            this.maxHeight = this.$ViewportSize - 260
             let setSearch = JSON.parse(localStorage.getItem('search'))
             if (setSearch != 'null' && setSearch != null) {
                 this.search = setSearch

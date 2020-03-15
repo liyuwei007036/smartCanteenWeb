@@ -279,7 +279,7 @@
 
             </el-form>
             <span slot="footer" class="dialog-footer">
-<!--            <el-button @click="resetForm('form')">重 置</el-button>-->
+            <el-button class="dialog-btn-reset" @click="resetForm('form')">重 置</el-button>
             <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit('form')">保存</el-button>
         </span>
 
@@ -317,6 +317,7 @@
 
             </el-form>
             <span slot="footer" class="dialog-footer">
+            <el-button class="dialog-btn-reset" @click="resetForm('deductionForm')">重 置</el-button>
             <el-button type="primary" class="dialog-btn-normal"
                        @click="handleDeductionSubmit('deductionForm')">保存</el-button>
         </span>
@@ -325,7 +326,7 @@
 
         <!--        补卡弹窗-->
 
-        <el-dialog class="dialog"
+        <el-dialog class="dialog abow_dialog"
                    title="补卡"
                    :close-on-click-modal="false"
                    :visible.sync="isReplaceVisible"
@@ -360,7 +361,7 @@
                 </el-form-item>
 
                 <el-form-item label="卡类别">
-                    <el-select class="select_normal" v-model="replaceForm.type" placeholder="请选择卡类别" :readonly="true">
+                    <el-select class="select_normal" v-model="replaceForm.type" placeholder="请选择卡类别" :disabled="true">
                         <el-option
                                 v-for="item in cardTypeList"
                                 :key="item.id"
@@ -381,7 +382,8 @@
                             v-model="replaceForm.validityTime"
                             type="date"
                             placeholder="请选择卡有效期"
-                            value-format="yyyy-MM-dd HH:mm:ss">
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            :readonly="true">
                     </el-date-picker>
                 </el-form-item>
 
@@ -402,10 +404,9 @@
                               placeholder="请输入工本费"></el-input>
                 </el-form-item>
 
+                <el-button class="dialog-btn-reset" @click="resetForm('replaceForm')">重 置</el-button>
+                <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit1('replaceForm')">保存</el-button>
             </el-form>
-            <span slot="footer" class="dialog-footer">
-            <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit1('replaceForm')">保存</el-button>
-        </span>
 
         </el-dialog>
     </div>
@@ -491,7 +492,6 @@
                     openCardAmount: '',
                     deposit: '',
                     expense: '',
-                    empId: ''
                 },
                 deductionForm: {
                     cardId: '',
@@ -540,7 +540,7 @@
 
         mounted: function () {
             this.getList();
-            this.maxHeight = this.$ViewportSize - 240
+            this.maxHeight = this.$ViewportSize - 260
         },
 
         methods: {
@@ -670,15 +670,14 @@
             replaceAccounnt(id) {
                 this.isReplaceVisible = true
                 this.replaceForm = {};
-                this.replaceForm.empId = id
                 this.$nextTick(() => {
-                    this.getUser()
+                    this.getUser(id)
                 })
             },
 
             //获取用户数据
-            async getUser() {
-                let res = await get(this.replaceForm.empId);
+            async getUser(id) {
+                let res = await get(id);
                 console.log(res)
                 if (res.code === 1000) {
                     this.replaceForm = res.data
@@ -786,7 +785,8 @@
                 } else {
                     return true
                 }
-            }
+            },
+
         }
     }
 </script>
@@ -794,5 +794,9 @@
 <style scoped>
     .select_normal /deep/ input[readonly] {
         background-color: #fff;
+    }
+
+    .select_normal /deep/ input[disabled] {
+        background-color: #f1f1f5;
     }
 </style>

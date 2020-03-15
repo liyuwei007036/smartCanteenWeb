@@ -216,7 +216,7 @@
 
         mounted: function () {
             this.getList();
-            this.maxHeight = this.$ViewportSize - 240
+            this.maxHeight = this.$ViewportSize - 260
         },
 
         methods: {

@@ -98,6 +98,22 @@
         color: #FFFFFF !important;
     }
 
+    .dialog-btn-reset {
+        background: #ffffff !important;
+        border: 1px solid #5EAFF7;
+        color: #5EAFF7 !important;
+        height: 30px;
+        width: 100px;
+        line-height: 30px;
+        padding: 0;
+        font-size: 13px;
+    }
+
+    .dialog-btn-reset:hover, .dialog-btn-reset:focus {
+        background: #F1F1F1 !important;
+        border: 1px solid #5EAFF7;
+    }
+
     .del-btn {
         background: #fff;
         border: 1px solid #DE302E;
@@ -257,6 +273,11 @@
     .el-input__inner {
         height: 34px;
         line-height: 34px;
+        border: 1px solid #d5d5d5;
+    }
+
+    .el-input__inner:focus {
+        border: 1px solid #5286FF;
     }
 
     .el-input__icon {
@@ -295,5 +316,17 @@
     }
 
 
+    /*滚动条的宽度*/
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+
+    /*滚动条的滑块*/
+    ::-webkit-scrollbar-thumb {
+        background-color: #5286FF;
+        border-radius: 3px;
+    }
 </style>
 
