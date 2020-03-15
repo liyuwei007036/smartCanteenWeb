@@ -5,7 +5,7 @@
             <span>通服信息管理系统</span>
         </div>
         <div class="demonstration">
-            <el-image :src="require('@/assets/header-icon.png')" class="header-img"/>
+            <el-image :src="require('@/assets/b730ea28a331725fd1ae1ac746795ab.png')" class="header-img"/>
             <span class="user-name">欢迎您：{{user.name}}</span>&nbsp;| &nbsp;
             <span style="color: #777" :style="{cursor:'pointer'}" @click="changePassword">修改密码</span>&nbsp;| &nbsp;
             <span style="color: #777" @click="out" :style="{cursor:'pointer'}">安全退出</span>
@@ -16,7 +16,7 @@
                     title="修改密码"
                     :close-on-click-modal="false"
                     :visible.sync="isChangePasswordVisible">
-                <el-form ref="changePasswordform" :model="changePasswordform" :rules="rules" label-width="80px"
+                <el-form ref="changePasswordform" :model="changePasswordform" :rules="rules" label-width="60px"
                          label-position="left">
                     <el-form-item prop="oldPassword" label="原密码">
                         <el-input type="password" v-model.trim="changePasswordform.oldPassword" auto-complete="off"
