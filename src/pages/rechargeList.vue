@@ -170,7 +170,6 @@
         },
 
         methods: {
-
             serach() {
                 this.search.page = 1
                 this.getList();
