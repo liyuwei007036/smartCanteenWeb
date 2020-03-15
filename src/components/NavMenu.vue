@@ -4,7 +4,8 @@
             <el-menu class="el-menu-vertical-demo" unique-opened @open="handleOpen" @close="handleClose"
                      background-color="#101634" text-color="#fff" active-text-color="#2E6CFE"
                      :default-active="currentMenu">
-                <el-submenu v-for="item in menu" :index="item.id" :key="item.id" v-acl="item.auths">
+                <el-submenu v-for="item in menu" :index="item.id" :key="item.id" v-acl="item.auths"
+                            style="border-bottom: rgb(23,31,69) solid 2px">
                     <template slot="title">
                         <i :class="item.icon"/>
                         <span v-text="item.name"/>

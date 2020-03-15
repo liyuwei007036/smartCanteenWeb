@@ -62,7 +62,7 @@
 
     .menu {
         height: 100%;
-        background: #171F45;
+        background: #101634;
     }
 
     .el-main {
