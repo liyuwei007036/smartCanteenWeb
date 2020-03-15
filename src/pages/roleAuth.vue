@@ -1,7 +1,6 @@
 <template>
     <div>
-        <div class="search"
-             style="background: #fff;padding: 15px;border-radius: 6px;;box-shadow: 0 0 6px 0 #DFDFDF;">
+        <div style="background: #fff;padding: 15px;margin-bottom:15px;border-radius: 6px;;box-shadow: 0 0 6px 0 #DFDFDF;">
             <div class="content-header"
                  style="border-bottom: 1px solid #f2f2f2;padding-bottom: 15px">
                 查询条件
@@ -20,8 +19,7 @@
             </el-form>
         </div>
 
-        <div class="search"
-             style="background: #fff;padding: 15px;border-radius: 6px;;box-shadow: 0 0 6px 0 #DFDFDF;">
+        <div style="background: #fff;padding: 15px;border-radius: 6px;;box-shadow: 0 0 6px 0 #DFDFDF;">
             <div class="content-header"
                  style="border-bottom: 1px solid #f2f2f2;padding-bottom: 15px">
                 权限分类
@@ -123,7 +121,7 @@
     }
 </script>
 <style scoped>
-    /deep/.buttons {
+    /deep/ .buttons {
         text-align: center;
         padding: 10px 0 0 0;
         border-top: 1px solid #eee;
