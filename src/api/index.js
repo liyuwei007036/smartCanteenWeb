@@ -4,7 +4,7 @@ import router from "../router";
 
 axios.defaults.timeout = 50000;
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://47.114.176.72:81/smj/';
+axios.defaults.baseURL = 'http://nexus.51mypc.cn:83/vue';
 
 
 const reqList = []

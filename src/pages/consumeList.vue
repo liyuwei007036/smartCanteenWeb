@@ -158,7 +158,7 @@
                 currentPage: 1,
                 total: 1,
                 tableData: [],
-                maxHeight: '',
+                maxHeight: 1000,
                 search: {
                     cardNo: "",
                     empName: "",
