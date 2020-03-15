@@ -56,8 +56,8 @@
                     :data="tableData"
                     stripe
                     border
-                    style="width: 100%"
-                    max-height="550"
+                    style="width: 100%; overflow-y: auto"
+                    max-height="maxHeight"
                     :header-cell-style="{
                     'background-color': '#F2F6FC',
                     'color':'#333333',
@@ -253,6 +253,7 @@
                 total: 1,
                 tableName: '',
                 tableData: [],
+                maxHeight: 1000,
                 search: {
                     orgName: "",
                     name: "",
@@ -297,6 +298,7 @@
             }
         },
         mounted: function () {
+            this.maxHeight = this.$ViewportSize - 240
             let setSearch = JSON.parse(localStorage.getItem('search'))
             console.log(setSearch)
             if (setSearch != 'null' && setSearch != null) {

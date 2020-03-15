@@ -66,7 +66,7 @@
                     :data="tableData"
                     stripe
                     border
-                    style="width: 100%"
+                    style="width: 100%; overflow-y: auto"
                     :max-height="maxHeight"
                     @selection-change="handleSelectionChange"
                     :header-cell-style="{
@@ -93,7 +93,7 @@
                 </el-table-column>
                 <el-table-column
                         prop="empNo"
-                        label="账号"
+                        label="工号"
                         align="center"
                         :show-overflow-tooltip='true'>
                 </el-table-column>

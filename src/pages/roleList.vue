@@ -1,15 +1,18 @@
 <template>
     <div>
 
-        <div v-if="isSearchVisible" class="search" style="border-bottom: 1px solid #eaeaea;padding-bottom: 15px">
+        <hr style="height: 2px;background-color: #5286FF;border:none;margin-bottom: 12px;">
+        <div v-if="isSearchVisible" class="search" style="border-bottom: 2px solid #5286FF;padding-bottom: 20px;">
             <el-input v-model="search.name" placeholder="请输入角色名称" style="width:240px"></el-input>
             <el-button type="primary" @click="serach" icon="el-icon-search">搜索</el-button>
         </div>
 
         <div class="option-menu">
-            <el-button type="primary"  v-acl="['role:add']" class="add-btn" @click="addOrUpdateRole()" icon="el-icon-plus">新增角色
+            <el-button type="primary" v-acl="['role:add']" class="add-btn" @click="addOrUpdateRole()"
+                       icon="el-icon-plus">新增角色
             </el-button>
-            <el-button type="danger" class="del-btn" @click="" icon="el-icon-delete" v-acl="['role:deleted']">删除</el-button>
+            <el-button type="danger" class="del-btn" @click="" icon="el-icon-delete" v-acl="['role:deleted']">删除
+            </el-button>
             <el-button type="primary" class="search-btn" @click="isSearchVisible = !isSearchVisible"
                        icon="el-icon-search"
                        style="float: right;"/>
@@ -19,7 +22,12 @@
                     :data="tableData"
                     stripe
                     border
-                    style="width: 100%">
+                    style="width: 100%; overflow-y: auto"
+                    :max-height="maxHeight"
+                    :header-cell-style="{
+                    'background-color': '#F2F6FC',
+                    'color':'#333333',
+                    'padding':'8px 0'}">
                 <el-table-column
                         type="index"
                         label="序号"
@@ -36,6 +44,7 @@
                         prop="createTime"
                         label="创建时间"
                         align="center"
+                        :show-overflow-tooltip='true'
                         width="">
                 </el-table-column>
                 <el-table-column
@@ -44,10 +53,11 @@
                         align="center"
                         width="">
                     <template slot-scope="scope">
-                        <el-button type="text" size="small"  v-acl="['role:update']"
-                                   @click="addOrUpdateRole(scope.row.id)">编辑
+                        <el-button type="text" size="small" v-acl="['role:update']"
+                                   @click="addOrUpdateRole(scope.row.id)">修改
                         </el-button>
-                        <el-button v-if="scope.row.canEdit == true" type="text" size="small" class="delete-btn" v-acl="['role:deleted']"
+                        <el-button v-if="scope.row.canEdit == true" type="text" size="small" class="delete-btn"
+                                   v-acl="['role:deleted']"
                                    @click="deleted(scope.row.id)">删除
                         </el-button>
                     </template>
@@ -88,7 +98,7 @@
 </template>
 
 <script>
-    import {list,get,update,add,deleted} from '@/api/role';
+    import {list, get, update, add, deleted} from '@/api/role';
 
     export default {
         name: "roleList",
@@ -100,10 +110,8 @@
                 tableName: '',
                 visible: false,
                 isSearchVisible: false,
-                tableData: [{
-                    name: '',
-                    createTime: '',
-                }],
+                maxHeight: 1000,
+                tableData: [],
                 search: {
                     name: '',
                     page: 1,
@@ -125,6 +133,7 @@
 
         mounted: function () {
             this.getList();
+            this.maxHeight = this.$ViewportSize - 240
         },
 
         methods: {

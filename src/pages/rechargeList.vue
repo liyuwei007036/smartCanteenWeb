@@ -1,7 +1,8 @@
 <template>
     <div>
 
-        <div v-if="isSearchVisible" class="search" style="border-bottom: 1px solid #eaeaea;padding-bottom: 15px">
+        <hr style="height: 2px;background-color: #5286FF;border:none;margin-bottom: 12px;">
+        <div v-if="isSearchVisible" class="search" style="border-bottom: 2px solid #5286FF;padding-bottom: 20px;">
             <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
                 <el-input class="search_input" v-model="search.empName" placeholder="请输入姓名" clearable>
                     <template slot="prepend">姓名</template>
@@ -58,51 +59,64 @@
                     :data="tableData"
                     stripe
                     border
-                    style="width: 100%">
+                    style="width: 100%; overflow-y: auto"
+                    :max-height="maxHeight"
+                    :header-cell-style="{
+                    'background-color': '#F2F6FC',
+                    'color':'#333333',
+                    'padding':'8px 0'}">
                 <el-table-column
                         type="index"
                         label="序号"
-                        align="center">
+                        align="center"
+                        width="80">
                 </el-table-column>
                 <el-table-column
                         prop="employeeName"
                         label="姓名"
+                        :show-overflow-tooltip='true'
                         align="center"
                         width="">
                 </el-table-column>
                 <el-table-column
                         prop="employeeNo"
-                        label="账号"
+                        label="工号"
+                        :show-overflow-tooltip='true'
                         align="center"
                         width="">
                 </el-table-column>
                 <el-table-column
                         prop="cardNo"
                         label="卡号"
+                        :show-overflow-tooltip='true'
                         align="center"
                         width="">
                 </el-table-column>
                 <el-table-column
                         prop="createTime"
                         label="记账时间"
+                        :show-overflow-tooltip='true'
                         align="center"
                         width="">
                 </el-table-column>
                 <el-table-column
                         prop="money"
-                        label="充值金额（元）"
+                        label="充值金额"
+                        :show-overflow-tooltip='true'
                         align="center"
                         width="">
                 </el-table-column>
                 <el-table-column
                         prop="balance"
-                        label="卡余额（元）"
+                        label="卡余额"
+                        :show-overflow-tooltip='true'
                         align="center"
                         width="">
                 </el-table-column>
                 <el-table-column
                         prop="type"
                         label="充值类型"
+                        :show-overflow-tooltip='true'
                         align="center"
                         width="">
                 </el-table-column>
@@ -110,6 +124,7 @@
                 <el-table-column
                         prop="creatorName"
                         label="操作人"
+                        :show-overflow-tooltip='true'
                         align="center"
                         width="">
                 </el-table-column>
@@ -143,6 +158,7 @@
                 currentPage: 1,
                 total: 1,
                 tableData: [],
+                maxHeight:1000,
                 search: {
                     cardNo: "",
                     empName: "",
@@ -167,6 +183,7 @@
 
         mounted: function () {
             this.getList();
+            this.maxHeight = this.$ViewportSize - 240
         },
 
         methods: {

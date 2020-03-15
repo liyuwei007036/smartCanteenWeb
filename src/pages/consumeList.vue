@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div v-if="isSearchVisible" class="search" style="border-bottom: 1px solid #eaeaea;padding-bottom: 15px">
+        <hr style="height: 2px;background-color: #5286FF;border:none;margin-bottom: 12px;">
+        <div v-if="isSearchVisible" class="search" style="border-bottom: 2px solid #5286FF;padding-bottom: 20px;">
             <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
                 <el-input class="search_input" v-model="search.empName" placeholder="请输入姓名">
                     <template slot="prepend">姓名</template>
@@ -58,45 +59,56 @@
                 stripe
                 border
                 style="width: 100%; overflow-y: auto"
-                :max-height="maxHeight">
+                :max-height="maxHeight"
+                :header-cell-style="{
+                    'background-color': '#F2F6FC',
+                    'color':'#333333',
+                    'padding':'8px 0'}">
             <el-table-column
                     type="index"
                     label="序号"
-                    align="center">
+                    align="center"
+                    width="80">
             </el-table-column>
             <el-table-column
                     prop="employeeName"
                     label="姓名"
                     align="center"
+                    :show-overflow-tooltip='true'
                     width="">
             </el-table-column>
             <el-table-column
                     prop="employeeNo"
-                    label="账号"
+                    label="工号"
                     align="center"
+                    :show-overflow-tooltip='true'
                     width="100px">
             </el-table-column>
             <el-table-column
                     prop="cardNo"
                     label="卡号"
                     align="center"
+                    :show-overflow-tooltip='true'
                     width="">
             </el-table-column>
             <el-table-column
                     prop="createTime"
                     label="消费时间"
+                    :show-overflow-tooltip='true'
                     align="center"
                     width="">
             </el-table-column>
             <el-table-column
                     label="消费金额"
                     align="center"
+                    :show-overflow-tooltip='true'
                     width=""
                     prop="money">
             </el-table-column>
             <el-table-column
                     prop="balance"
                     label="消费后卡余额"
+                    :show-overflow-tooltip='true'
                     align="center"
                     width="">
             </el-table-column>
@@ -104,6 +116,7 @@
             <el-table-column
                     prop="machineNo"
                     label="终端编号"
+                    :show-overflow-tooltip='true'
                     align="center"
                     width="">
             </el-table-column>
@@ -113,12 +126,14 @@
                     prop="type"
                     label="消费方式"
                     align="center"
+                    :show-overflow-tooltip='true'
                     width="">
             </el-table-column>
 
             <el-table-column
                     prop="channel"
                     label="消费类型"
+                    :show-overflow-tooltip='true'
                     align="center"
                     width="">
             </el-table-column>
@@ -126,6 +141,7 @@
             <el-table-column
                     prop="creatorName"
                     label="操作人"
+                    :show-overflow-tooltip='true'
                     align="center"
                     width="">
             </el-table-column>

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <hr style="height: 2px;background-color: #5286FF;border:none;margin-bottom: 12px;">
         <div class="option-menu">
             <el-button type="primary" class="add-btn" @click="addNodes()" icon="el-icon-plus"
                        v-acl="['origination:add']">新增组织
@@ -8,24 +9,29 @@
 
         <el-table :indent="16" v-acl="['origination:view']"
                   :data="tableData"
-                  style="width: 100%"
                   row-key="id"
                   border
                   lazy
                   :load="load"
                   :stripe="true"
                   :default-expand-all="true"
-                  :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+                  :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+                  style="width: 100%"
+                  max-height="maxHeight"
+                  :header-cell-style="{
+                    'background-color': '#F2F6FC',
+                    'color':'#333333',
+                    'padding':'8px 0'}">
             <el-table-column
                     prop="name"
                     label="组织名称"
-                    width="220"
+                    width=""
                     align="left">
             </el-table-column>
             <el-table-column
                     prop="code"
                     label="组织编码"
-                    width="220"
+                    width=""
                     align="center">
             </el-table-column>
             <el-table-column
@@ -40,10 +46,10 @@
                     align="center"
                     width="180">
                 <template slot-scope="scope">
-                    <el-button @click="addNodes(scope.row.id)" type="text" size="small" v-acl="['origination:add']">新增
+                    <el-button @click="addNodes(scope.row.id)" type="text" size="small" v-acl="['origination:add']">新增子组织
                     </el-button>
                     <el-button type="text" size="small" @click="editNodes(scope.row.id)" v-acl="['origination:update']">
-                        编辑
+                        修改
                     </el-button>
                     <el-button type="text" size="small" class="delete-btn" @click="deleted(scope.row.id)"
                                v-acl="['origination:deleted']">删除
@@ -90,11 +96,7 @@
             return {
                 visible: false,
                 isUpdate: true,
-                tableData: [{
-                    name: '',
-                    code: '',
-                    description: '',
-                }],
+                tableData: [],
                 childrenTableData: [{
                     name: '',
                     code: '',
