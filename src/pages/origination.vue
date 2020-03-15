@@ -13,6 +13,8 @@
                   border
                   lazy
                   :load="load"
+                  :stripe="true"
+                  :default-expand-all="true"
                   :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
             <el-table-column
                     prop="name"

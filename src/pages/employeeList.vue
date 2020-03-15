@@ -1,28 +1,54 @@
 <template>
     <div>
-        <div v-if="isSerachVisible" class="search" style="border-bottom: 1px solid #eaeaea;padding-bottom: 15px">
-            <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
-                <el-input class="search_input" v-model="search.name" placeholder="请输入姓名">
-                    <template slot="prepend">姓名</template>
-                </el-input>
-                <el-input class="search_input" v-model="search.mobile" placeholder="请输入手机号">
-                    <template slot="prepend">手机号</template>
-                </el-input>
-                <el-input class="search_input" v-model="search.no" placeholder="请输入账号">
-                    <template slot="prepend">账号</template>
-                </el-input>
-                <el-input class="search_input" v-model="search.idCard" placeholder="请输入卡号">
-                    <template slot="prepend">卡号</template>
-                </el-input>
+        <keep-alive>
+            <div v-if="isSerachVisible" class="search" style="border-bottom: 1px solid #eaeaea;padding-bottom: 15px">
+                <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
+                    <el-input class="search_input" v-model="search.name" placeholder="请输入姓名">
+                        <template slot="prepend">姓名</template>
+                    </el-input>
+                    <el-input class="search_input" v-model="search.orgName" placeholder="请输入所属组织">
+                        <template slot="prepend">所属组织</template>
+                    </el-input>
+                    <el-input class="search_input" v-model="search.no" placeholder="请输入账号">
+                        <template slot="prepend">账号</template>
+                    </el-input>
+                    <el-input class="search_input" v-model="search.cardNo" placeholder="请输入卡号">
+                        <template slot="prepend">卡号</template>
+                    </el-input>
+                </div>
+                <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
+                    <el-date-picker class="search_input"
+                                    v-model="search.createStart"
+                                    type="date"
+                                    placeholder="创建开始时间" clearable>
+                    </el-date-picker>
+
+                    <el-date-picker class="search_input"
+                                    v-model="search.createEnd"
+                                    type="date"
+                                    placeholder="创建结束时间" clearable>
+                    </el-date-picker>
+                    <el-date-picker class="search_input"
+                                    v-model="search.cardTimeStart"
+                                    type="date"
+                                    placeholder="卡有效期开始时间" clearable>
+                    </el-date-picker>
+
+                    <el-date-picker class="search_input"
+                                    v-model="search.cardTimeEnd"
+                                    type="date"
+                                    placeholder="卡有效期结束时间" clearable>
+                    </el-date-picker>
+                </div>
+                <el-button type="primary" @click="searchList" icon="el-icon-search">搜索</el-button>
             </div>
-            <el-button type="primary" @click="serach" icon="el-icon-search">搜索</el-button>
-        </div>
+        </keep-alive>
         <div class="option-menu">
             <el-button type="primary" class="add-btn" @click="addOrUpdateEmployee()" icon="el-icon-plus"
                        v-acl="['employee:add']">新增人员
             </el-button>
             <el-button v-acl="['employee:view']" type="primary" class="search-btn"
-                       @click="isSerachVisible = !isSerachVisible"
+                       @click="toggleSearch"
                        icon="el-icon-search"
                        style="float: right;"/>
         </div>
@@ -37,62 +63,61 @@
                         type="index"
                         label="序号"
                         align="center"
-                        style="width:9%">
+                        className="table-column-width">
                 </el-table-column>
                 <el-table-column
                         prop="name"
                         label="姓名"
                         align="center"
-                        style="width:9%">
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
 
                 <el-table-column
                         prop="no"
                         label="账号"
                         align="center"
-                        style="width:9%">
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
 
                 <el-table-column
                         prop="mobile"
                         label="手机号"
                         align="center"
-                        style="width:9%">
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
 
                 <el-table-column
                         prop="cardNo"
                         label="卡号"
                         align="center"
-                        style="width:9%">
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
 
                 <el-table-column
                         prop="type"
                         label="卡类型"
                         align="center"
-                        style="width:9%">
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
 
                 <el-table-column
                         prop="originationName"
                         label="所属组织"
                         align="center"
-                        style="width:9%">
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
 
                 <el-table-column
                         prop="status"
                         label="状态"
                         align="center"
-                        style="width:9%">
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
 
                 <el-table-column
                         prop="validityTime"
                         label="卡有效期"
                         align="center"
-                        style="width:9%"
                         :show-overflow-tooltip='true'>
                 </el-table-column>
 
@@ -100,7 +125,6 @@
                         prop="createTime"
                         label="创建时间"
                         align="center"
-                        style="width:9%"
                         :show-overflow-tooltip='true'>
                 </el-table-column>
 
@@ -108,7 +132,7 @@
                         prop="operation"
                         label="操作"
                         align="center"
-                        style="width:10%">
+                        width="180">
                     <template slot-scope="scope">
                         <el-button v-acl="['employee:view']" @click="getEmployee(scope.row.id)" type="text"
                                    size="small">查看
@@ -247,19 +271,17 @@
                 tableName: '',
                 tableData: [],
                 search: {
-                    mobile: "",
+                    orgName: "",
                     name: "",
                     no: "",
+                    mobile: '',
+                    cardNo: '',
+                    createStart: '',
+                    createEnd: '',
+                    cardTimeStart: '',
+                    cardTimeEnd: '',
                     page: 1,
                     size: 10
-                },
-                editParams: {
-                    id: 0,
-                    idCard: "",
-                    mobile: "",
-                    name: "",
-                    no: "",
-                    password: ""
                 },
                 form1: {
                     id: '',
@@ -292,12 +314,27 @@
             }
         },
         mounted: function () {
-            this.getList();
+            let setSearch = JSON.parse(localStorage.getItem('search'))
+            console.log(setSearch)
+            if (setSearch != 'null' && setSearch != null) {
+                this.search = setSearch
+                console.log(111)
+                this.getList();
+            } else {
+                console.log(222)
+                localStorage.setItem('search', JSON.stringify(this.search))
+                this.getList();
+            }
+        },
+
+        created() {
+            window.addEventListener('beforeunload', e => this.beforeunloadFn(e))
         },
 
         methods: {
             async getList() { //获取数据
                 let res = await list(this.search);
+                console.log(this.search)
                 if (res.code === 1000) {
                     this.total = res.data.total;
                     this.currentPage = res.data.currentPage;
@@ -364,9 +401,11 @@
                 }
             },
 
-            serach() {
+            searchList() {
                 this.search.page = 1
                 this.getList()
+                console.log(this.search)
+                localStorage.setItem('search', JSON.stringify(this.search))
             },
 
 
@@ -379,6 +418,10 @@
             handleCurrentChange(val) {
                 this.search.page = val
                 this.getList();
+            },
+
+            toggleSearch() {
+                this.isSerachVisible = !this.isSerachVisible
             }
 
         },
@@ -392,5 +435,9 @@
 
     .el-select {
         display: block;
+    }
+
+    .table-column-width {
+        width: 9% !important;
     }
 </style>

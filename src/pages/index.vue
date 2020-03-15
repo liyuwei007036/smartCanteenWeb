@@ -93,5 +93,9 @@
         height: 100%;
     }
 
+    .el-pagination{
+        padding: 10px 0;
+    }
+
 
 </style>

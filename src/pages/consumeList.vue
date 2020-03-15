@@ -48,7 +48,7 @@
         </div>
 
         <div class="option-menu clearfix">
-            <el-button type="primary" class="search-btn" @click="isSearchVisible = !isSearchVisible"
+            <el-button type="primary" class="search-btn" @click="toggleSearch"
                        icon="el-icon-search"
                        style="float: right;"></el-button>
         </div>
@@ -57,7 +57,8 @@
                 :data="tableData"
                 stripe
                 border
-                style="width: 100%">
+                style="width: 100%; overflow-y: auto"
+                :max-height="maxHeight">
             <el-table-column
                     type="index"
                     label="序号"
@@ -157,6 +158,7 @@
                 currentPage: 1,
                 total: 1,
                 tableData: [],
+                maxHeight: '',
                 search: {
                     cardNo: "",
                     empName: "",
@@ -181,6 +183,8 @@
 
         mounted: function () {
             this.getList();
+            this.maxHeight = this.$ViewportSize - 240
+            console.log(this.maxHeight)
         },
 
         methods: {
@@ -188,6 +192,10 @@
             serach() {
                 this.search.page = 1
                 this.getList();
+            },
+
+            toggleSearch() {
+                this.isSearchVisible = !this.isSearchVisible
             },
 
             //获取列表数据
@@ -216,7 +224,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>
