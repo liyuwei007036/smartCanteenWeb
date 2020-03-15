@@ -46,7 +46,8 @@
                     align="center"
                     width="180">
                 <template slot-scope="scope">
-                    <el-button @click="addNodes(scope.row.id)" type="text" size="small" v-acl="['origination:add']">新增子组织
+                    <el-button @click="addNodes(scope.row.id)" type="text" size="small" v-acl="['origination:add']">
+                        新增子组织
                     </el-button>
                     <el-button type="text" size="small" @click="editNodes(scope.row.id)" v-acl="['origination:update']">
                         修改
@@ -59,10 +60,11 @@
         </el-table>
 
         <!--        弹窗-->
-        <el-dialog
-                :title="this.isUpdate?'编辑':'新增'"
-                :close-on-click-modal="false"
-                :visible.sync="visible">
+        <el-dialog class="dialog"
+                   :title="this.isUpdate?'编辑':'新增'"
+                   :close-on-click-modal="false"
+                   :visible.sync="visible"
+                   width="40%">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
                 <el-form-item prop="name" label="组织名称">
                     <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="组织名称"
@@ -78,7 +80,7 @@
                 </el-form-item>
 
             </el-form>
-            <span slot="footer" class="dialog-footer">
+            <span slot="footer" class="dialog-footer" style="text-align: center">
 <!--            <el-button @click="resetForm('form')">重 置</el-button>-->
             <el-button type="primary" @click="handleSubmit('form')">保存</el-button>
         </span>

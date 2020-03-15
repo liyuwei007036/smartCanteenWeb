@@ -157,6 +157,14 @@
 
     }
 
+    .dialog {
+        text-align: center;
+    }
+
+    .dialog .el-dialog__footer {
+        text-align: center;
+    }
+
     .dialog .el-dialog__body input[readonly] {
         background-color: #f1f1f5
     }
@@ -165,7 +173,6 @@
     .el-dialog__body .el-date-editor.el-input, .el-date-editor.el-input__inner {
         width: 100%;
     }
-
 
     .select_normal {
         width: 100%;
@@ -180,6 +187,9 @@
     input[type="number"] {
         -moz-appearance: textfield;
     }
+
+    /*重置dialog样式*/
+
 
     .abow_dialog {
         display: flex;
@@ -207,8 +217,50 @@
     }
 
     .el-input__inner {
-        height: 30px;
+        height: 34px;
         line-height: 30px;
     }
+
+    .el-dialog__header {
+        color: #fff;
+        background-color: #4D7DFF;
+        text-align: center;
+        font-size: 16px;
+        height: 41px;
+        line-height: 41px;
+        padding: 0;
+        position: relative;
+    }
+
+    .el-dialog__title {
+        color: #fff;
+    }
+
+    .el-dialog__headerbtn .el-dialog__close {
+        color: #fff;
+        font-size: 23px;
+    }
+
+    .el-dialog__headerbtn {
+        position: absolute;
+        top: 50%;
+        margin-top: -10px;
+        right: 15px;
+    }
+
+    .el-form-item__label {
+        color: #2F332A;
+    }
+
+    .dialog-btn {
+        color: #5EAFF7;
+        color: #FFFFFF;
+    }
+
+    .dialog-btn:hover, .dialog-btn:focus {
+        color: #2E6CFE;
+        color: #FFFFFF;
+    }
+
 </style>
 

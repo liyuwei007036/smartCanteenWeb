@@ -143,8 +143,8 @@
         <editdialog v-if="isVisible" ref="addOrUpdate"/>
 
         <!--        查看弹窗-->
-        <el-dialog
-                title="查看"
+        <el-dialog class="dialog abow_dialog"
+                title="查看人员"
                 :close-on-click-modal="false"
                 :visible.sync="isShowVisible" width="40%">
             <el-form ref="form1" :model="form1" disabled label-width="100px" label-position="right">
@@ -223,9 +223,7 @@
 
             </el-form>
 
-            <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="isShowVisible = false">关 闭</el-button>
-            </span>
+            <el-button type="primary" @click="isShowVisible = false" :disabled="false" class="dialog-btn">关 闭</el-button>
 
         </el-dialog>
 

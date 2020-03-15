@@ -74,10 +74,10 @@
                     'color':'#333333',
                     'padding':'8px 0'}">
                 <el-table-column v-acl="['recharge:recharge']"
-                    type="selection"
-                    width="50"
-                    align="center"
-                    :selectable="handleDisable">
+                                 type="selection"
+                                 width="50"
+                                 align="center"
+                                 :selectable="handleDisable">
                 </el-table-column>
                 <el-table-column
                         type="index"
@@ -185,7 +185,8 @@
         <el-dialog class="dialog"
                    title="充值"
                    :close-on-click-modal="false"
-                   :visible.sync="visible">
+                   :visible.sync="visible"
+                   width="40%">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
                 <el-form-item prop="name" label="姓名" v-if="isShow">
                     <el-input type="text" v-model.trim="name" auto-complete="off" placeholder="用户姓名"
@@ -245,7 +246,8 @@
         <el-dialog class="dialog"
                    title="补扣"
                    :close-on-click-modal="false"
-                   :visible.sync="isDeductionVisible">
+                   :visible.sync="isDeductionVisible"
+                   width="40%">
             <el-form ref="deductionForm" :model="deductionForm" :rules="deductionRules" label-width="80px"
                      label-position="left">
                 <el-form-item prop="name" label="姓名">
@@ -265,7 +267,8 @@
 
                 <el-form-item label="补扣金额" prop="money">
 
-                    <el-input type="number" v-model.trim="deductionForm.money" auto-complete="off"  @mousewheel.native.prevent
+                    <el-input type="number" v-model.trim="deductionForm.money" auto-complete="off"
+                              @mousewheel.native.prevent
                               placeholder="请输入补扣金额"></el-input>
                 </el-form-item>
 
@@ -281,7 +284,8 @@
         <el-dialog class="dialog"
                    title="补卡"
                    :close-on-click-modal="false"
-                   :visible.sync="isReplaceVisible" width="40%"
+                   :visible.sync="isReplaceVisible"
+                   width="40%"
                    @closed="handleClose">
             <el-form ref="replaceForm" :model="replaceForm" :rules="replaceRules" status-icon label-width="100px"
                      label-position="right">

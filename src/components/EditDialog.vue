@@ -1,8 +1,9 @@
 <template>
     <el-dialog class="dialog abow_dialog"
-               :title="!form.id?'新增':'编辑'"
+               :title="!form.id?'新增人员':'修改人员'"
                :close-on-click-modal="false"
-               :visible.sync="visible" width="40%"
+               :visible.sync="visible"
+               width="40%"
                @closed="handleClose">
         <el-form ref="form" :model="form" :rules="rules" status-icon label-width="100px" label-position="right">
             <el-form-item prop="name" label="姓名">
@@ -22,11 +23,14 @@
                           maxlength="11"></el-input>
             </el-form-item>
 
-            <el-form-item prop="cardNo" label="卡号">
+            <el-form-item prop="cardNo" label="卡号" class="getCard">
                 <el-input type="number" v-model.trim="form.cardNo" auto-complete="off" placeholder="卡号"
                           @mousewheel.native.prevent readOnly="true">
-                    <el-button slot="append" v-if="!isReadonly" @click="readCard()">点击读卡</el-button>
                 </el-input>
+                <el-button v-if="!isReadonly" @click="readCard()"
+                           style="margin-left: 10px;height: 34px;color: #fff;background-color: #2E6CFE;font-size: 13px;line-height: 34px;padding:0 10px;border: none">
+                    {{status_text}}
+                </el-button>
             </el-form-item>
 
             <el-form-item label="卡类别">
@@ -124,13 +128,8 @@
 
             </el-form-item>
 
-            <el-button type="primary" @click="handleSubmit('form')" >保存</el-button>
+            <el-button type="primary" @click="handleSubmit('form')">保存</el-button>
         </el-form>
-<!--        <span slot="footer" class="dialog-footer">-->
-<!--&lt;!&ndash;            <el-button @click="resetForm('form')">重 置</el-button>&ndash;&gt;-->
-
-<!--        </span>-->
-
     </el-dialog>
 </template>
 
@@ -176,6 +175,7 @@
 
             return {
                 visible: false,
+                status_text: '点击读卡',
                 form: {
                     id: '',
                     name: '',
@@ -196,7 +196,7 @@
                     validityTime: '',
                     openCardAmount: '',
                     deposit: '',
-                    expense: ''
+                    expense: '',
                 },
                 roleList: [],
                 cardTypeList: [
@@ -259,6 +259,8 @@
                     if (this.form.id > 0) {
                         this.getEmployeeDetail()
                         this.isReadonly = true
+                    } else {
+                        this.isReadonly = false
                     }
                 })
             },
@@ -329,6 +331,7 @@
                 } else {
                     let res = await beforeGetCard()
                     if (res.code === 1000) {
+                        this.status_text = '正在读卡'
                         this.t = setInterval(this.getCardNo, 2000);
                     }
                 }
@@ -339,6 +342,7 @@
                 if (this.timer > 10) {
                     clearInterval(this.t)
                     this.timer = 0
+                    this.status_text = '点击读卡'
                     return
                 }
                 let res = await getCard()
@@ -347,6 +351,7 @@
                     if (rno && rno.length > 0) {
                         this.form.cardNo = rno
                         this.$forceUpdate();
+                        this.status_text = '读卡成功'
                         clearInterval(this.t)
                     }
 
@@ -391,5 +396,11 @@
 <style scoped>
     .select_normal /deep/ input[readonly] {
         background-color: #fff;
+    }
+
+    .getCard /deep/ .el-form-item__content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 </style>

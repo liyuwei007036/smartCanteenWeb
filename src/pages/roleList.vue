@@ -81,7 +81,8 @@
         <el-dialog
                 :title="!form.id?'新增':'编辑'"
                 :close-on-click-modal="false"
-                :visible.sync="visible">
+                :visible.sync="visible"
+                width="40%">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
                 <el-form-item prop="name" label="角色名称">
                     <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="角色名称"></el-input>
