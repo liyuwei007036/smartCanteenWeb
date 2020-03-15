@@ -107,7 +107,7 @@
             </el-table-column>
             <el-table-column
                     prop="balance"
-                    label="消费后卡余额"
+                    label="卡余额"
                     :show-overflow-tooltip='true'
                     align="center"
                     width="">

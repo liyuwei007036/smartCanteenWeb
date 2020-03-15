@@ -98,21 +98,8 @@
                         :show-overflow-tooltip='true'>
                 </el-table-column>
                 <el-table-column
-                        prop="mobile"
-                        label="手机号"
-                        align="center"
-                        :show-overflow-tooltip='true'>
-                </el-table-column>
-                <el-table-column
                         prop="cardNo"
                         label="卡号"
-                        align="center"
-                        :show-overflow-tooltip='true'>
-                </el-table-column>
-
-                <el-table-column
-                        prop="cardType"
-                        label="卡类型"
                         align="center"
                         :show-overflow-tooltip='true'>
                 </el-table-column>
