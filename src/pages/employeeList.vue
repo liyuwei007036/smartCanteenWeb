@@ -61,8 +61,7 @@
                     :header-cell-style="{
                     'background-color': '#F2F6FC',
                     'color':'#333333',
-                    'padding':'8px 0'}"
-            >
+                    'padding':'8px 0'}">
                 <el-table-column
                         type="index"
                         label="序号"

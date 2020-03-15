@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div v-if="isSearchVisible" class="search" style="border-bottom: 1px solid #eaeaea;padding-bottom: 15px">
+        <hr style="height: 2px;background-color: #5286FF;border:none;margin-bottom: 12px;">
+        <div v-if="isSearchVisible" class="search" style="border-bottom: 2px solid #5286FF;padding-bottom: 20px;">
             <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
                 <el-input class="search_input" v-model="search.empName" placeholder="请输入姓名">
                     <template slot="prepend">姓名</template>
@@ -66,8 +67,12 @@
                     stripe
                     border
                     style="width: 100%"
-                    max-height="550"
-                    @selection-change="handleSelectionChange">
+                    :max-height="maxHeight"
+                    @selection-change="handleSelectionChange"
+                    :header-cell-style="{
+                    'background-color': '#F2F6FC',
+                    'color':'#333333',
+                    'padding':'8px 0'}">
                 <el-table-column v-acl="['recharge:recharge']"
                     type="selection"
                     width="50"
@@ -78,70 +83,73 @@
                         type="index"
                         label="序号"
                         align="center"
-                        width="">
+                        width="80">
                 </el-table-column>
                 <el-table-column
                         prop="empName"
                         label="姓名"
                         align="center"
-                        width="120">
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
                 <el-table-column
                         prop="empNo"
                         label="账号"
                         align="center"
-                        width="120">
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
                 <el-table-column
                         prop="mobile"
                         label="手机号"
                         align="center"
-                        width="120">
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
                 <el-table-column
                         prop="cardNo"
                         label="卡号"
                         align="center"
-                        width="120">
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
 
                 <el-table-column
                         prop="cardType"
                         label="卡类型"
                         align="center"
-                        width="80">
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
 
                 <el-table-column
                         prop="deposit"
                         label="押金"
                         align="center"
-                        width="80">
+                        width="80"
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
 
                 <el-table-column
                         prop="currentBalance"
                         label="卡余额"
                         align="center"
-                        width="80">
+                        width="80"
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
                 <el-table-column
                         prop="status"
                         label="卡状态"
                         align="center"
-                        width="120">
+                        width="120"
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
                 <el-table-column
                         prop="accountStatus"
                         label="账户状态"
                         align="center"
-                        width="120">
+                        width="120"
+                        :show-overflow-tooltip='true'>
                 </el-table-column>
                 <el-table-column
                         prop="validityTime"
                         label="卡有效期"
                         align="center"
-                        width="140"
                         :show-overflow-tooltip='true'>
                 </el-table-column>
 
@@ -389,6 +397,7 @@
                 name: '',
                 no: '',
                 currentBalance: '',
+                maxHeight: 1000,
                 search: {
                     accountStatus: "",
                     cardNo: "",
@@ -496,6 +505,7 @@
 
         mounted: function () {
             this.getList();
+            this.maxHeight = this.$ViewportSize - 240
         },
 
         methods: {
