@@ -32,7 +32,8 @@
                     </div>
                 </el-col>
             </el-row>
-            <el-button type="primary" class="search-btn-primary" @click="searchList" icon="el-icon-search">搜索</el-button>
+            <el-button type="primary" class="search-btn-primary" @click="searchList" icon="el-icon-search">搜索
+            </el-button>
         </div>
 
 
@@ -144,9 +145,9 @@
 
         <!--        查看弹窗-->
         <el-dialog class="dialog abow_dialog"
-                title="查看人员"
-                :close-on-click-modal="false"
-                :visible.sync="isShowVisible" width="40%">
+                   title="查看人员"
+                   :close-on-click-modal="false"
+                   :visible.sync="isShowVisible" width="40%">
             <el-form ref="form1" :model="form1" disabled label-width="100px" label-position="right">
 
                 <el-form-item prop="name" label="姓名">
@@ -223,7 +224,8 @@
 
             </el-form>
 
-            <el-button type="primary" @click="isShowVisible = false" :disabled="false" class="dialog-btn">关 闭</el-button>
+            <el-button type="primary" class="dialog-btn-normal" @click="isShowVisible = false" :disabled="false">关 闭
+            </el-button>
 
         </el-dialog>
 

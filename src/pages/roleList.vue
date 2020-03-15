@@ -91,7 +91,7 @@
             </el-form>
             <span slot="footer" class="dialog-footer">
 <!--            <el-button @click="resetForm('form')">重 置</el-button>-->
-            <el-button type="primary" @click="handleSubmit('form')">保存</el-button>
+            <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit('form')">保存</el-button>
         </span>
 
         </el-dialog>

@@ -40,7 +40,7 @@
             </div>
 
             <div class="buttons">
-                <el-button type="primary" @click="getCheckedKeys">保存</el-button>
+                <el-button type="primary" class="dialog-btn-normal" @click="getCheckedKeys">保存</el-button>
             </div>
         </div>
 

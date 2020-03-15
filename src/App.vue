@@ -65,6 +65,21 @@
         background: #2d6bf7;
     }
 
+    .dialog-btn-normal {
+        background: #5EAFF7 !important;
+        color: #FFFFFF !important;
+        height: 30px;
+        width: 100px;
+        line-height: 30px;
+        padding: 0;
+        font-size: 13px;
+    }
+
+    .dialog-btn-normal:hover, .dialog-btn-normal:focus {
+        background: #2E6CFE !important;
+        color: #FFFFFF !important;
+    }
+
     .del-btn {
         background: #fff;
         border: 1px solid #DE302E;
@@ -198,6 +213,10 @@
         overflow: hidden;
     }
 
+    .el-dialog__body{
+        padding: 30px 20px 0;
+    }
+
     .abow_dialog .el-dialog__body {
         position: absolute;
         left: 0;
@@ -208,6 +227,7 @@
         overflow: hidden;
         overflow-y: auto;
         text-align: center;
+        padding:10px 20px;
     }
 
     .abow_dialog .el-dialog {
@@ -252,15 +272,6 @@
         color: #2F332A;
     }
 
-    .dialog-btn {
-        color: #5EAFF7;
-        color: #FFFFFF;
-    }
-
-    .dialog-btn:hover, .dialog-btn:focus {
-        color: #2E6CFE;
-        color: #FFFFFF;
-    }
 
 </style>
 
