@@ -2,17 +2,25 @@
     <div>
 
         <hr style="height: 2px;background-color: #5286FF;border:none;margin-bottom: 12px;">
-        <div v-if="isSearchVisible" class="search" style="border-bottom: 2px solid #5286FF;padding-bottom: 20px;">
-            <el-input v-model="search.name" placeholder="请输入角色名称" style="width:240px"></el-input>
-            <el-button type="primary" @click="serach" icon="el-icon-search">搜索</el-button>
+        <div v-if="isSearchVisible" class="search">
+            <el-row :gutter="20" class="search-row">
+                <el-col :span="8">
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">角色名称：</label>
+                        <el-input class="search_input" v-model="search.name" placeholder="请输入角色名称"></el-input>
+                    </div>
+                </el-col>
+            </el-row>
+
+            <el-button type="primary" class="search-btn-primary" @click="serach" icon="el-icon-search">搜索</el-button>
         </div>
 
         <div class="option-menu">
             <el-button type="primary" v-acl="['role:add']" class="add-btn" @click="addOrUpdateRole()"
                        icon="el-icon-plus">新增角色
             </el-button>
-            <el-button type="danger" class="del-btn" @click="" icon="el-icon-delete" v-acl="['role:deleted']">删除
-            </el-button>
+<!--            <el-button type="danger" class="del-btn" @click="" icon="el-icon-delete" v-acl="['role:deleted']">删除-->
+<!--            </el-button>-->
             <el-button type="primary" class="search-btn" @click="isSearchVisible = !isSearchVisible"
                        icon="el-icon-search"
                        style="float: right;"/>
@@ -255,6 +263,7 @@
 </script>
 
 <style>
+
 
     .page {
         margin-top: 20px;

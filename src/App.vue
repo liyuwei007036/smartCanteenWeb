@@ -40,12 +40,30 @@
         background-color: #C7C9E1 !important
     }
 
+    /*重写搜索样式*/
     .search {
         margin-bottom: 20px;
+        border-bottom: 1px solid #5286FF;
+        padding-bottom: 20px;
     }
 
     .search .search_input {
         margin: 0 20px 0 0;
+    }
+
+    .search-row {
+        padding: 10px 0
+    }
+
+    .search-grid-content {
+        display: flex;
+        align-items: center
+    }
+
+    .search-label {
+        display: inline-block;
+        width: 100px;
+        font-size: 14px;
     }
 
     .add-btn {
@@ -213,7 +231,7 @@
         overflow: hidden;
     }
 
-    .el-dialog__body{
+    .el-dialog__body {
         padding: 30px 20px 0;
     }
 
@@ -227,7 +245,7 @@
         overflow: hidden;
         overflow-y: auto;
         text-align: center;
-        padding:10px 20px;
+        padding: 10px 20px;
     }
 
     .abow_dialog .el-dialog {
@@ -238,7 +256,11 @@
 
     .el-input__inner {
         height: 34px;
-        line-height: 30px;
+        line-height: 34px;
+    }
+
+    .el-input__icon {
+        line-height: 34px;
     }
 
     .el-dialog__header {

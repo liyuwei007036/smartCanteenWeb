@@ -1,55 +1,98 @@
 <template>
     <div>
         <hr style="height: 2px;background-color: #5286FF;border:none;margin-bottom: 12px;">
-        <div v-if="isSearchVisible" class="search" style="border-bottom: 2px solid #5286FF;padding-bottom: 20px;">
-            <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
-                <el-input class="search_input" v-model="search.empName" placeholder="请输入姓名">
-                    <template slot="prepend">姓名</template>
-                </el-input>
-                <el-input class="search_input" v-model="search.mobile" placeholder="请输入手机号">
-                    <template slot="prepend">手机号</template>
-                </el-input>
-                <el-input class="search_input" v-model="search.empNo" placeholder="请输入账号">
-                    <template slot="prepend">用户账号</template>
-                </el-input>
-                <el-input class="search_input" v-model="search.cardNo" placeholder="请输入卡号">
-                    <template slot="prepend">卡号</template>
-                </el-input>
-            </div>
-            <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
-                <el-select class="search_input" v-model="search.cardStatus" placeholder="请选择卡状态" clearable>
-                    <el-option
-                            v-for="item in carStatusList"
-                            :key="item.id"
-                            :label="item.name"
-                            :value="item.id">
-                    </el-option>
-                </el-select>
-                <el-select class="search_input" v-model="search.accountStatus" placeholder="请选择账户状态" clearable>
-                    <el-option
-                            v-for="item in accountStatusList"
-                            :key="item.id"
-                            :label="item.name"
-                            :value="item.id">
-                    </el-option>
-                </el-select>
 
 
-                <el-date-picker class="search_input"
-                                v-model="search.start"
-                                type="date"
-                                placeholder="卡有效期开始时间" clearable>
-                </el-date-picker>
+        <div v-if="isSearchVisible" class="search">
 
-                <el-date-picker class="search_input"
-                                v-model="search.end"
-                                type="date"
-                                placeholder="卡有效期结束时间" clearable>
-                </el-date-picker>
+            <el-row :gutter="20" class="search-row">
+                <el-col :span="8">
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">姓名：</label>
+                        <el-input class="search_input" v-model="search.empName" placeholder="请输入姓名"></el-input>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">手机号：</label>
+                        <el-input class="search_input" v-model="search.mobile" placeholder="请输入手机号"></el-input>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">工号：</label>
+                        <el-input class="search_input" v-model="search.empNo" placeholder="请输入工号"></el-input>
+                    </div>
+                </el-col>
+            </el-row>
 
-            </div>
+            <el-row :gutter="20" class="search-row">
+                <el-col :span="8">
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">卡号：</label>
+                        <el-input class="search_input" v-model="search.cardNo" placeholder="请输入卡号"></el-input>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">手机号：</label>
+                        <el-input class="search_input" v-model="search.mobile" placeholder="请输入手机号"></el-input>
+                    </div>
+                </el-col>
 
-            <el-button type="primary" @click="serach" icon="el-icon-search" v-acl="['icCard:list']">搜索</el-button>
+                <el-col :span="8">
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">卡状态：</label>
+                        <el-select class="search_input el-input" v-model="search.cardStatus" placeholder="请选择卡状态"
+                                   clearable>
+                            <el-option
+                                    v-for="item in carStatusList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </div>
+                </el-col>
+            </el-row>
+
+            <el-row :gutter="20" class="search-row">
+                <el-col :span="8">
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">账户状态：</label>
+                        <el-select class="search_input el-input" v-model="search.accountStatus" placeholder="请选择账户状态"
+                                   clearable>
+                            <el-option
+                                    v-for="item in accountStatusList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </div>
+                </el-col>
+
+                <el-col :span="8">
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">卡有效期：</label>
+                        <el-date-picker class="search_input" style="margin: 0"
+                                        v-model="search.start"
+                                        type="date"
+                                        placeholder="开始时间" clearable>
+                        </el-date-picker>
+                        <span style="padding: 0 5px">-</span>
+                        <el-date-picker class="search_input"
+                                        v-model="search.end"
+                                        type="date"
+                                        placeholder="结束时间" clearable>
+                        </el-date-picker>
+                    </div>
+                </el-col>
+            </el-row>
+
+            <el-button type="primary" class="search-btn-primary" @click="serach" icon="el-icon-search"
+                       v-acl="['icCard:list']">搜索
+            </el-button>
         </div>
 
         <div class="option-menu clearfix">
@@ -274,7 +317,8 @@
 
             </el-form>
             <span slot="footer" class="dialog-footer">
-            <el-button type="primary" class="dialog-btn-normal" @click="handleDeductionSubmit('deductionForm')">保存</el-button>
+            <el-button type="primary" class="dialog-btn-normal"
+                       @click="handleDeductionSubmit('deductionForm')">保存</el-button>
         </span>
 
         </el-dialog>
@@ -395,11 +439,11 @@
                     cardStatus: "",
                     empName: "",
                     empNo: "",
+                    start: "",
                     end: "",
                     mobile: "",
                     page: 1,
                     size: 10,
-                    start: ""
                 },
                 carStatusList: [{
                     name: '激活',

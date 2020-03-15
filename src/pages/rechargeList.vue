@@ -1,52 +1,71 @@
 <template>
     <div>
-
         <hr style="height: 2px;background-color: #5286FF;border:none;margin-bottom: 12px;">
-        <div v-if="isSearchVisible" class="search" style="border-bottom: 2px solid #5286FF;padding-bottom: 20px;">
-            <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
-                <el-input class="search_input" v-model="search.empName" placeholder="请输入姓名" clearable>
-                    <template slot="prepend">姓名</template>
-                </el-input>
+        <div v-if="isSearchVisible" class="search">
 
-                <el-input class="search_input" v-model="search.empNo" placeholder="请输入账号" clearable>
-                    <template slot="prepend">账号</template>
-                </el-input>
+            <el-row :gutter="20" class="search-row">
+                <el-col :span="8">
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">姓名：</label>
+                        <el-input class="search_input" v-model="search.empName" placeholder="请输入姓名"></el-input>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">工号：</label>
+                        <el-input class="search_input" v-model="search.empNo" placeholder="请输入工号"></el-input>
+                    </div>
+                </el-col>
 
-                <el-input class="search_input" v-model="search.cardNo" placeholder="请输入卡号" clearable>
-                    <template slot="prepend">卡号</template>
-                </el-input>
+                <el-col :span="8">
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">卡号：</label>
+                        <el-input class="search_input" v-model="search.cardNo" placeholder="请输入卡号" clearable></el-input>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20" class="search-row">
+                <el-col :span="8">
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">操作人：</label>
+                        <el-input class="search_input" v-model="search.operatorName" placeholder="请输入操作人姓名"></el-input>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">充值类型：</label>
+                        <el-select class="search_input el-input" v-model="search.rechargeType" placeholder="请选择充值类型"
+                                   clearable>
+                            <el-option
+                                    v-for="item in rechargeTypeList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">记账时间：</label>
+                        <el-date-picker class="search_input" style="margin: 0"
+                                        v-model="search.start"
+                                        type="date"
+                                        placeholder="开始时间" clearable>
+                        </el-date-picker>
+                        <span style="padding: 0 5px">-</span>
+                        <el-date-picker class="search_input"
+                                        v-model="search.end"
+                                        type="date"
+                                        placeholder="结束时间" clearable>
+                        </el-date-picker>
+                    </div>
+                </el-col>
+            </el-row>
 
-                <el-input class="search_input" v-model="search.operatorName" placeholder="请输入操作人姓名" clearable>
-                    <template slot="prepend">操作人</template>
-                </el-input>
-
-            </div>
-            <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
-
-                <el-select class="search_input" v-model="search.rechargeType" placeholder="请选择充值类型" clearable>
-                    <el-option
-                            v-for="item in rechargeTypeList"
-                            :key="item.id"
-                            :label="item.name"
-                            :value="item.id">
-                    </el-option>
-                </el-select>
-
-                <el-date-picker class="search_input"
-                                v-model="search.start"
-                                type="date"
-                                placeholder="记账开始时间" clearable>
-                </el-date-picker>
-
-                <el-date-picker class="search_input"
-                                v-model="search.end"
-                                type="date"
-                                placeholder="记账结束时间" clearable>
-                </el-date-picker>
-
-            </div>
-
-            <el-button v-acl="['recharge:listlog']" type="primary" @click="serach" icon="el-icon-search">搜索</el-button>
+            <el-button v-acl="['recharge:listlog']" type="primary" class="search-btn-primary" @click="serach"
+                       icon="el-icon-search">搜索
+            </el-button>
         </div>
 
         <div class="option-menu clearfix">
@@ -158,7 +177,7 @@
                 currentPage: 1,
                 total: 1,
                 tableData: [],
-                maxHeight:1000,
+                maxHeight: 1000,
                 search: {
                     cardNo: "",
                     empName: "",

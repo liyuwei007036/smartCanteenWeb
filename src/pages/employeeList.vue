@@ -1,33 +1,33 @@
 <template>
     <div>
         <hr style="height: 2px;background-color: #5286FF;border:none;margin-bottom: 12px;">
-        <div v-if="isSerachVisible" class="search" style="border-bottom: 1px solid #5286FF;padding-bottom: 20px;">
-            <el-row :gutter="20" style="padding:10px 0">
+        <div v-if="isSerachVisible" class="search">
+            <el-row :gutter="20" class="search-row">
                 <el-col :span="8">
-                    <div class="grid-content" style="display: flex;align-items: center">
-                        <label style=";display: inline-block;width: 100px;font-size: 14px;">姓名：</label>
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">姓名：</label>
                         <el-input class="search_input" v-model="search.name" placeholder="请输入姓名"></el-input>
                     </div>
                 </el-col>
                 <el-col :span="8">
-                    <div class="grid-content" style="display: flex;align-items: center">
-                        <label style=";display: inline-block;width: 100px;font-size: 14px;">工号：</label>
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">工号：</label>
                         <el-input class="search_input" v-model="search.no" placeholder="请输入工号">
                         </el-input>
                     </div>
                 </el-col>
                 <el-col :span="8">
-                    <div class="grid-content" style="display: flex;align-items: center">
-                        <label style=";display: inline-block;width: 100px;font-size: 14px;">手机号：</label>
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">手机号：</label>
                         <el-input class="search_input" v-model="search.mobile" placeholder="请输入手机号">
                         </el-input>
                     </div>
                 </el-col>
             </el-row>
-            <el-row :gutter="20" style="padding:10px 0">
+            <el-row :gutter="20" class="search-row">
                 <el-col :span="8">
-                    <div class="grid-content" style="display: flex;align-items: center">
-                        <label style=";display: inline-block;width: 100px;font-size: 14px;">所属组织：</label>
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">所属组织：</label>
                         <el-input class="search_input" v-model="search.orgName" placeholder="请输入所属组织"></el-input>
                     </div>
                 </el-col>
