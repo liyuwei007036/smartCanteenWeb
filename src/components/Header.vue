@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div style="float: left;display: flex;align-items: center">
+        <div style="float: left;display: flex;align-items: center;font-size: 16px">
 <!--            <el-image :src="require('@/assets/logo-lion.png')" style="width: 50px;height:50px"/>-->
             <span>通服信息管理系统</span>
         </div>

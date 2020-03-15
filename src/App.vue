@@ -36,7 +36,7 @@
         margin: 0;
     }
 
-    .el-table tbody tr:hover>td {
+    .el-table tbody tr:hover > td {
         background-color: #C7C9E1 !important
     }
 
@@ -45,7 +45,6 @@
     }
 
     .search .search_input {
-        width: 25%;
         margin: 0 20px 0 0;
     }
 
@@ -92,6 +91,24 @@
     }
 
     .search-btn:hover {
+        background: #2d6bf7;
+    }
+
+    .search-btn-primary {
+        background: #2E6CFE;
+        height: 34px;
+        width: 87px;
+        border: none;
+        border-radius: 5px;
+        text-align: center;
+        padding: 0;
+    }
+
+    .search-btn-primary:focus {
+        background: #2E6CFE;
+    }
+
+    .search-btn-primary:hover {
         background: #2d6bf7;
     }
 
@@ -187,6 +204,11 @@
         margin: 0 auto !important;
         height: 90%;
         /*overflow: hidden;*/
+    }
+
+    .el-input__inner {
+        height: 30px;
+        line-height: 30px;
     }
 </style>
 

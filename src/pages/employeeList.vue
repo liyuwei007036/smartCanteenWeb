@@ -1,47 +1,41 @@
 <template>
     <div>
         <hr style="height: 2px;background-color: #5286FF;border:none;margin-bottom: 12px;">
-        <div v-if="isSerachVisible" class="search" style="border-bottom: 2px solid #5286FF;padding-bottom: 20px;">
-            <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
-                <el-input class="search_input" v-model="search.name" placeholder="请输入姓名">
-                    <template slot="prepend">姓名</template>
-                </el-input>
-                <el-input class="search_input" v-model="search.orgName" placeholder="请输入所属组织">
-                    <template slot="prepend">所属组织</template>
-                </el-input>
-                <el-input class="search_input" v-model="search.no" placeholder="请输入账号">
-                    <template slot="prepend">账号</template>
-                </el-input>
-                <el-input class="search_input" v-model="search.cardNo" placeholder="请输入卡号">
-                    <template slot="prepend">卡号</template>
-                </el-input>
-            </div>
-            <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
-                <el-date-picker class="search_input"
-                                v-model="search.createStart"
-                                type="date"
-                                placeholder="创建开始时间" clearable>
-                </el-date-picker>
-
-                <el-date-picker class="search_input"
-                                v-model="search.createEnd"
-                                type="date"
-                                placeholder="创建结束时间" clearable>
-                </el-date-picker>
-                <el-date-picker class="search_input"
-                                v-model="search.cardTimeStart"
-                                type="date"
-                                placeholder="卡有效期开始时间" clearable>
-                </el-date-picker>
-
-                <el-date-picker class="search_input"
-                                v-model="search.cardTimeEnd"
-                                type="date"
-                                placeholder="卡有效期结束时间" clearable>
-                </el-date-picker>
-            </div>
-            <el-button type="primary" @click="searchList" icon="el-icon-search">搜索</el-button>
+        <div v-if="isSerachVisible" class="search" style="border-bottom: 1px solid #5286FF;padding-bottom: 20px;">
+            <el-row :gutter="20" style="padding:10px 0">
+                <el-col :span="8">
+                    <div class="grid-content" style="display: flex;align-items: center">
+                        <label style=";display: inline-block;width: 100px;font-size: 14px;">姓名：</label>
+                        <el-input class="search_input" v-model="search.name" placeholder="请输入姓名"></el-input>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content" style="display: flex;align-items: center">
+                        <label style=";display: inline-block;width: 100px;font-size: 14px;">工号：</label>
+                        <el-input class="search_input" v-model="search.no" placeholder="请输入工号">
+                        </el-input>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content" style="display: flex;align-items: center">
+                        <label style=";display: inline-block;width: 100px;font-size: 14px;">手机号：</label>
+                        <el-input class="search_input" v-model="search.mobile" placeholder="请输入手机号">
+                        </el-input>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20" style="padding:10px 0">
+                <el-col :span="8">
+                    <div class="grid-content" style="display: flex;align-items: center">
+                        <label style=";display: inline-block;width: 100px;font-size: 14px;">所属组织：</label>
+                        <el-input class="search_input" v-model="search.orgName" placeholder="请输入所属组织"></el-input>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-button type="primary" class="search-btn-primary" @click="searchList" icon="el-icon-search">搜索</el-button>
         </div>
+
+
         <div class="option-menu">
             <el-button type="primary" class="add-btn" @click="addOrUpdateEmployee()" icon="el-icon-plus"
                        v-acl="['employee:add']">新增人员
@@ -300,7 +294,6 @@
         mounted: function () {
             this.maxHeight = this.$ViewportSize - 240
             let setSearch = JSON.parse(localStorage.getItem('search'))
-            console.log(setSearch)
             if (setSearch != 'null' && setSearch != null) {
                 this.search = setSearch
                 console.log(111)
@@ -319,7 +312,6 @@
         methods: {
             async getList() { //获取数据
                 let res = await list(this.search);
-                console.log(this.search)
                 if (res.code === 1000) {
                     this.total = res.data.total;
                     this.currentPage = res.data.currentPage;
