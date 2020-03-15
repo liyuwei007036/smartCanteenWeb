@@ -184,7 +184,6 @@
         mounted: function () {
             this.getList();
             this.maxHeight = this.$ViewportSize - 240
-            console.log(this.maxHeight)
         },
 
         methods: {

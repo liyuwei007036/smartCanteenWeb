@@ -78,7 +78,7 @@
                         type="index"
                         label="序号"
                         align="center"
-                        width="80">
+                        width="">
                 </el-table-column>
                 <el-table-column
                         prop="empName"

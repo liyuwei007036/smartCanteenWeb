@@ -1,48 +1,47 @@
 <template>
     <div>
-        <keep-alive>
-            <div v-if="isSerachVisible" class="search" style="border-bottom: 1px solid #eaeaea;padding-bottom: 15px">
-                <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
-                    <el-input class="search_input" v-model="search.name" placeholder="请输入姓名">
-                        <template slot="prepend">姓名</template>
-                    </el-input>
-                    <el-input class="search_input" v-model="search.orgName" placeholder="请输入所属组织">
-                        <template slot="prepend">所属组织</template>
-                    </el-input>
-                    <el-input class="search_input" v-model="search.no" placeholder="请输入账号">
-                        <template slot="prepend">账号</template>
-                    </el-input>
-                    <el-input class="search_input" v-model="search.cardNo" placeholder="请输入卡号">
-                        <template slot="prepend">卡号</template>
-                    </el-input>
-                </div>
-                <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
-                    <el-date-picker class="search_input"
-                                    v-model="search.createStart"
-                                    type="date"
-                                    placeholder="创建开始时间" clearable>
-                    </el-date-picker>
-
-                    <el-date-picker class="search_input"
-                                    v-model="search.createEnd"
-                                    type="date"
-                                    placeholder="创建结束时间" clearable>
-                    </el-date-picker>
-                    <el-date-picker class="search_input"
-                                    v-model="search.cardTimeStart"
-                                    type="date"
-                                    placeholder="卡有效期开始时间" clearable>
-                    </el-date-picker>
-
-                    <el-date-picker class="search_input"
-                                    v-model="search.cardTimeEnd"
-                                    type="date"
-                                    placeholder="卡有效期结束时间" clearable>
-                    </el-date-picker>
-                </div>
-                <el-button type="primary" @click="searchList" icon="el-icon-search">搜索</el-button>
+        <hr style="height: 2px;background-color: #5286FF;border:none;margin-bottom: 12px;">
+        <div v-if="isSerachVisible" class="search" style="border-bottom: 2px solid #5286FF;padding-bottom: 20px;">
+            <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
+                <el-input class="search_input" v-model="search.name" placeholder="请输入姓名">
+                    <template slot="prepend">姓名</template>
+                </el-input>
+                <el-input class="search_input" v-model="search.orgName" placeholder="请输入所属组织">
+                    <template slot="prepend">所属组织</template>
+                </el-input>
+                <el-input class="search_input" v-model="search.no" placeholder="请输入账号">
+                    <template slot="prepend">账号</template>
+                </el-input>
+                <el-input class="search_input" v-model="search.cardNo" placeholder="请输入卡号">
+                    <template slot="prepend">卡号</template>
+                </el-input>
             </div>
-        </keep-alive>
+            <div class="search-group" style="padding: 5px 0;display: flex;flex: 1">
+                <el-date-picker class="search_input"
+                                v-model="search.createStart"
+                                type="date"
+                                placeholder="创建开始时间" clearable>
+                </el-date-picker>
+
+                <el-date-picker class="search_input"
+                                v-model="search.createEnd"
+                                type="date"
+                                placeholder="创建结束时间" clearable>
+                </el-date-picker>
+                <el-date-picker class="search_input"
+                                v-model="search.cardTimeStart"
+                                type="date"
+                                placeholder="卡有效期开始时间" clearable>
+                </el-date-picker>
+
+                <el-date-picker class="search_input"
+                                v-model="search.cardTimeEnd"
+                                type="date"
+                                placeholder="卡有效期结束时间" clearable>
+                </el-date-picker>
+            </div>
+            <el-button type="primary" @click="searchList" icon="el-icon-search">搜索</el-button>
+        </div>
         <div class="option-menu">
             <el-button type="primary" class="add-btn" @click="addOrUpdateEmployee()" icon="el-icon-plus"
                        v-acl="['employee:add']">新增人员
@@ -58,12 +57,17 @@
                     stripe
                     border
                     style="width: 100%"
-                    max-height="550">
+                    max-height="550"
+                    :header-cell-style="{
+                    'background-color': '#F2F6FC',
+                    'color':'#333333',
+                    'padding':'8px 0'}"
+            >
                 <el-table-column
                         type="index"
                         label="序号"
                         align="center"
-                        className="table-column-width">
+                        width="80px">
                 </el-table-column>
                 <el-table-column
                         prop="name"
@@ -74,7 +78,7 @@
 
                 <el-table-column
                         prop="no"
-                        label="账号"
+                        label="工号"
                         align="center"
                         :show-overflow-tooltip='true'>
                 </el-table-column>
@@ -87,29 +91,8 @@
                 </el-table-column>
 
                 <el-table-column
-                        prop="cardNo"
-                        label="卡号"
-                        align="center"
-                        :show-overflow-tooltip='true'>
-                </el-table-column>
-
-                <el-table-column
-                        prop="type"
-                        label="卡类型"
-                        align="center"
-                        :show-overflow-tooltip='true'>
-                </el-table-column>
-
-                <el-table-column
                         prop="originationName"
                         label="所属组织"
-                        align="center"
-                        :show-overflow-tooltip='true'>
-                </el-table-column>
-
-                <el-table-column
-                        prop="status"
-                        label="状态"
                         align="center"
                         :show-overflow-tooltip='true'>
                 </el-table-column>
@@ -134,11 +117,12 @@
                         align="center"
                         width="180">
                     <template slot-scope="scope">
+                        <el-button v-if="scope.row.status === '在职'" type="text" size="small" v-acl="['employee:update']"
+                                   @click="addOrUpdateEmployee(scope.row.id)">修改
+                        </el-button>
+
                         <el-button v-acl="['employee:view']" @click="getEmployee(scope.row.id)" type="text"
                                    size="small">查看
-                        </el-button>
-                        <el-button v-if="scope.row.status === '在职'" type="text" size="small" v-acl="['employee:update']"
-                                   @click="addOrUpdateEmployee(scope.row.id)">编辑
                         </el-button>
                         <el-button v-if="scope.row.status === '在职'" type="text" size="small" class="delete-btn"
                                    v-acl="['icCard:deleted']"
@@ -437,7 +421,4 @@
         display: block;
     }
 
-    .table-column-width {
-        width: 9% !important;
-    }
 </style>

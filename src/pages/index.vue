@@ -70,10 +70,10 @@
     }
 
     .main-content {
-        background: #FFFFFF;
-        box-shadow: 0 0 6px 0 #DFDFDF;
-        border-radius: 6px;
-        padding: 15px 20px 30px;
+        /*background: #FFFFFF;*/
+        /*box-shadow: 0 0 6px 0 #DFDFDF;*/
+        /*border-radius: 6px;*/
+        /*padding: 15px 20px 30px;*/
     }
 
     .logo {
