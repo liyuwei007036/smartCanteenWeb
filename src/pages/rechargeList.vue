@@ -51,13 +51,17 @@
                         <el-date-picker class="search_input" style="margin: 0"
                                         v-model="search.start"
                                         type="date"
-                                        placeholder="开始时间" clearable>
+                                        placeholder="开始时间"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                        clearable>
                         </el-date-picker>
                         <span style="padding: 0 5px">-</span>
                         <el-date-picker class="search_input"
                                         v-model="search.end"
                                         type="date"
-                                        placeholder="结束时间" clearable>
+                                        placeholder="结束时间"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                        clearable>
                         </el-date-picker>
                     </div>
                 </el-col>

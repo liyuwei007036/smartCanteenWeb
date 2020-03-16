@@ -10,6 +10,9 @@ import roleAuth from '@/pages/roleAuth';
 import rechargeList from '@/pages/rechargeList';
 import consumeList from '@/pages/consumeList';
 import cardList from '@/pages/cardList';
+import consumerStatistics from '@/pages/consumerStatistics';
+import loginLog from '@/pages/loginLog';
+import operateLog from '@/pages/operateLog';
 import index from '@/pages/index';
 import login from '@/pages/login';
 import home from '@/pages/home';
@@ -103,6 +106,30 @@ const router = new VueRouter({
                     meta: {
                         title: '消费记录',
                         auths: ['order:list'],
+                    }
+                },{
+                    path: '/consumerStatistics',
+                    component: consumerStatistics,
+                    name: 'consumerStatistics',
+                    meta: {
+                        title: '消费统计',
+                        auths: ['order:list'],
+                    }
+                },{
+                    path: '/operateLog',
+                    component: operateLog,
+                    name: 'operateLog',
+                    meta: {
+                        title: '操作日志',
+                        auths: [],
+                    }
+                },{
+                    path: '/loginLog',
+                    component: loginLog,
+                    name: 'loginLog',
+                    meta: {
+                        title: '登录日志',
+                        auths: [],
                     }
                 },
             ],

@@ -1,52 +1,33 @@
 <template>
     <div>
         <hr style="height: 2px;background-color: #5286FF;border:none;margin-bottom: 12px;">
-        <div v-if="isSearchVisible" class="search" ref="search">
+        <div v-if="isSearchVisible" class="search">
 
             <el-row :gutter="20" class="search-row">
                 <el-col :span="8">
                     <div class="grid-content search-grid-content">
-                        <label class="search-label">姓名：</label>
+                        <label class="search-label">登录人：</label>
                         <el-input class="search_input" v-model="search.empName" placeholder="请输入姓名"></el-input>
                     </div>
                 </el-col>
                 <el-col :span="8">
                     <div class="grid-content search-grid-content">
-                        <label class="search-label">工号：</label>
-                        <el-input class="search_input" v-model="search.empNo" placeholder="请输入工号"></el-input>
+                        <label class="search-label">动作：</label>
+                        <el-input class="search_input" v-model="search.action" placeholder="请输入动作"></el-input>
                     </div>
                 </el-col>
                 <el-col :span="8">
                     <div class="grid-content search-grid-content">
-                        <label class="search-label">卡号：</label>
-                        <el-input class="search_input" v-model="search.empNo" placeholder="请输入卡号" clearable></el-input>
+                        <label class="search-label">模块：</label>
+                        <el-input class="search_input" v-model="search.module" placeholder="请输入模块"></el-input>
                     </div>
                 </el-col>
             </el-row>
+
             <el-row :gutter="20" class="search-row">
                 <el-col :span="8">
                     <div class="grid-content search-grid-content">
-                        <label class="search-label">操作人：</label>
-                        <el-input class="search_input" v-model="search.operatorName" placeholder="请输入操作人姓名"></el-input>
-                    </div>
-                </el-col>
-                <el-col :span="8">
-                    <div class="grid-content search-grid-content">
-                        <label class="search-label">消费类型：</label>
-                        <el-select class="search_input el-input" v-model="search.orderType" placeholder="请选择消费类型"
-                                   clearable>
-                            <el-option
-                                    v-for="item in orderTypeList"
-                                    :key="item.id"
-                                    :label="item.name"
-                                    :value="item.id">
-                            </el-option>
-                        </el-select>
-                    </div>
-                </el-col>
-                <el-col :span="8">
-                    <div class="grid-content search-grid-content">
-                        <label class="search-label">消费时间：</label>
+                        <label class="search-label">操作时间：</label>
                         <el-date-picker class="search_input" style="margin: 0"
                                         v-model="search.start"
                                         type="date"
@@ -92,79 +73,59 @@
                     width="80">
             </el-table-column>
             <el-table-column
-                    prop="employeeName"
+                    prop="empName"
                     label="姓名"
                     align="center"
                     :show-overflow-tooltip='true'
                     width="">
             </el-table-column>
             <el-table-column
-                    prop="employeeNo"
+                    prop="empNo"
                     label="工号"
                     align="center"
                     :show-overflow-tooltip='true'
-                    width="100px">
+                    width="">
             </el-table-column>
             <el-table-column
-                    prop="cardNo"
-                    label="卡号"
+                    prop="operationTime"
+                    label="操作时间"
                     align="center"
                     :show-overflow-tooltip='true'
                     width="">
             </el-table-column>
             <el-table-column
-                    prop="createTime"
-                    label="消费时间"
-                    :show-overflow-tooltip='true'
+                    prop="module"
+                    label="模块"
                     align="center"
+                    :show-overflow-tooltip='true'
                     width="">
             </el-table-column>
             <el-table-column
-                    label="消费金额"
+                    prop="action"
+                    label="动作"
                     align="center"
                     :show-overflow-tooltip='true'
-                    width=""
-                    prop="money">
-            </el-table-column>
-            <el-table-column
-                    prop="balance"
-                    label="卡余额"
-                    :show-overflow-tooltip='true'
-                    align="center"
                     width="">
             </el-table-column>
-
             <el-table-column
-                    prop="machineNo"
-                    label="终端编号"
-                    :show-overflow-tooltip='true'
-                    align="center"
-                    width="">
-            </el-table-column>
-
-
-            <el-table-column
-                    prop="type"
-                    label="消费方式"
+                    prop="detail"
+                    label="详情"
                     align="center"
                     :show-overflow-tooltip='true'
                     width="">
             </el-table-column>
 
             <el-table-column
-                    prop="channel"
-                    label="消费类型"
-                    :show-overflow-tooltip='true'
+                    prop="operation"
+                    label="操作"
                     align="center"
-                    width="">
-            </el-table-column>
-
-            <el-table-column
-                    prop="creatorName"
-                    label="操作人"
-                    :show-overflow-tooltip='true'
-                    align="center"
-                    width="">
+                    width="180">
+                <template slot-scope="scope">
+                    <el-button type="text" size="small"
+                               v-acl="['icCard:patch']"
+                               @click="getDetail(scope.row.id)">查看
+                    </el-button>
+                </template>
             </el-table-column>
         </el-table>
 
@@ -180,14 +141,44 @@
             </el-pagination>
         </div>
 
+        <el-dialog class="dialog"
+                   title="查看详情"
+                   :close-on-click-modal="false"
+                   :visible.sync="isShowVisible" width="40%">
+            <el-form ref="form" :model="form" disabled label-width="100px" label-position="right">
+
+                <el-form-item prop="empName" label="姓名">
+                    <el-input type="text" v-model="form.empName"></el-input>
+                </el-form-item>
+                <el-form-item prop="empNo" label="工号">
+                    <el-input type="text" v-model="form.empNo"></el-input>
+                </el-form-item>
+                <el-form-item prop="operationTime" label="操作时间">
+                    <el-input type="text" v-model="form.operationTime"></el-input>
+                </el-form-item>
+                <el-form-item prop="module" label="模块">
+                    <el-input type="text" v-model="form.module"></el-input>
+                </el-form-item>
+                <el-form-item prop="action" label="操作">
+                    <el-input type="text" v-model="form.action"></el-input>
+                </el-form-item>
+                <el-form-item prop="detail" label="详情">
+                    <el-input type="textarea" v-model="form.detail" rows="6"></el-input>
+                </el-form-item>
+            </el-form>
+
+            <el-button type="primary" class="dialog-btn-normal" @click="isShowVisible = false" :disabled="false">关 闭
+            </el-button>
+        </el-dialog>
+
     </div>
 </template>
 
 <script>
-    import {list} from '@/api/order'
+    import {listOperation, get} from '@/api/log'
 
     export default {
-        name: "consumeList",
+        name: "operateLog",
         inject: ['reload'],
         data() {
             return {
@@ -196,25 +187,17 @@
                 total: 1,
                 tableData: [],
                 maxHeight: 1000,
+                isShowVisible: false,
                 search: {
-                    cardNo: "",
-                    empName: "",
-                    empNo: "",
-                    start: "",
-                    end: "",
-                    money: 0,
-                    orderType: "",
-                    operatorName: "",
+                    action: '',
+                    empName: '',
+                    end: '',
+                    module: "",
                     page: 0,
-                    size: 10,
+                    size: 0,
+                    start: ''
                 },
-                orderTypeList: [{
-                    name: '正常',
-                    id: 1
-                }, {
-                    name: '补扣',
-                    id: 2
-                }],
+                form: {}
             }
         },
 
@@ -223,8 +206,8 @@
             this.maxHeight = this.$ViewportSize - 300
         },
 
-        methods: {
 
+        methods: {
             serach() {
                 this.search.page = 1
                 this.getList();
@@ -232,20 +215,16 @@
 
             toggleSearch() {
                 this.isSearchVisible = !this.isSearchVisible
-                if (this.isSearchVisible === true) {
-                    this.$nextTick(() => {
-                        let height = this.$refs.search.offsetHeight;
-                        // console.log(height)
-                        this.maxHeight = this.$ViewportSize - 300 - height + 1
-                    })
-                } else {
-                    this.maxHeight = this.$ViewportSize - 300
-                }
+                // if (this.isSearchVisible == true) {
+                //     this.maxHeight = this.$ViewportSize - 300 - 160
+                // } else {
+                //     this.maxHeight = this.$ViewportSize - 300
+                // }
             },
 
             //获取列表数据
             async getList() {
-                let res = await list(this.search);
+                let res = await listOperation(this.search);
                 if (res.code === 1000) {
                     this.total = res.data.total;
                     this.currentPage = res.data.currentPage;
@@ -255,6 +234,25 @@
                 }
             },
 
+            //查看详情
+            async getDetail(id) {
+                this.isShowVisible = true;
+                let res = await get(id);
+                if (res.code === 1000) {
+                    this.form = res.data
+                } else {
+                    this.$message.error(res.msg);
+                }
+            },
+
+            async showEmployee() { //获取员工数据
+                let res = await get(this.form1.id);
+                if (res.code === 1000) {
+                    this.form = res.data
+                } else {
+                    this.$message.error(res.msg);
+                }
+            },
             //分页
             handleSizeChange(val) {
                 this.search.size = val
@@ -265,7 +263,13 @@
                 this.search.page = val
                 this.getList();
             },
-
         }
+
     }
 </script>
+
+<style>
+    .el-tooltip__popper {
+        max-width: 20%;
+    }
+</style>

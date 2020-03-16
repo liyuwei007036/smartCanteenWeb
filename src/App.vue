@@ -62,7 +62,7 @@
 
     .search-label {
         display: inline-block;
-        width: 100px;
+        width: 115px;
         font-size: 14px;
     }
 
@@ -247,10 +247,6 @@
         overflow: hidden;
     }
 
-    .el-dialog__body {
-        padding: 30px 20px 0;
-    }
-
     .abow_dialog .el-dialog__body {
         position: absolute;
         left: 0;
@@ -261,7 +257,7 @@
         overflow: hidden;
         overflow-y: auto;
         text-align: center;
-        padding: 10px 20px;
+        padding: 10px 40px 0 10px;
     }
 
     .abow_dialog .el-dialog {

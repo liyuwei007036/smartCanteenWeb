@@ -55,8 +55,31 @@ module.exports = [{
         auths: ['order:list'],
     }],
 }, {
+    name: '日志管理',
+    id: 'log',
+    icon: 'el-icon-s-marketing',
+    auths: [''],
+    sub: [
+        {
+            name: '操作日志',
+            auths: [],
+            componentName: 'operateLog',
+        },{
+            name: '登录日志',
+            auths: [''],
+            componentName: 'loginLog',
+        }
+    ],
+}, {
     name: '数据统计',
     id: 'dataStatistics',
     icon: 'el-icon-s-marketing',
     auths: [''],
+    sub: [
+        {
+            name: '消费统计',
+            auths: ['icCard:list'],
+            componentName: 'consumerStatistics',
+        },
+    ],
 }];
