@@ -14,6 +14,7 @@
                         <router-view></router-view>
                     </div>
                 </el-main>
+                <el-footer style="text-align: right;background-color: #F1F2F5;height: 30px;line-height: 30px;font-size: 13px;color: #999">copyright &copy; 2019-2029南京镀尔墨科技有限公司</el-footer>
             </el-container>
         </el-container>
     </div>

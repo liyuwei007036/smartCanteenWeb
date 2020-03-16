@@ -19,8 +19,6 @@
             <el-button type="primary" v-acl="['role:add']" class="add-btn" @click="addOrUpdateRole()"
                        icon="el-icon-plus">新增角色
             </el-button>
-<!--            <el-button type="danger" class="del-btn" @click="" icon="el-icon-delete" v-acl="['role:deleted']">删除-->
-<!--            </el-button>-->
             <el-button type="primary" class="search-btn" @click="isSearchVisible = !isSearchVisible"
                        icon="el-icon-search"
                        style="float: right;"/>

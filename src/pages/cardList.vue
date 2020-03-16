@@ -463,7 +463,7 @@
                 form: { //充值弹窗
                     cardIds: [],
                     money: '',
-                    rechargeType: ''
+                    rechargeType: 1
                 },
                 replaceForm: {
                     id: '',
