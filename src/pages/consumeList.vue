@@ -1,7 +1,7 @@
 <template>
     <div>
         <hr style="height: 2px;background-color: #5286FF;border:none;margin-bottom: 12px;">
-        <div v-if="isSearchVisible" class="search">
+        <div v-if="isSearchVisible" class="search" ref="search">
 
             <el-row :gutter="20" class="search-row">
                 <el-col :span="8">
@@ -75,7 +75,7 @@
                 :data="tableData"
                 stripe
                 border
-                style="width: 100%; overflow-y: auto"
+                style="width: 100%"
                 :max-height="maxHeight"
                 :header-cell-style="{
                     'background-color': '#F2F6FC',
@@ -202,7 +202,7 @@
                     orderType: "",
                     operatorName: "",
                     page: 0,
-                    size: 10,
+                    size: 20,
                 },
                 orderTypeList: [{
                     name: '正常',
@@ -216,7 +216,7 @@
 
         mounted: function () {
             this.getList();
-            this.maxHeight = this.$ViewportSize - 260
+            this.maxHeight = this.$ViewportSize - 300
         },
 
         methods: {
@@ -228,6 +228,14 @@
 
             toggleSearch() {
                 this.isSearchVisible = !this.isSearchVisible
+                if (this.isSearchVisible === true) {
+                    console.log(this.$refs.search)
+                    // let height= this.$refs['search'].offsetHeight;
+                    console.log(height)
+                    this.maxHeight = this.$ViewportSize - 300 - 160
+                } else {
+                    this.maxHeight = this.$ViewportSize - 300
+                }
             },
 
             //获取列表数据

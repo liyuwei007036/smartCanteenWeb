@@ -414,4 +414,17 @@
         display: block;
     }
 
+    .el-tree{
+        background-color: #F2F6FC;
+    }
+
+    .el-tree-node__content{
+        padding: 5px 0 5px;
+        border-bottom: 1px solid #fff;
+    }
+
+    .el-tree-node__content:hover{
+        background-color: #C7C9E1;
+    }
+
 </style>
