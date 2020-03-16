@@ -202,7 +202,7 @@
                     orderType: "",
                     operatorName: "",
                     page: 0,
-                    size: 20,
+                    size: 10,
                 },
                 orderTypeList: [{
                     name: '正常',
@@ -229,10 +229,11 @@
             toggleSearch() {
                 this.isSearchVisible = !this.isSearchVisible
                 if (this.isSearchVisible === true) {
-                    console.log(this.$refs.search)
-                    // let height= this.$refs['search'].offsetHeight;
-                    console.log(height)
-                    this.maxHeight = this.$ViewportSize - 300 - 160
+                    this.$nextTick(() => {
+                        let height = this.$refs.search.offsetHeight;
+                        // console.log(height)
+                        this.maxHeight = this.$ViewportSize - 300 - height + 1
+                    })
                 } else {
                     this.maxHeight = this.$ViewportSize - 300
                 }
