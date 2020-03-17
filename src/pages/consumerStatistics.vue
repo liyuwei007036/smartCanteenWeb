@@ -18,16 +18,7 @@
                 </div>
             </div>
             <div style="display: flex;align-items: center;padding: 25px 0">
-                <div v-if='actives == "day"' id="chartColumn1" style="height: 350px;width: 70%">
-
-                </div>
-                <div v-if='actives == "week"' id="chartColumn2" style="height: 350px;width: 70%">
-
-                </div>
-                <div v-if='actives == "month"' id="chartColumn3" style="height: 350px;width: 70%">
-
-                </div>
-                <div v-if='actives == "year"' id="chartColumn" style="height: 350px;width: 70%">
+                <div id="Histogram" style="height: 350px;width: 70%">
 
                 </div>
                 <div style="border: 1px solid #108DE9;width: 30%;height: 280px;">
@@ -37,8 +28,8 @@
         </div>
 
         <div style="background-color: #fff;padding: 25px;margin-bottom: 0px">
-            <!--            <div id="chartColumn" style="height: 350px;">-->
-            <!--            </div>-->
+            <div id="chartColumn" style="height: 350px;">
+            </div>
         </div>
 
     </div>
@@ -46,7 +37,7 @@
 
 <script>
     import echarts from 'echarts'
-    import {lineChat} from "../api/dateSummary";
+    import {lineChat, yearChat} from "../api/dateSummary";
 
     export default {
         name: "dataStatistics",
@@ -55,6 +46,8 @@
                 chartColumn: null,
                 lineChatX: [],
                 lineChatY: [],
+                HistogramX: [],
+                HistogramY: [],
                 isDayChart: false,
                 isWeekChart: false,
                 isMonthChart: false,
@@ -66,11 +59,100 @@
         },
         mounted() {
             this.drawLine();
+            this.drawHistogram();
         },
         methods: {
+            async getYearChat() {
+                let res = await yearChat();
+                if (res && res.code === 1000) {
+                    let data = res.data
+                    for (let x in data) {
+                        this.HistogramX.push(x)
+                        this.HistogramY.push(data[x])
+                    }
+                    this.Histogram.setOption({
+                        color: ['#3398DB'],
+                        tooltip: {
+                            trigger: 'axis',
+                            backgroundColor: 'rgba(50,50,50,0.9)',
+                            padding: [
+                                15,  // 上
+                                10, // 右
+                                15,  // 下
+                                10, // 左
+                            ], axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                                type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                            },
+                            formatter: function (params) {
+                                return '&nbsp &nbsp &nbsp &nbsp &nbsp' + params[0].axisValueLabel + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + params[0].value + ' 元'
+                            }
+                        },
+
+                        xAxis: {
+                            type: 'category',
+                            axisLabel: {
+                                margin: 20,
+                                formatter: function (value, index) {
+                                    return value.split('-')[1] + '月'
+                                }
+                            },
+                            axisTick: {
+                                alignWithLabel: true
+                            },
+                            data: this.HistogramX,
+                        },
+                        yAxis: {
+                            min: 0,
+                            type: 'value',
+                            show: true,
+                            axisTick: {
+                                show: false
+                            },
+                            axisLabel: {
+                                margin: 20,
+                            },
+                            axisLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: {
+                                        type: 'radial',
+                                        x: 0.5,
+                                        y: 0.5,
+                                        r: 0.5,
+                                        colorStops: [{
+                                            offset: 0, color: '#fff'
+                                        }, {
+                                            offset: 1, color: '#fff'
+                                        }],
+                                        global: false // 缺省为 fals
+                                    }
+                                }
+                            },
+                            splitLine: {
+                                lineStyle: {
+                                    color: ['#aaa'],
+                                    type: 'dashed'
+                                }
+                            }
+                        },
+                        series: [
+                            {
+                                name: '销售额',
+                                type: 'bar',
+                                barWidth: '50%',
+                                data: this.HistogramY,
+                            }
+                        ]
+                    });
+                }
+            },
+            drawHistogram() {
+                this.Histogram = echarts.init(document.getElementById('Histogram'));
+                this.getYearChat()
+            },
             drawLine() {
-                    this.chartColumn = echarts.init(document.getElementById('chartColumn'));
-                    this.getLineChatData()
+                this.chartColumn = echarts.init(document.getElementById('chartColumn'));
+                this.getLineChatData()
 
             },
             async getLineChatData() {
@@ -84,7 +166,7 @@
                     this.chartColumn.setOption({
                         color: ['#2FC25B'],
                         title: {
-                            // text: '消费峰值统计',
+                            text: '消费峰值统计',
                             left: '10%',
                             textStyle: {
                                 fontStyle: 'normal',
@@ -123,13 +205,14 @@
                         minInterval: 1,
                         xAxis: {
                             type: 'category',
-                            boundaryGap: false,
                             axisLabel: {
                                 margin: 20,
                                 formatter: function (value, index) {
                                     // 格式化成月/日，只在第一个刻度显示年份
                                     return new Date(value).format("hh:mm");
                                 }
+                            }, axisTick: {
+                                alignWithLabel: true
                             },
                             data: this.lineChatX,
                         },
@@ -174,7 +257,6 @@
                             type: 'line'
                         }]
                     });
-                    console.log(this.lineChatX, this.lineChatY)
                 }
             },
 

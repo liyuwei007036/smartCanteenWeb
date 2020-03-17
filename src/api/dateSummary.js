@@ -7,6 +7,14 @@ const lineChat = () => {
     })
 }
 
+const yearChat = () => {
+    return axios({
+        method: 'get',
+        url: `/order/summary/year`,
+    })
+}
+
 export {
     lineChat,
+    yearChat,
 }
