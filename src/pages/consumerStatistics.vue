@@ -1,25 +1,46 @@
 <template>
-    <div>
+    <div class="statistics">
         <div style="background-color: #fff;padding: 15px;margin-bottom: 15px;">
-            <div style="display: flex;align-items: center;justify-content: left;border-bottom: 1px solid #eee">
-                <div style="font-size: 18px;height: 40px;line-height: 40px;padding: 0 20px;border-bottom:1px solid #108DE9">
+            <div style="border-bottom: 1px solid #E8E8E8;height: 30px">
+                <div style="font-size: 16px;border-bottom: 2px solid #108DE9;height: 30px;display:inline-block;line-height: 30px;padding: 0 15px;color: #1890FF">
                     销售额
                 </div>
-                <el-tabs>
-                    <el-tab-pane label="今日" name="first" style="margin:0;">今日</el-tab-pane>
-                    <el-tab-pane label="本周" name="second" style="margin:0;">本周</el-tab-pane>
-                    <el-tab-pane label="本月" name="third" style="margin:0;">本月</el-tab-pane>
-                    <el-tab-pane label="本年" name="fourth" style="margin:0;">本年</el-tab-pane>
-                </el-tabs>
-            </div>
+                <div style="display: inline-block;margin-left: 20px;color: #666666;font-size: 14px;">
+                    <span :class="{is_active:actives === 'day','statistics-tab':true}" style="padding: 0 10px"
+                          @click="click('day')">今日</span>
+                    <span :class="{is_active:actives === 'week','statistics-tab':true}" style="padding: 0 10px"
+                          @click="click('week')">本周</span>
+                    <span :class="{is_active:actives === 'month','statistics-tab':true}" style="padding: 0 10px"
+                          @click="click('month')">本月</span>
+                    <span :class="{is_active:actives === 'year','statistics-tab':true}" style="padding: 0 10px"
+                          @click="click('year')">全年</span>
 
-            <div id="chartColumn1" style="height: 300px;">
+                </div>
+            </div>
+            <div style="display: flex;align-items: center;padding: 25px 0">
+                <div v-if='actives == "day"' id="chartColumn1" style="height: 350px;width: 70%">
+
+                </div>
+                <div v-if='actives == "week"' id="chartColumn2" style="height: 350px;width: 70%">
+
+                </div>
+                <div v-if='actives == "month"' id="chartColumn3" style="height: 350px;width: 70%">
+
+                </div>
+                <div v-if='actives == "year"' id="chartColumn" style="height: 350px;width: 70%">
+
+                </div>
+                <div style="border: 1px solid #108DE9;width: 30%;height: 280px;">
+
+                </div>
             </div>
         </div>
+
         <div style="background-color: #fff;padding: 25px;margin-bottom: 0px">
-            <div id="chartColumn" style="height: 350px;">
-            </div>
+            <!--            <div id="chartColumn" style="height: 350px;">-->
+            <!--            </div>-->
         </div>
+
     </div>
 </template>
 
@@ -34,6 +55,13 @@
                 chartColumn: null,
                 lineChatX: [],
                 lineChatY: [],
+                isDayChart: false,
+                isWeekChart: false,
+                isMonthChart: false,
+                isYearChart: true,
+                actives: 'year',
+                is_show: 'year'
+
             }
         },
         mounted() {
@@ -41,8 +69,8 @@
         },
         methods: {
             drawLine() {
-                this.chartColumn = echarts.init(document.getElementById('chartColumn'));
-                this.getLineChatData()
+                    this.chartColumn = echarts.init(document.getElementById('chartColumn'));
+                    this.getLineChatData()
 
             },
             async getLineChatData() {
@@ -56,7 +84,7 @@
                     this.chartColumn.setOption({
                         color: ['#2FC25B'],
                         title: {
-                            text: '消费峰值统计',
+                            // text: '消费峰值统计',
                             left: '10%',
                             textStyle: {
                                 fontStyle: 'normal',
@@ -148,6 +176,12 @@
                     });
                     console.log(this.lineChatX, this.lineChatY)
                 }
+            },
+
+            click(i) {
+                console.log(i)
+                this.actives = i
+                console.log(this.actives == i)
             }
         }
     }
@@ -157,4 +191,22 @@
     /deep/ .el-tabs__header {
         margin: 0;
     }
+
+    .statistics.statistics-tab {
+        padding: 0 10px;
+    }
+
+    .statistics-tab:hover, .statistics-tab:focus {
+        color: #9760E4;
+        cursor: pointer;
+    }
+
+    .is_active {
+        color: #9760E4;
+    }
+
+    .is_show {
+        display: block;
+    }
+
 </style>
