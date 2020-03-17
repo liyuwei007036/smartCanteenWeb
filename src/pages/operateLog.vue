@@ -1,7 +1,7 @@
 <template>
     <div>
         <hr style="height: 2px;background-color: #5286FF;border:none;margin-bottom: 12px;">
-        <div v-if="isSearchVisible" class="search">
+        <div v-if="isSearchVisible" class="search" ref="search">
 
             <el-row :gutter="20" class="search-row">
                 <el-col :span="8">
@@ -215,11 +215,17 @@
 
             toggleSearch() {
                 this.isSearchVisible = !this.isSearchVisible
-                // if (this.isSearchVisible == true) {
-                //     this.maxHeight = this.$ViewportSize - 300 - 160
-                // } else {
-                //     this.maxHeight = this.$ViewportSize - 300
-                // }
+                if (this.isSearchVisible === true) {
+                    this.$nextTick(() => {
+                        let height = this.$refs.search.offsetHeight;
+                        // console.log(height)
+                        this.maxHeight = this.$ViewportSize - 300 - height + 1
+                        console.log(this.maxHeight)
+                    })
+                } else {
+                    this.maxHeight = this.$ViewportSize - 300
+                    console.log(this.maxHeight)
+                }
             },
 
             //获取列表数据

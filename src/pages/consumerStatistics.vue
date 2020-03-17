@@ -71,7 +71,7 @@
                         this.HistogramY.push(data[x])
                     }
                     this.Histogram.setOption({
-                        color: ['#3398DB'],
+                        color: ['#1890FF'],
                         tooltip: {
                             trigger: 'axis',
                             backgroundColor: 'rgba(50,50,50,0.9)',

@@ -3,7 +3,7 @@
         <hr style="height: 2px;background-color: #5286FF;border:none;margin-bottom: 12px;">
 
 
-        <div v-if="isSearchVisible" class="search">
+        <div v-if="isSearchVisible" class="search" ref="search">
 
             <el-row :gutter="20" class="search-row">
                 <el-col :span="8">
@@ -103,7 +103,7 @@
             <el-button type="primary" class="add-btn" @click="patchRecharge()" icon="el-icon-plus"
                        v-acl="['recharge:recharge']">批量充值
             </el-button>
-            <el-button type="primary" class="search-btn" @click="isSearchVisible = !isSearchVisible"
+            <el-button type="primary" class="search-btn" @click="toggleSearch"
                        icon="el-icon-search"
                        style="float: right;"></el-button>
         </div>
@@ -113,7 +113,7 @@
                     :data="tableData"
                     stripe
                     border
-                    style="width: 100%; overflow-y: auto"
+                    style="width: 100%"
                     :max-height="maxHeight"
                     @selection-change="handleSelectionChange"
                     :header-cell-style="{
@@ -534,7 +534,7 @@
         },
         mounted: function () {
             this.getList();
-            this.maxHeight = this.$ViewportSize - 260
+            this.maxHeight = this.$ViewportSize - 300
         },
 
         methods: {
@@ -783,6 +783,21 @@
             resetForm(formName) {
                 this.$refs[formName].resetFields();
             },
+
+            toggleSearch(){
+                this.isSearchVisible = !this.isSearchVisible
+                if (this.isSearchVisible === true) {
+                    this.$nextTick(() => {
+                        let height = this.$refs.search.offsetHeight;
+                        // console.log(height)
+                        this.maxHeight = this.$ViewportSize - 300 - height + 1
+                        console.log(this.maxHeight)
+                    })
+                } else {
+                    this.maxHeight = this.$ViewportSize - 300
+                    console.log(this.maxHeight)
+                }
+            }
 
         }
     }
