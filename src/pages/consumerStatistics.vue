@@ -5,7 +5,7 @@
                 <div style="font-size: 18px;height: 40px;line-height: 40px;padding: 0 20px;border-bottom:1px solid #108DE9">
                     销售额
                 </div>
-                <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tabs>
                     <el-tab-pane label="今日" name="first" style="margin:0;">今日</el-tab-pane>
                     <el-tab-pane label="本周" name="second" style="margin:0;">本周</el-tab-pane>
                     <el-tab-pane label="本月" name="third" style="margin:0;">本月</el-tab-pane>
@@ -20,12 +20,15 @@
 
 <script>
     import echarts from 'echarts'
+    import {lineChat} from "../api/dateSummary";
 
     export default {
         name: "dataStatistics",
         data() {
             return {
-                chartColumn: null
+                chartColumn: null,
+                lineChatX: [],
+                lineChatY: [],
             }
         },
         mounted() {
@@ -34,21 +37,45 @@
         methods: {
             drawLine() {
                 this.chartColumn = echarts.init(document.getElementById('chartColumn'));
+                this.getLineChatData()
 
-                this.chartColumn.setOption({
-                    tooltip: {},
-                    xAxis: {
-                        type: 'category',
-                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-                    },
-                    yAxis: {
-                        type: 'value'
-                    },
-                    series: [{
-                        data: [820, 932, 901, 934, 1290, 1330, 1320],
-                        type: 'line'
-                    }]
-                });
+            },
+            async getLineChatData() {
+                let res = await lineChat()
+                if (res && res.code === 1000) {
+                    let data = res.data
+                    for (let x in data) {
+                        this.lineChatX.push(x)
+                        this.lineChatY.push(data[x])
+                    }
+                    this.chartColumn.setOption({
+                        title: {
+                            text: '消费峰值统计',
+                            textStyle: {
+                                fontStyle: 'normal',
+                                fontSize: 14,
+                                color: '#000'
+                            }
+                        },
+                        tooltip: {},
+                        xAxis: {
+                            type: 'category',
+                            data: this.lineChatX,
+                        },
+                        yAxis: {
+                            type: 'value',
+                            show: true,
+                            axisLine: {
+                                show: true
+                            }
+                        },
+                        series: [{
+                            data: this.lineChatY,
+                            type: 'line'
+                        }]
+                    });
+                    console.log(this.lineChatX, this.lineChatY)
+                }
             }
         }
     }
