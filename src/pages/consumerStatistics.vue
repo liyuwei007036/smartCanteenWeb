@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div style="background-color: #fff;padding: 15px">
+        <div style="background-color: #fff;padding: 15px;margin-bottom: 15px;">
             <div style="display: flex;align-items: center;justify-content: left;border-bottom: 1px solid #eee">
                 <div style="font-size: 18px;height: 40px;line-height: 40px;padding: 0 20px;border-bottom:1px solid #108DE9">
                     销售额
@@ -12,6 +12,11 @@
                     <el-tab-pane label="本年" name="fourth" style="margin:0;">本年</el-tab-pane>
                 </el-tabs>
             </div>
+
+            <div id="chartColumn1" style="height: 400px;">
+            </div>
+        </div>
+        <div style="background-color: #fff;padding: 15px;margin-bottom: 15px;">
             <div id="chartColumn" style="height: 400px;">
             </div>
         </div>
