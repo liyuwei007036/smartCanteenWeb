@@ -68,21 +68,40 @@
                         legend: {
                             type: 'plain',
                             show: true,
-                            data: ['支付笔数'],
+                            data: [{
+                                icon: 'circle',
+                                name: '支付笔数',
+                            }],
                             right: '10%',
+                            top: '5%',
                             selectedMode: false,
-                            icon: 'circle',
-                            itemHeight: 10,
-                            itemWidth: 10,
+                            itemHeight: 8,
+                            itemWidth: 8,
 
                         },
-                        tooltip: {},
+                        tooltip: {
+                            trigger: 'axis',
+                            backgroundColor: 'rgba(50,50,50,0.9)',
+                            padding: [
+                                15,  // 上
+                                10, // 右
+                                15,  // 下
+                                10, // 左
+                            ],
+                            formatter: function (params) {
+                                return params[0].axisValueLabel + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + params[0].value + '笔'
+                            }
+                        },
                         minInterval: 1,
                         xAxis: {
                             type: 'category',
                             boundaryGap: false,
                             axisLabel: {
                                 margin: 20,
+                                formatter: function (value, index) {
+                                    // 格式化成月/日，只在第一个刻度显示年份
+                                    return new Date(value).format("hh:mm");
+                                }
                             },
                             data: this.lineChatX,
                         },
