@@ -566,6 +566,7 @@
             },
             onClose(e) {  //关闭
                 console.log('断开连接', e);
+                this.websock.close()
             },
             serach() {
                 this.search.page = 1
@@ -763,9 +764,11 @@
             },
 
             handleClose() {
-                let token = sessionStorage.getItem('x-smart-token') || 'x';
-                this.send({token: token, start: false})
-                this.onClose()
+                if (this.websock) {
+                    let token = sessionStorage.getItem('x-smart-token') || 'x';
+                    this.send({token: token, start: false})
+                    this.onClose()
+                }
                 this.$refs.replaceForm.resetFields()
             },
 
@@ -773,18 +776,14 @@
             // 有两个参数返回,表格的每一行对象和当前索引
             handleDisable(row, index) {
                 // 函数需要一个返回值,true为可选,false为不可选择
-                if (row.status === '禁止') {
-                    return false
-                } else {
-                    return true
-                }
+                return row.status !== '禁止';
             },
 
             resetForm(formName) {
                 this.$refs[formName].resetFields();
             },
 
-            toggleSearch(){
+            toggleSearch() {
                 this.isSearchVisible = !this.isSearchVisible
                 if (this.isSearchVisible === true) {
                     this.$nextTick(() => {
