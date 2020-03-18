@@ -19,8 +19,22 @@
                 <div id="Histogram" style="height: 350px;width: 70%">
 
                 </div>
-                <div style="border: 1px solid #108DE9;width: 30%;height: 280px;">
-
+                <div class="statistics_right">
+                    <div class="total_sales_amount">
+                        总销售额
+                    </div>
+                    <div style="margin: 20px 0">
+                        <div class="total_amount">126,560</div>
+                        <div class="rate">
+                            <div class="rate_num">周同比 <i class="el-icon-caret-top"></i><span>12%</span>
+                            </div>
+                            <div class="rate_num">日环比 <i class="el-icon-caret-bottom"></i><span>12%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="day_sales_amount">
+                        日均销售额<span style="padding-left: 20px"> &#xA5;12,423</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -397,4 +411,61 @@
         display: block;
     }
 
+    .statistics_right {
+        border: 1px solid #2E6CFE;
+        width: 30%;
+        height: 280px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .total_sales_amount {
+        padding: 20px 0 10px 20px;
+        border-bottom: 1px solid #DEDEDE;
+        color: #2E6CFE;
+        vertical-align: center;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .total_amount {
+        font-size: 30px;
+        font-weight: bold;
+        color: #000;
+        padding: 0 15px 20px
+    }
+
+    .rate {
+        display: flex;
+        align-items: center;
+        padding: 0 20px
+    }
+
+    .rate_num {
+        width: 50%;
+        font-size: 14px;
+        color: #888;
+    }
+
+    .el-icon-caret-top {
+        color: #52C41A;
+        font-size: 16px;
+        padding: 10px
+    }
+
+    .el-icon-caret-bottom {
+        color: #F5222D;
+        font-size: 16px;
+        padding: 10px
+    }
+
+    .day_sales_amount {
+        margin: 0 20px;
+        padding: 15px 0;
+        border-top: 1px solid #DEDEDE;
+        color: #888888;
+        vertical-align: center;;
+        font-size: 14px;
+    }
 </style>

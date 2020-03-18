@@ -1,7 +1,7 @@
 <template>
     <div>
         <hr style="height: 2px;background-color: #5286FF;border:none;margin-bottom: 12px;">
-        <div v-if="isSerachVisible" class="search">
+        <div v-if="isSearchVisible" class="search" ref="search">
             <el-row :gutter="20" class="search-row">
                 <el-col :span="8">
                     <div class="grid-content search-grid-content">
@@ -29,6 +29,20 @@
                     <div class="grid-content search-grid-content">
                         <label class="search-label">所属组织：</label>
                         <el-input class="search_input" v-model="search.orgName" placeholder="请输入所属组织"></el-input>
+                    </div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content search-grid-content">
+                        <label class="search-label">人员状态：</label>
+                        <el-select class="search_input el-input" v-model="search.status" placeholder="请选择人员状态"
+                                   clearable>
+                            <el-option
+                                    v-for="item in statusList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
                     </div>
                 </el-col>
             </el-row>
@@ -92,15 +106,15 @@
                 </el-table-column>
 
                 <el-table-column
-                        prop="validityTime"
-                        label="卡有效期"
+                        prop="createTime"
+                        label="创建时间"
                         align="center"
                         :show-overflow-tooltip='true'>
                 </el-table-column>
 
                 <el-table-column
-                        prop="createTime"
-                        label="创建时间"
+                        prop="status"
+                        label="人员状态"
                         align="center"
                         :show-overflow-tooltip='true'>
                 </el-table-column>
@@ -144,7 +158,7 @@
         <editdialog v-if="isVisible" ref="addOrUpdate"/>
 
         <!--        查看弹窗-->
-        <el-dialog class="dialog abow_dialog"
+        <el-dialog class="dialog"
                    title="查看人员"
                    :close-on-click-modal="false"
                    :visible.sync="isShowVisible" width="40%">
@@ -172,15 +186,10 @@
                     </el-input>
                 </el-form-item>
 
-                <el-form-item prop="password" label="卡密码">
-                    <el-input type="password" v-model.trim="form1.password" auto-complete="off"
-                              placeholder="密码"></el-input>
-                </el-form-item>
-
-                <el-form-item prop="minimumBalance" label="卡最低余额">
-                    <el-input type="number" v-model.trim="form1.minimumBalance" auto-complete="off"
-                              placeholder="请输入卡最低余额"></el-input>
-                </el-form-item>
+<!--                <el-form-item prop="minimumBalance" label="卡最低余额">-->
+<!--                    <el-input type="number" v-model.trim="form1.minimumBalance" auto-complete="off"-->
+<!--                              placeholder="请输入卡最低余额"></el-input>-->
+<!--                </el-form-item>-->
 
                 <el-form-item prop="validityTime" label="卡有效期">
                     <el-date-picker
@@ -195,16 +204,16 @@
                               placeholder="请输入开卡存入金额"/>
                 </el-form-item>
 
-                <el-form-item prop="deposit" label="押金">
-                    <el-input type="number" v-model.trim="form1.deposit" auto-complete="off"
-                              placeholder="请输入押金"/>
-                </el-form-item>
+<!--                <el-form-item prop="deposit" label="押金">-->
+<!--                    <el-input type="number" v-model.trim="form1.deposit" auto-complete="off"-->
+<!--                              placeholder="请输入押金"/>-->
+<!--                </el-form-item>-->
 
 
-                <el-form-item prop="expense" label="工本费">
-                    <el-input type="number" v-model.trim="form1.expense" auto-complete="off"
-                              placeholder="请输入工本费"/>
-                </el-form-item>
+<!--                <el-form-item prop="expense" label="工本费">-->
+<!--                    <el-input type="number" v-model.trim="form1.expense" auto-complete="off"-->
+<!--                              placeholder="请输入工本费"/>-->
+<!--                </el-form-item>-->
 
                 <el-form-item prop="originationName" label="所属组织">
                     <el-input type="text" v-model.trim="form1.originationName" auto-complete="off"
@@ -258,6 +267,7 @@
                     createEnd: '',
                     cardTimeStart: '',
                     cardTimeEnd: '',
+                    status: '',
                     page: 1,
                     size: 10
                 },
@@ -286,9 +296,14 @@
                     {id: 1, name: 1},
                     {id: 2, name: 2}
                 ],
+                statusList: [
+                    {id: '', name: '全部'},
+                    {id: 1, name: '正常'},
+                    {id: 2, name: '离职'}
+                ],
                 isVisible: false, //编辑新增弹窗
                 isShowVisible: false,//查看弹窗
-                isSerachVisible: false, //搜索
+                isSearchVisible: false, //搜索
             }
         },
         mounted: function () {
@@ -397,7 +412,15 @@
             },
 
             toggleSearch() {
-                this.isSerachVisible = !this.isSerachVisible
+                this.isSearchVisible = !this.isSearchVisible
+                if (this.isSearchVisible === true) {
+                    this.$nextTick(() => {
+                        let height = this.$refs.search.offsetHeight;
+                        this.maxHeight = this.$ViewportSize - 300 - height + 1
+                    })
+                } else {
+                    this.maxHeight = this.$ViewportSize - 300
+                }
             },
 
 
@@ -414,16 +437,16 @@
         display: block;
     }
 
-    .el-tree{
+    .el-tree {
         background-color: #F2F6FC;
     }
 
-    .el-tree-node__content{
+    .el-tree-node__content {
         padding: 5px 0 5px;
         border-bottom: 1px solid #fff;
     }
 
-    .el-tree-node__content:hover{
+    .el-tree-node__content:hover {
         background-color: #C7C9E1;
     }
 

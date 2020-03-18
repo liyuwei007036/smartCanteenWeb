@@ -5,7 +5,7 @@
                :visible.sync="visible"
                width="40%"
                @closed="handleClose">
-        <el-form ref="form" :model="form" :rules="rules" status-icon label-width="100px" label-position="right">
+        <el-form ref="form" :model="form" :rules="rules" status-icon label-width="120px" label-position="right">
             <el-form-item prop="name" label="姓名">
                 <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="姓名"></el-input>
             </el-form-item>
@@ -13,39 +13,10 @@
                 <el-input type="text" v-model.trim="form.no" auto-complete="off" placeholder=账号
                           :readonly="isReadonly"></el-input>
             </el-form-item>
-            <el-form-item prop="idCard" label="身份证号">
-                <el-input type="text" v-model.trim="form.idCard" auto-complete="off" placeholder="身份证号"
-                          :readonly="isReadonly" maxlength="18"></el-input>
-            </el-form-item>
 
-            <el-form-item prop="mobile" label="手机号">
-                <el-input type="mobile" v-model.trim="form.mobile" auto-complete="off" placeholder="手机号"
-                          maxlength="11"></el-input>
-            </el-form-item>
-
-            <el-form-item prop="cardNo" label="卡号" class="getCard">
-                <el-input type="number" v-model.trim="form.cardNo" auto-complete="off" placeholder="卡号"
-                          @mousewheel.native.prevent readOnly="true">
-                </el-input>
-                <el-button v-if="!isReadonly" @click="readCard()"
-                           style="margin-left: 10px;height: 34px;color: #fff;background-color: #2E6CFE;font-size: 13px;line-height: 34px;padding:0 10px;border: none">
-                    {{status_text}}
-                </el-button>
-            </el-form-item>
-
-            <el-form-item label="卡类别">
-                <el-select class="select_normal" v-model="form.type" placeholder="请选择卡类别">
-                    <el-option
-                            v-for="item in cardTypeList"
-                            :key="item.id"
-                            :label="item.name"
-                            :value="item.id">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-
-            <el-form-item prop="password1" label="卡密码">
-                <el-input type="password" v-model.trim="form.password1" auto-complete="off" placeholder="密码"></el-input>
+            <el-form-item prop="password1" label="登录密码">
+                <el-input type="password" v-model.trim="form.password1" auto-complete="off"
+                          placeholder="登录密码"></el-input>
             </el-form-item>
 
             <el-form-item prop="confirmPassword1" label="确认密码">
@@ -62,11 +33,42 @@
                 <el-input type="password" v-model.trim="form.confirmPassword" auto-complete="off"
                           placeholder="请再次输入密码"></el-input>
             </el-form-item>
-
-            <el-form-item prop="minimumBalance" label="卡最低余额">
-                <el-input type="number" v-model.trim="form.minimumBalance" auto-complete="off"
-                          placeholder="请输入卡最低余额" @mousewheel.native.prevent></el-input>
+            <el-form-item prop="idCard" label="身份证号">
+                <el-input type="text" v-model.trim="form.idCard" auto-complete="off" placeholder="身份证号"
+                          :readonly="isReadonly" maxlength="18"></el-input>
             </el-form-item>
+
+            <el-form-item prop="mobile" label="手机号">
+                <el-input type="mobile" v-model.trim="form.mobile" auto-complete="off" placeholder="手机号"
+                          maxlength="11"></el-input>
+            </el-form-item>
+
+            <el-form-item prop="cardNo" label="卡号" class="getCard">
+                <el-input type="number" id="cardNo" v-model.trim="form.cardNo" auto-complete="off" placeholder="卡号"
+                          @mousewheel.native.prevent>
+                </el-input>
+                <el-button v-if="!isReadonly" @click="readCard()"
+                           style="margin-left: 10px;height: 34px;color: #fff;background-color: #2E6CFE;font-size: 13px;line-height: 34px;padding:0 10px;border: none">
+                    {{status_text}}
+                </el-button>
+            </el-form-item>
+
+            <!--            <el-form-item label="卡类别">-->
+            <!--                <el-select class="select_normal" v-model="form.type" placeholder="请选择卡类别">-->
+            <!--                    <el-option-->
+            <!--                            v-for="item in cardTypeList"-->
+            <!--                            :key="item.id"-->
+            <!--                            :label="item.name"-->
+            <!--                            :value="item.id">-->
+            <!--                    </el-option>-->
+            <!--                </el-select>-->
+            <!--            </el-form-item>-->
+
+
+            <!--            <el-form-item prop="minimumBalance" label="卡最低余额">-->
+            <!--                <el-input type="number" v-model.trim="form.minimumBalance" auto-complete="off"-->
+            <!--                          placeholder="请输入卡最低余额" @mousewheel.native.prevent></el-input>-->
+            <!--            </el-form-item>-->
 
             <el-form-item prop="validityTime" label="卡有效期">
                 <el-date-picker
@@ -77,21 +79,21 @@
                 </el-date-picker>
             </el-form-item>
 
-            <el-form-item prop="openCardAmount" label="开卡存入金额">
+            <el-form-item prop="openCardAmount" label="开卡存入金额(元)">
                 <el-input type="number" v-model.trim="form.openCardAmount" auto-complete="off"
                           placeholder="请输入开卡存入金额" @mousewheel.native.prevent></el-input>
             </el-form-item>
 
-            <el-form-item prop="deposit" label="押金">
-                <el-input type="number" v-model.trim="form.deposit" auto-complete="off"
-                          placeholder="请输入押金" @mousewheel.native.prevent></el-input>
-            </el-form-item>
+            <!--            <el-form-item prop="deposit" label="押金">-->
+            <!--                <el-input type="number" v-model.trim="form.deposit" auto-complete="off"-->
+            <!--                          placeholder="请输入押金" @mousewheel.native.prevent></el-input>-->
+            <!--            </el-form-item>-->
 
 
-            <el-form-item prop="expense" label="工本费">
-                <el-input type="number" v-model.trim="form.expense" auto-complete="off"
-                          placeholder="请输入工本费" @mousewheel.native.prevent></el-input>
-            </el-form-item>
+            <!--            <el-form-item prop="expense" label="工本费">-->
+            <!--                <el-input type="number" v-model.trim="form.expense" auto-complete="off"-->
+            <!--                          placeholder="请输入工本费" @mousewheel.native.prevent></el-input>-->
+            <!--            </el-form-item>-->
 
             <el-form-item label="角色" prop="roles">
                 <el-select class="select_normal" v-model="form.roles" multiple placeholder="请选择角色">
@@ -169,6 +171,10 @@
                 }
             };
 
+            let checkRoles = (rule, value, callback) => {
+                console.log(value)
+            };
+
             return {
                 visible: false,
                 status_text: '点击读卡',
@@ -187,12 +193,12 @@
                     cardId: '',
                     cardNo: '',
                     roles: [],
-                    type: '',
-                    minimumBalance: '',
+                    type: 1,
+                    minimumBalance: 0,
                     validityTime: '',
                     openCardAmount: '',
-                    deposit: '',
-                    expense: '',
+                    deposit: 0,
+                    expense: 0,
                 },
                 roleList: [],
                 cardTypeList: [
@@ -211,13 +217,13 @@
                     name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
                     no: [{required: true, message: '请输入账号', trigger: 'blur'}],
                     cardNo: [
-                        {required: true, message: '请读卡', trigger: 'blur'}],
+                        {required: true, message: '卡号不能为空', trigger: 'blur'}],
                     mobile: [
                         {required: true, message: '请输入手机号', trigger: 'blur'},
                         {validator: checkPhone, trigger: 'blur'}
                     ],
-                    password1: [
-                        // {required: true, message: '请输入身份证号', trigger: 'blur'},
+                    roles: [
+                        {validator: checkRoles, trigger: 'blur'}
                     ],
                     confirmPassword1: [
                         {validator: validatePass2, trigger: 'blur'}
@@ -277,6 +283,12 @@
 
             init(id) {
                 this.form = {};
+                //初始化默认项
+                this.form.type = 1;
+                this.form.deposit = 0;
+                this.form.expense = 0;
+                this.form.minimumBalance = 0
+                this.form.openCardAmount = 0
                 this.form.id = id || 0;
                 this.visible = true;
                 this.getOrigination()  //获取组织结构
