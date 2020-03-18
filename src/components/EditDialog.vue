@@ -376,7 +376,10 @@
             },
 
             handleClose() {
-                if (this.websock !== undefined) {
+                if (this.websock && this.websock.readyState === 0) {
+                    this.onClose()
+                }
+                if (this.websock && this.websock.readyState === 1) {
                     let token = sessionStorage.getItem('x-smart-token') || 'x';
                     this.onSend({token: token, start: false})
                     this.onClose()

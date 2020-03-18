@@ -550,7 +550,7 @@
                 console.log("'onOpen")
                 let token = sessionStorage.getItem('x-smart-token') || 'x';
 
-                this.send({token: token, start: true});
+                this.onSend({token: token, start: true});
             },
             onError() {//连接建立失败重连
                 this.initWebSocket();
@@ -560,7 +560,7 @@
                 this.replaceForm.cardNo = e.data
                 this.$forceUpdate();
             },
-            send(Data) {//
+            onSend(Data) {//
                 console.log('数据发送', Data)
                 this.websock.send(JSON.stringify(Data));
             },
@@ -764,9 +764,12 @@
             },
 
             handleClose() {
-                if (this.websock) {
+                if (this.websock && this.websock.readyState === 0) {
+                    this.onClose()
+                }
+                if (this.websock && this.websock.readyState === 1) {
                     let token = sessionStorage.getItem('x-smart-token') || 'x';
-                    this.send({token: token, start: false})
+                    this.onSend({token: token, start: false})
                     this.onClose()
                 }
                 this.$refs.replaceForm.resetFields()
