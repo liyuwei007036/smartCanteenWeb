@@ -14,7 +14,24 @@ const yearChat = () => {
     })
 }
 
+const monthChat = () => {
+    return axios({
+        method: 'get',
+        url: `/order/summary/month`,
+    })
+}
+
+const dayChat = () => {
+    return axios({
+        method: 'get',
+        url: `/order/summary/day`,
+    })
+}
+
+
 export {
     lineChat,
     yearChat,
+    monthChat,
+    dayChat,
 }

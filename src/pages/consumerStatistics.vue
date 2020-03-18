@@ -8,8 +8,6 @@
                 <div style="display: inline-block;margin-left: 20px;color: #666666;font-size: 14px;">
                     <span :class="{is_active:actives === 'day','statistics-tab':true}" style="padding: 0 10px"
                           @click="click('day')">今日</span>
-                    <span :class="{is_active:actives === 'week','statistics-tab':true}" style="padding: 0 10px"
-                          @click="click('week')">本周</span>
                     <span :class="{is_active:actives === 'month','statistics-tab':true}" style="padding: 0 10px"
                           @click="click('month')">本月</span>
                     <span :class="{is_active:actives === 'year','statistics-tab':true}" style="padding: 0 10px"
@@ -37,7 +35,7 @@
 
 <script>
     import echarts from 'echarts'
-    import {lineChat, yearChat} from "../api/dateSummary";
+    import {lineChat, yearChat, monthChat, dayChat} from "../api/dateSummary";
 
     export default {
         name: "dataStatistics",
@@ -54,101 +52,184 @@
                 isYearChart: true,
                 actives: 'year',
                 is_show: 'year'
-
             }
         },
         mounted() {
+            this.actives = sessionStorage.getItem('summarySearch') || 'day'
             this.drawLine();
             this.drawHistogram();
+            if (this.actives === 'year') {
+                this.getYearChat()
+            } else if (this.actives === 'month') {
+                this.getMonthChat();
+            } else if (this.actives === 'day') {
+                this.getDayChat();
+            }
         },
         methods: {
             async getYearChat() {
                 let res = await yearChat();
                 if (res && res.code === 1000) {
                     let data = res.data
+                    let HistogramX = []
+                    let HistogramY = []
                     for (let x in data) {
-                        this.HistogramX.push(x)
-                        this.HistogramY.push(data[x])
+                        HistogramX.push(x)
+                        HistogramY.push(data[x])
                     }
                     this.Histogram.setOption({
-                        color: ['#1890FF'],
                         tooltip: {
-                            trigger: 'axis',
-                            backgroundColor: 'rgba(50,50,50,0.9)',
-                            padding: [
-                                15,  // 上
-                                10, // 右
-                                15,  // 下
-                                10, // 左
-                            ], axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                                type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                            },
                             formatter: function (params) {
-                                return '&nbsp &nbsp &nbsp &nbsp &nbsp' + params[0].axisValueLabel + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + params[0].value + ' 元'
+                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + params[0].value + ' 元'
                             }
                         },
-
                         xAxis: {
-                            type: 'category',
                             axisLabel: {
                                 margin: 20,
                                 formatter: function (value, index) {
                                     return value.split('-')[1] + '月'
                                 }
                             },
-                            axisTick: {
-                                alignWithLabel: true
-                            },
-                            data: this.HistogramX,
+                            data: HistogramX
                         },
-                        yAxis: {
-                            min: 0,
-                            type: 'value',
-                            show: true,
-                            axisTick: {
-                                show: false
-                            },
+                        series: [{
+                            name: '销售额',
+                            type: 'bar',
+                            barWidth: '50%',
+                            data: HistogramY
+                        }]
+                    })
+                }
+            },
+            async getMonthChat() {
+                let res = await monthChat();
+                if (res && res.code === 1000) {
+                    let data = res.data
+                    let HistogramX = []
+                    let HistogramY = []
+                    for (let x in data) {
+                        HistogramX.push(x)
+                        HistogramY.push(data[x])
+                    }
+                    this.Histogram.setOption({
+                        tooltip: {
+                            formatter: function (params) {
+                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + params[0].value + ' 元'
+                            }
+                        },
+                        xAxis: {
                             axisLabel: {
                                 margin: 20,
-                            },
-                            axisLine: {
-                                show: true,
-                                lineStyle: {
-                                    color: {
-                                        type: 'radial',
-                                        x: 0.5,
-                                        y: 0.5,
-                                        r: 0.5,
-                                        colorStops: [{
-                                            offset: 0, color: '#fff'
-                                        }, {
-                                            offset: 1, color: '#fff'
-                                        }],
-                                        global: false // 缺省为 fals
-                                    }
+                                formatter: function (value, index) {
+                                    return value.split('-')[2] + '日'
                                 }
                             },
-                            splitLine: {
-                                lineStyle: {
-                                    color: ['#aaa'],
-                                    type: 'dashed'
-                                }
+                            data: HistogramX
+                        },
+                        series: [{
+                            name: '销售额',
+                            type: 'bar',
+                            barWidth: '50%',
+                            data: HistogramY
+                        }]
+                    })
+                }
+            },
+            async getDayChat() {
+                let res = await dayChat();
+                if (res && res.code === 1000) {
+                    let data = res.data
+                    let HistogramX = []
+                    let HistogramY = []
+                    for (let x in data) {
+                        HistogramX.push(x)
+                        HistogramY.push(data[x])
+                    }
+                    this.Histogram.setOption({
+                        tooltip: {
+                            formatter: function (params) {
+                                let times = params[0].axisValueLabel.split('-')
+                                return `${times[0]}-${times[1]}-${times[2]} ${times[3]} 时` + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + params[0].value + ' 元'
                             }
                         },
-                        series: [
-                            {
-                                name: '销售额',
-                                type: 'bar',
-                                barWidth: '50%',
-                                data: this.HistogramY,
-                            }
-                        ]
-                    });
+                        xAxis: {
+                            axisLabel: {
+                                margin: 20,
+                                formatter: function (value, index) {
+                                    console.log(value)
+                                    return value.split('-')[3] + '时'
+                                }
+                            },
+                            data: HistogramX
+                        },
+                        series: [{
+                            name: '销售额',
+                            type: 'bar',
+                            barWidth: '50%',
+                            data: HistogramY
+                        }]
+                    })
                 }
             },
             drawHistogram() {
                 this.Histogram = echarts.init(document.getElementById('Histogram'));
-                this.getYearChat()
+                this.Histogram.setOption({
+                    color: ['#1890FF'],
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: 'rgba(50,50,50,0.9)',
+                        padding: [
+                            15,  // 上
+                            10, // 右
+                            15,  // 下
+                            10, // 左
+                        ], axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        },
+                    },
+                    xAxis: {
+                        type: 'category',
+                        axisTick: {
+                            alignWithLabel: true
+                        },
+                        data: [],
+                    },
+                    yAxis: {
+                        min: 0,
+                        type: 'value',
+                        show: true,
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            margin: 20,
+                        },
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: {
+                                    type: 'radial',
+                                    x: 0.5,
+                                    y: 0.5,
+                                    r: 0.5,
+                                    colorStops: [{
+                                        offset: 0, color: '#fff'
+                                    }, {
+                                        offset: 1, color: '#fff'
+                                    }],
+                                    global: false
+                                }
+                            }
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: ['#aaa'],
+                                type: 'dashed'
+                            }
+                        }
+                    },
+                    series: []
+                });
             },
             drawLine() {
                 this.chartColumn = echarts.init(document.getElementById('chartColumn'));
@@ -259,11 +340,16 @@
                     });
                 }
             },
-
             click(i) {
-                console.log(i)
                 this.actives = i
-                console.log(this.actives == i)
+                if (i === 'month') {
+                    this.getMonthChat()
+                } else if (i === 'year') {
+                    this.getYearChat()
+                } else if (i === 'day') {
+                    this.getDayChat()
+                }
+                sessionStorage.setItem('summarySearch', i)
             }
         }
     }
