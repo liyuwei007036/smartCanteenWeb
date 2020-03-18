@@ -15,7 +15,7 @@
 
                 </div>
             </div>
-            <div style="display: flex;align-items: center;padding: 25px 0">
+            <div style="display: flex;align-items: center;padding: 0px 0">
                 <div id="Histogram" style="height: 350px;width: 70%">
 
                 </div>
@@ -37,6 +37,18 @@
     import echarts from 'echarts'
     import {lineChat, yearChat, monthChat, dayChat} from "../api/dateSummary";
 
+    function formatMoney(number, places, symbol, thousand, decimal) {
+        number = number || 0;
+        places = !isNaN(places = Math.abs(places)) ? places : 2;
+        symbol = symbol !== undefined ? symbol : "￥";
+        thousand = thousand || ",";
+        decimal = decimal || ".";
+        var negative = number < 0 ? "-" : "",
+            i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
+            j = (j = i.length) > 3 ? j % 3 : 0;
+        return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
+    }
+
     export default {
         name: "dataStatistics",
         data() {
@@ -51,7 +63,8 @@
                 isMonthChart: false,
                 isYearChart: true,
                 actives: 'year',
-                is_show: 'year'
+                is_show: 'year',
+                totalSale: 0,
             }
         },
         mounted() {
@@ -70,7 +83,8 @@
             async getYearChat() {
                 let res = await yearChat();
                 if (res && res.code === 1000) {
-                    let data = res.data
+                    let data = res.data.data
+                    this.totalSale = res.data.total
                     let HistogramX = []
                     let HistogramY = []
                     for (let x in data) {
@@ -80,7 +94,7 @@
                     this.Histogram.setOption({
                         tooltip: {
                             formatter: function (params) {
-                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + params[0].value + ' 元'
+                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + formatMoney(params[0].value) 
                             }
                         },
                         xAxis: {
@@ -104,7 +118,8 @@
             async getMonthChat() {
                 let res = await monthChat();
                 if (res && res.code === 1000) {
-                    let data = res.data
+                    let data = res.data.data
+                    this.totalSale = res.data.total
                     let HistogramX = []
                     let HistogramY = []
                     for (let x in data) {
@@ -114,7 +129,7 @@
                     this.Histogram.setOption({
                         tooltip: {
                             formatter: function (params) {
-                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + params[0].value + ' 元'
+                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + formatMoney(params[0].value) 
                             }
                         },
                         xAxis: {
@@ -138,7 +153,8 @@
             async getDayChat() {
                 let res = await dayChat();
                 if (res && res.code === 1000) {
-                    let data = res.data
+                    let data = res.data.data
+                    this.totalSale = res.data.total
                     let HistogramX = []
                     let HistogramY = []
                     for (let x in data) {
@@ -149,7 +165,7 @@
                         tooltip: {
                             formatter: function (params) {
                                 let times = params[0].axisValueLabel.split('-')
-                                return `${times[0]}-${times[1]}-${times[2]} ${times[3]} 时` + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + params[0].value + ' 元'
+                                return `${times[0]}-${times[1]}-${times[2]} ${times[3]} 时` + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + formatMoney(params[0].value) 
                             }
                         },
                         xAxis: {
@@ -186,6 +202,10 @@
                         ], axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                             type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                         },
+                    },
+                    grid: {
+                        top: '10%',
+                        bottom: '10%'
                     },
                     xAxis: {
                         type: 'category',
