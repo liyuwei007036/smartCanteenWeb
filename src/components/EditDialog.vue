@@ -136,7 +136,7 @@
 </template>
 
 <script>
-    import {get, add, update} from '@/api/employeeList';
+    import {add, get, update} from '@/api/employeeList';
     import {listAll} from '@/api/origination';
     import {listAllRole} from '@/api/role';
     import {SOCKET_URL} from '@/config/global'
@@ -246,9 +246,7 @@
         created() {
         },
         destroyed() {
-            let token = sessionStorage.getItem('x-smart-token') || 'x';
-            this.send({token: token, start: true})
-            this.onClose()
+
         },
         methods: {
             initWebSocket() { //初始化weosocket
@@ -262,8 +260,7 @@
             onOpen() { //连接建立之后执行send方法发送数据
                 console.log("'onOpen")
                 let token = sessionStorage.getItem('x-smart-token') || 'x';
-
-                this.send({token: token, start: true});
+                this.onSend({token: token, start: true});
             },
             onError() {//连接建立失败重连
                 this.initWebSocket();
@@ -273,12 +270,13 @@
                 this.form.cardNo = e.data
                 this.$forceUpdate();
             },
-            send(Data) {//
+            onSend(Data) {//
                 console.log('数据发送', Data)
                 this.websock.send(JSON.stringify(Data));
             },
             onClose(e) {  //关闭
                 console.log('断开连接', e);
+                this.websock.close();
             },
 
             init(id) {
@@ -362,6 +360,7 @@
             //读卡
             readCard() {
                 this.initWebSocket();
+                console.log(this.websock)
                 this.$message.success('正在读卡中');
             },
 
@@ -377,9 +376,11 @@
             },
 
             handleClose() {
-                let token = sessionStorage.getItem('x-smart-token') || 'x';
-                this.send({token: token, start: false})
-                this.onClose()
+                if (this.websock !== undefined) {
+                    let token = sessionStorage.getItem('x-smart-token') || 'x';
+                    this.onSend({token: token, start: false})
+                    this.onClose()
+                }
                 this.$refs.form.resetFields()
             },
 
