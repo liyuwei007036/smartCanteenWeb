@@ -15,7 +15,7 @@
 
                 </div>
             </div>
-            <div style="display: flex;align-items: center;padding: 0px 0">
+            <div style="display: flex;align-items: center;padding: 0 0">
                 <div id="Histogram" style="height: 350px;width: 70%">
 
                 </div>
@@ -24,7 +24,7 @@
                         总销售额
                     </div>
                     <div style="margin: 20px 0">
-                        <div class="total_amount">126,560</div>
+                        <div class="total_amount" v-html="formatMoney(totalSale)"></div>
                         <div class="rate">
                             <div class="rate_num">周同比 <i class="el-icon-caret-top"></i><span>12%</span>
                             </div>
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                     <div class="day_sales_amount">
-                        日均销售额<span style="padding-left: 20px"> &#xA5;12,423</span>
+                        日均销售额<span style="padding-left: 20px" v-html="formatMoney(avg)"/>
                     </div>
                 </div>
             </div>
@@ -51,27 +51,12 @@
     import echarts from 'echarts'
     import {lineChat, yearChat, monthChat, dayChat} from "../api/dateSummary";
 
-    function formatMoney(number, places, symbol, thousand, decimal) {
-        number = number || 0;
-        places = !isNaN(places = Math.abs(places)) ? places : 2;
-        symbol = symbol !== undefined ? symbol : "￥";
-        thousand = thousand || ",";
-        decimal = decimal || ".";
-        var negative = number < 0 ? "-" : "",
-            i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
-            j = (j = i.length) > 3 ? j % 3 : 0;
-        return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
-    }
 
     export default {
         name: "dataStatistics",
         data() {
             return {
                 chartColumn: null,
-                lineChatX: [],
-                lineChatY: [],
-                HistogramX: [],
-                HistogramY: [],
                 isDayChart: false,
                 isWeekChart: false,
                 isMonthChart: false,
@@ -79,6 +64,7 @@
                 actives: 'year',
                 is_show: 'year',
                 totalSale: 0,
+                avg: 0,
             }
         },
         mounted() {
@@ -95,10 +81,12 @@
         },
         methods: {
             async getYearChat() {
+                const that = this
                 let res = await yearChat();
                 if (res && res.code === 1000) {
                     let data = res.data.data
                     this.totalSale = res.data.total
+                    this.avg = res.data.avg
                     let HistogramX = []
                     let HistogramY = []
                     for (let x in data) {
@@ -108,7 +96,7 @@
                     this.Histogram.setOption({
                         tooltip: {
                             formatter: function (params) {
-                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + formatMoney(params[0].value) 
+                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
                             }
                         },
                         xAxis: {
@@ -130,10 +118,12 @@
                 }
             },
             async getMonthChat() {
+                const that = this
                 let res = await monthChat();
                 if (res && res.code === 1000) {
                     let data = res.data.data
                     this.totalSale = res.data.total
+                    this.avg = res.data.avg
                     let HistogramX = []
                     let HistogramY = []
                     for (let x in data) {
@@ -143,7 +133,7 @@
                     this.Histogram.setOption({
                         tooltip: {
                             formatter: function (params) {
-                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + formatMoney(params[0].value) 
+                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
                             }
                         },
                         xAxis: {
@@ -165,10 +155,12 @@
                 }
             },
             async getDayChat() {
+                const that = this;
                 let res = await dayChat();
                 if (res && res.code === 1000) {
                     let data = res.data.data
                     this.totalSale = res.data.total
+                    this.avg = res.data.avg
                     let HistogramX = []
                     let HistogramY = []
                     for (let x in data) {
@@ -179,14 +171,13 @@
                         tooltip: {
                             formatter: function (params) {
                                 let times = params[0].axisValueLabel.split('-')
-                                return `${times[0]}-${times[1]}-${times[2]} ${times[3]} 时` + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + formatMoney(params[0].value) 
+                                return `${times[0]}-${times[1]}-${times[2]} ${times[3]} 时` + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
                             }
                         },
                         xAxis: {
                             axisLabel: {
                                 margin: 20,
                                 formatter: function (value, index) {
-                                    console.log(value)
                                     return value.split('-')[3] + '时'
                                 }
                             },
@@ -274,9 +265,11 @@
                 let res = await lineChat()
                 if (res && res.code === 1000) {
                     let data = res.data
+                    let lineChatX = []
+                    let lineChatY = []
                     for (let x in data) {
-                        this.lineChatX.push(x)
-                        this.lineChatY.push(data[x])
+                        lineChatX.push(x)
+                        lineChatY.push(data[x])
                     }
                     this.chartColumn.setOption({
                         color: ['#2FC25B'],
@@ -329,7 +322,7 @@
                             }, axisTick: {
                                 alignWithLabel: true
                             },
-                            data: this.lineChatX,
+                            data: lineChatX,
                         },
                         yAxis: {
                             min: 0,
@@ -368,7 +361,7 @@
                         series: [{
                             symbol: 'circle',
                             name: '支付笔数',
-                            data: this.lineChatY,
+                            data: lineChatY,
                             type: 'line'
                         }]
                     });
@@ -384,6 +377,17 @@
                     this.getDayChat()
                 }
                 sessionStorage.setItem('summarySearch', i)
+            },
+            formatMoney(number, places, symbol, thousand, decimal) {
+                number = number || 0;
+                places = !isNaN(places = Math.abs(places)) ? places : 2;
+                symbol = symbol !== undefined ? symbol : "&#xA5; ";
+                thousand = thousand || ",";
+                decimal = decimal || ".";
+                var negative = number < 0 ? "-" : "",
+                    i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
+                    j = (j = i.length) > 3 ? j % 3 : 0;
+                return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
             }
         }
     }
