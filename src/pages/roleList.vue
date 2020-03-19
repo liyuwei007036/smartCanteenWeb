@@ -59,10 +59,10 @@
                         align="center"
                         width="">
                     <template slot-scope="scope">
-                        <el-button type="text" size="small" v-acl="['role:update']"
+                        <el-button v-if="scope.row.canEdit === true" type="text" size="small" v-acl="['role:update']"
                                    @click="addOrUpdateRole(scope.row.id)">修改
                         </el-button>
-                        <el-button v-if="scope.row.canEdit == true" type="text" size="small" class="delete-btn"
+                        <el-button v-if="scope.row.canEdit === true" type="text" size="small" class="delete-btn"
                                    v-acl="['role:deleted']"
                                    @click="deleted(scope.row.id)">删除
                         </el-button>
@@ -85,10 +85,10 @@
 
         <!--        弹窗-->
         <el-dialog class="dialog"
-                :title="!form.id?'新增':'编辑'"
-                :close-on-click-modal="false"
-                :visible.sync="visible"
-                width="40%">
+                   :title="!form.id?'新增':'编辑'"
+                   :close-on-click-modal="false"
+                   :visible.sync="visible"
+                   width="40%">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
                 <el-form-item prop="name" label="角色名称">
                     <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="角色名称"></el-input>
@@ -105,7 +105,7 @@
 </template>
 
 <script>
-    import {list, get, update, add, deleted} from '@/api/role';
+    import {add, deleted, get, list, update} from '@/api/role';
 
     export default {
         name: "roleList",
