@@ -146,7 +146,6 @@
                    :close-on-click-modal="false"
                    :visible.sync="isShowVisible" width="40%">
             <el-form ref="form" :model="form" disabled label-width="100px" label-position="right">
-
                 <el-form-item prop="empName" label="姓名">
                     <el-input type="text" v-model="form.empName"></el-input>
                 </el-form-item>
@@ -166,9 +165,10 @@
                     <el-input type="textarea" v-model="form.detail" rows="6"></el-input>
                 </el-form-item>
             </el-form>
-
-            <el-button type="primary" class="dialog-btn-normal" @click="isShowVisible = false" :disabled="false">关 闭
-            </el-button>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" class="dialog-btn-normal" @click="isShowVisible = false" :disabled="false">关 闭
+                </el-button>
+            </div>
         </el-dialog>
 
     </div>

@@ -325,6 +325,11 @@
         border-radius: 3px;
     }
 
+    .el-dialog__footer{
+        border-top: 1px solid #eee;
+        padding: 20px;
+    }
+
     .dialog-footer{
         display: flex;
         justify-content: space-around;
