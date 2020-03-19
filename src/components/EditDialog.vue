@@ -45,6 +45,7 @@
 
             <el-form-item prop="cardNo" label="卡号" class="getCard">
                 <el-input type="number" id="cardNo" v-model.trim="form.cardNo" auto-complete="off" placeholder="卡号"
+                          :readonly="isReadonly"
                           @mousewheel.native.prevent>
                 </el-input>
                 <el-button v-if="!isReadonly" @click="readCard()"
@@ -52,23 +53,6 @@
                     {{status_text}}
                 </el-button>
             </el-form-item>
-
-            <!--            <el-form-item label="卡类别">-->
-            <!--                <el-select class="select_normal" v-model="form.type" placeholder="请选择卡类别">-->
-            <!--                    <el-option-->
-            <!--                            v-for="item in cardTypeList"-->
-            <!--                            :key="item.id"-->
-            <!--                            :label="item.name"-->
-            <!--                            :value="item.id">-->
-            <!--                    </el-option>-->
-            <!--                </el-select>-->
-            <!--            </el-form-item>-->
-
-
-            <!--            <el-form-item prop="minimumBalance" label="卡最低余额">-->
-            <!--                <el-input type="number" v-model.trim="form.minimumBalance" auto-complete="off"-->
-            <!--                          placeholder="请输入卡最低余额" @mousewheel.native.prevent></el-input>-->
-            <!--            </el-form-item>-->
 
             <el-form-item prop="validityTime" label="卡有效期">
                 <el-date-picker
@@ -83,17 +67,6 @@
                 <el-input type="number" v-model.trim="form.openCardAmount" auto-complete="off"
                           placeholder="请输入开卡存入金额" @mousewheel.native.prevent></el-input>
             </el-form-item>
-
-            <!--            <el-form-item prop="deposit" label="押金">-->
-            <!--                <el-input type="number" v-model.trim="form.deposit" auto-complete="off"-->
-            <!--                          placeholder="请输入押金" @mousewheel.native.prevent></el-input>-->
-            <!--            </el-form-item>-->
-
-
-            <!--            <el-form-item prop="expense" label="工本费">-->
-            <!--                <el-input type="number" v-model.trim="form.expense" auto-complete="off"-->
-            <!--                          placeholder="请输入工本费" @mousewheel.native.prevent></el-input>-->
-            <!--            </el-form-item>-->
 
             <el-form-item label="角色" prop="roles">
                 <el-select class="select_normal" v-model="form.roles" multiple placeholder="请选择角色">
@@ -126,10 +99,8 @@
                          class="width-220 selectTree-input objectTree"
                          ref="selectTree">
                 </el-tree>
-
-
             </el-form-item>
-
+            <el-button class="dialog-btn-reset" @click="resetForm('form')">重 置</el-button>
             <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit('form')">保存</el-button>
         </el-form>
     </el-dialog>
@@ -236,7 +207,6 @@
         watch: {
             form: {
                 handler: function (val) {
-                    console.log(val.confirmPassword1)
                     this.form.confirmPassword = this.form.confirmPassword1
                     this.form.password = this.form.password1
                 },
@@ -316,6 +286,11 @@
                 let res = await listAllRole()
                 if (res.code === 1000) {
                     this.roleList = res.data
+                    res.data.forEach(el => {
+                        if (el.isDefault === true) {
+                            this.form.roles.push(el.id);
+                        }
+                    })
                 }
             },
 
