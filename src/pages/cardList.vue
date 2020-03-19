@@ -346,11 +346,14 @@
                               placeholder="手机号" :readonly="true"></el-input>
                 </el-form-item>
 
-                <el-form-item prop="cardNo" label="卡号">
+                <el-form-item prop="cardNo" label="卡号" class="getCard">
                     <el-input type="number" v-model.trim="replaceForm.cardNo" auto-complete="off" placeholder="卡号"
-                              :readonly="true">
-                        <el-button slot="append" @click="readCard()">点击读卡</el-button>
+                              @mousewheel.native.prevent>
                     </el-input>
+                    <el-button @click="readCard()"
+                               style="margin-left: 10px;height: 34px;color: #fff;background-color: #2E6CFE;font-size: 13px;line-height: 34px;padding:0 10px;border: none">
+                        点击读卡
+                    </el-button>
                 </el-form-item>
 
                 <el-form-item label="卡类别">
@@ -397,7 +400,7 @@
                               placeholder="请输入工本费"></el-input>
                 </el-form-item>
 
-<!--                <el-button class="dialog-btn-reset" @click="resetForm('replaceForm')">重 置</el-button>-->
+                <el-button class="dialog-btn-reset" @click="resetForm('replaceForm')">重 置</el-button>
                 <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit1('replaceForm')">保存</el-button>
             </el-form>
 
@@ -783,7 +786,7 @@
             },
 
             resetForm(formName) {
-                this.$refs[formName].resetFields();
+                this.replaceForm.cardNo = ''
             },
 
             toggleSearch() {
@@ -812,5 +815,12 @@
 
     .select_normal /deep/ input[disabled] {
         background-color: #f1f1f5;
+    }
+
+
+    .getCard /deep/ .el-form-item__content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 </style>
