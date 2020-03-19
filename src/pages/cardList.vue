@@ -400,8 +400,11 @@
                               placeholder="请输入工本费"></el-input>
                 </el-form-item>
 
-                <el-button class="dialog-btn-reset" @click="resetForm('replaceForm')">重 置</el-button>
-                <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit1('replaceForm')">保存</el-button>
+                <div class="dialog-footer">
+                    <el-button class="dialog-btn-reset" @click="resetReplaceForm('replaceForm')">重 置</el-button>
+                    <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit1('replaceForm')">保存
+                    </el-button>
+                </div>
             </el-form>
 
         </el-dialog>
@@ -786,6 +789,10 @@
             },
 
             resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
+
+            resetReplaceForm() {
                 this.replaceForm.cardNo = ''
             },
 

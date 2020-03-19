@@ -324,5 +324,11 @@
         background-color: #5286FF;
         border-radius: 3px;
     }
+
+    .dialog-footer{
+        display: flex;
+        justify-content: space-around;
+    }
+
 </style>
 

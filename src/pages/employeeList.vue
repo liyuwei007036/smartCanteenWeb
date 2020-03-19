@@ -182,16 +182,10 @@
                     <el-input type="text" v-model.trim="form1.mobile" auto-complete="off" placeholder="手机号"></el-input>
                 </el-form-item>
 
-
                 <el-form-item prop="cardNo" label="卡号">
                     <el-input type="number" v-model.trim="form1.cardNo" auto-complete="off" placeholder="卡号">
                     </el-input>
                 </el-form-item>
-
-                <!--                <el-form-item prop="minimumBalance" label="卡最低余额">-->
-                <!--                    <el-input type="number" v-model.trim="form1.minimumBalance" auto-complete="off"-->
-                <!--                              placeholder="请输入卡最低余额"></el-input>-->
-                <!--                </el-form-item>-->
 
                 <el-form-item prop="validityTime" label="卡有效期">
                     <el-date-picker
@@ -205,17 +199,6 @@
                     <el-input type="number" v-model.trim="form1.openCardAmount" auto-complete="off"
                               placeholder="请输入开卡存入金额"/>
                 </el-form-item>
-
-                <!--                <el-form-item prop="deposit" label="押金">-->
-                <!--                    <el-input type="number" v-model.trim="form1.deposit" auto-complete="off"-->
-                <!--                              placeholder="请输入押金"/>-->
-                <!--                </el-form-item>-->
-
-
-                <!--                <el-form-item prop="expense" label="工本费">-->
-                <!--                    <el-input type="number" v-model.trim="form1.expense" auto-complete="off"-->
-                <!--                              placeholder="请输入工本费"/>-->
-                <!--                </el-form-item>-->
 
                 <el-form-item prop="originationName" label="所属组织">
                     <el-input type="text" v-model.trim="form1.originationName" auto-complete="off"
