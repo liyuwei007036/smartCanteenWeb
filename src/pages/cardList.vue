@@ -222,21 +222,21 @@
                    title="充值"
                    :close-on-click-modal="false"
                    :visible.sync="visible"
-                   width="40%">
+                   width="40%" @closed="handleClose">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
                 <el-form-item prop="name" label="姓名" v-if="isShow">
                     <el-input type="text" v-model.trim="name" auto-complete="off" placeholder="用户姓名"
-                              :readonly='true'></el-input>
+                              :readonly='true'/>
                 </el-form-item>
 
                 <el-form-item prop="no" label="账号" v-if="isShow">
                     <el-input type="text" v-model.trim="no" auto-complete="off" placeholder="账号"
-                              :readonly='true'></el-input>
+                              :readonly='true'/>
                 </el-form-item>
 
                 <el-form-item prop="currentBalance" label="余额" v-if="isShow">
                     <el-input type="text" v-model.trim="currentBalance" auto-complete="off" placeholder="余额"
-                              :readonly='true'></el-input>
+                              :readonly='true'/>
                 </el-form-item>
 
                 <el-form-item label="充值类型" prop="rechargeType">
@@ -283,7 +283,9 @@
                    title="补扣"
                    :close-on-click-modal="false"
                    :visible.sync="isDeductionVisible"
-                   width="40%">
+                   width="40%"
+                   @close="handleClose"
+        >
             <el-form ref="deductionForm" :model="deductionForm" :rules="deductionRules" label-width="80px"
                      label-position="left">
                 <el-form-item prop="name" label="姓名">
@@ -412,7 +414,7 @@
 </template>
 
 <script>
-    import {list, loss, beforeGetCard, getCard, patch, deduction} from '@/api/card';
+    import {list, loss, patch, deduction} from '@/api/card';
     import {recharge} from '@/api/recharge';
     import {get} from '@/api/employeeList';
     import {SOCKET_URL} from '@/config/global'
@@ -594,6 +596,11 @@
 
             //充值
             recharge(id, empId, currentBalance) {
+                this.form = {
+                    cardIds: [],
+                    money: '',
+                    rechargeType: 1
+                }
                 this.visible = true;
                 this.isShow = true;
                 this.form.cardIds.push(id);
@@ -603,6 +610,11 @@
 
             //批量充值
             patchRecharge() {
+                this.form = {
+                    cardIds: [],
+                    money: '',
+                    rechargeType: 1
+                }
                 if (this.multipleSelection.length > 0) {
                     this.visible = true;
                     this.isShow = false;
@@ -778,7 +790,21 @@
                     this.onSend({token: token, start: false})
                     this.onClose()
                 }
-                this.$refs.replaceForm.resetFields()
+                try {
+                    this.$refs['replaceForm'].resetFields()
+                } catch (e) {
+
+                }
+                try {
+                    this.$refs['form'].resetFields()
+                } catch (e) {
+
+                }
+                try {
+                    this.$refs['deductionForm'].resetFields()
+                } catch (e) {
+
+                }
             },
 
             // 处理表格数据,卡片为禁止的不允许充值
