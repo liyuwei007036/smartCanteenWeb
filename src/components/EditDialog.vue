@@ -7,40 +7,40 @@
                @closed="handleClose">
         <el-form ref="form" :model="form" :rules="rules" status-icon label-width="120px" label-position="right">
             <el-form-item prop="name" label="姓名">
-                <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="姓名"></el-input>
+                <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="姓名"/>
             </el-form-item>
             <el-form-item prop="no" label="账号">
                 <el-input type="text" v-model.trim="form.no" auto-complete="off" placeholder=账号
-                          :readonly="isReadonly"></el-input>
+                          :readonly="isReadonly"/>
             </el-form-item>
 
             <el-form-item prop="password1" label="登录密码">
                 <el-input type="password" v-model.trim="form.password1" auto-complete="off"
-                          placeholder="登录密码"></el-input>
+                          placeholder="登录密码"/>
             </el-form-item>
 
             <el-form-item prop="confirmPassword1" label="确认密码">
                 <el-input type="password" v-model.trim="form.confirmPassword1" auto-complete="off"
-                          placeholder="请再次输入密码"></el-input>
+                          placeholder="请再次输入密码"/>
             </el-form-item>
 
 
             <el-form-item prop="password" label="卡密码" hidden>
-                <el-input type="password" v-model.trim="form.password" auto-complete="off" placeholder="密码"></el-input>
+                <el-input type="password" v-model.trim="form.password" auto-complete="off" placeholder="密码"/>
             </el-form-item>
 
             <el-form-item prop="confirmPassword" label="确认密码" hidden>
                 <el-input type="password" v-model.trim="form.confirmPassword" auto-complete="off"
-                          placeholder="请再次输入密码"></el-input>
+                          placeholder="请再次输入密码"/>
             </el-form-item>
             <el-form-item prop="idCard" label="身份证号">
                 <el-input type="text" v-model.trim="form.idCard" auto-complete="off" placeholder="身份证号"
-                          :readonly="isReadonly" maxlength="18"></el-input>
+                          :readonly="isReadonly" maxlength="18"/>
             </el-form-item>
 
             <el-form-item prop="mobile" label="手机号">
                 <el-input type="mobile" v-model.trim="form.mobile" auto-complete="off" placeholder="手机号"
-                          maxlength="11"></el-input>
+                          maxlength="11"/>
             </el-form-item>
 
             <el-form-item prop="cardNo" label="卡号" class="getCard">
@@ -59,13 +59,14 @@
                         v-model="form.validityTime"
                         type="date"
                         placeholder="请选择卡有效期"
+                        :picker-options="pickerOptions"
                         value-format="yyyy-MM-dd HH:mm:ss">
                 </el-date-picker>
             </el-form-item>
 
             <el-form-item prop="openCardAmount" label="开卡存入金额(元)">
                 <el-input type="number" v-model.trim="form.openCardAmount" auto-complete="off"
-                          placeholder="请输入开卡存入金额" @mousewheel.native.prevent></el-input>
+                          placeholder="请输入开卡存入金额" @mousewheel.native.prevent/>
             </el-form-item>
 
             <el-form-item label="角色" prop="roles">
@@ -115,12 +116,14 @@
     export default {
         name: "EditDialog",
         inject: ['reload'],
-        data() {
+        data: function () {
             let validatePass2 = (rule, value, callback) => {
-                console.log(value)
-                console.log(this.form.password1)
                 if (value === '') {
-                    callback(new Error('请再次输入密码'))
+                    if (this.form.password1 && this.form.password1.length > 0) {
+                        callback(new Error('请再次输入密码'))
+                    } else {
+                        callback()
+                    }
                 } else if (value !== this.form.password1) {
                     callback(new Error('两次输入密码不一致!'))
                 } else {
@@ -133,7 +136,6 @@
                     return callback(new Error('手机号不能为空'));
                 } else {
                     const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
-                    console.log(reg.test(value));
                     if (reg.test(value)) {
                         callback();
                     } else {
@@ -143,6 +145,11 @@
             };
 
             return {
+                pickerOptions: {
+                    disabledDate(time) {
+                        return time.getTime() < Date.now();
+                    },
+                },
                 visible: false,
                 status_text: '点击读卡',
                 form: {
@@ -162,7 +169,7 @@
                     roles: [],
                     type: 1,
                     minimumBalance: 0,
-                    validityTime: '',
+                    validityTime: new Date('2099-12-31'),
                     openCardAmount: 0,
                     deposit: 0,
                     expense: 0,
@@ -195,7 +202,9 @@
                     confirmPassword1: [
                         {validator: validatePass2, trigger: 'blur'}
                     ],
-                    // originationName: [{required: true, message: '请选择组织结构', trigger: 'blur'},]
+                    originationName: [
+                        {required: true, message: '请选择组织结构', trigger: 'blur'},
+                    ]
                 },
             }
         },
@@ -224,7 +233,6 @@
                 this.websock.onclose = this.onClose;
             },
             onOpen() { //连接建立之后执行send方法发送数据
-                console.log("'onOpen")
                 let token = sessionStorage.getItem('x-smart-token') || 'x';
                 this.onSend({token: token, start: true});
             },
@@ -232,19 +240,15 @@
                 this.initWebSocket();
             },
             onMessage(e) { //数据接收
-                console.log("'接受数据", e)
                 this.form.cardNo = e.data
                 this.$forceUpdate();
             },
             onSend(Data) {//
-                console.log('数据发送', Data)
                 this.websock.send(JSON.stringify(Data));
             },
             onClose(e) {  //关闭
-                console.log('断开连接', e);
                 this.websock.close();
             },
-
             init(id) {
                 this.form.id = id || 0;
                 this.visible = true;
