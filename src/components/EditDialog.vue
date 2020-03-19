@@ -101,8 +101,10 @@
                          ref="selectTree">
                 </el-tree>
             </el-form-item>
-            <el-button class="dialog-btn-reset" @click="resetForm('form')">重 置</el-button>
-            <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit('form')">保存</el-button>
+            <div class="dialog-footer">
+                <el-button class="dialog-btn-reset" @click="resetForm('form')">重 置</el-button>
+                <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit('form')">保存</el-button>
+            </div>
         </el-form>
     </el-dialog>
 </template>
@@ -379,7 +381,13 @@
             },
 
             resetForm(formName) {
-                this.$refs[formName].resetFields();
+                this.getEmployeeRole()  //获取角色下拉列表
+                if (this.form.id > 0) {
+                    this.$refs[formName].clearValidate()
+                    this.init(this.form.id)
+                } else {
+                    this.$refs[formName].resetFields();
+                }
             }
 
         }
