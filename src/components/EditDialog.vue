@@ -142,10 +142,6 @@
                 }
             };
 
-            let checkRoles = (rule, value, callback) => {
-                console.log(value)
-            };
-
             return {
                 visible: false,
                 status_text: '点击读卡',
@@ -194,7 +190,7 @@
                         {validator: checkPhone, trigger: 'blur'}
                     ],
                     roles: [
-                        {validator: checkRoles, trigger: 'blur'}
+                        {required: true, message: '请选择角色', trigger: 'blur'},
                     ],
                     confirmPassword1: [
                         {validator: validatePass2, trigger: 'blur'}
@@ -286,11 +282,14 @@
                 let res = await listAllRole()
                 if (res.code === 1000) {
                     this.roleList = res.data
-                    res.data.forEach(el => {
-                        if (el.isDefault === true) {
-                            this.form.roles.push(el.id);
-                        }
-                    })
+                    console.log(this.form.id)
+                    if (this.form.id === 0) {
+                        res.data.forEach(el => {
+                            if (el.isDefault === true) {
+                                this.form.roles.push(el.id);
+                            }
+                        })
+                    }
                 }
             },
 
