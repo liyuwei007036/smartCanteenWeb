@@ -14,25 +14,16 @@
                           :readonly="isReadonly"/>
             </el-form-item>
 
-            <el-form-item prop="password1" label="登录密码">
-                <el-input type="password" v-model.trim="form.password1" auto-complete="off"
+            <el-form-item prop="password" label="登录密码">
+                <el-input type="password" v-model.trim="form.password" auto-complete="off"
                           placeholder="登录密码"/>
             </el-form-item>
 
-            <el-form-item prop="confirmPassword1" label="确认密码">
-                <el-input type="password" v-model.trim="form.confirmPassword1" auto-complete="off"
-                          placeholder="请再次输入密码"/>
-            </el-form-item>
-
-
-            <el-form-item prop="password" label="卡密码" hidden>
-                <el-input type="password" v-model.trim="form.password" auto-complete="off" placeholder="密码"/>
-            </el-form-item>
-
-            <el-form-item prop="confirmPassword" label="确认密码" hidden>
+            <el-form-item prop="confirmPassword" label="确认密码">
                 <el-input type="password" v-model.trim="form.confirmPassword" auto-complete="off"
                           placeholder="请再次输入密码"/>
             </el-form-item>
+
             <el-form-item prop="idCard" label="身份证号">
                 <el-input type="text" v-model.trim="form.idCard" auto-complete="off" placeholder="身份证号"
                           :readonly="isReadonly" maxlength="18"/>
@@ -121,12 +112,12 @@
         data: function () {
             let validatePass2 = (rule, value, callback) => {
                 if (value === '') {
-                    if (this.form.password1 && this.form.password1.length > 0) {
+                    if (this.form.password && this.form.password.length > 0) {
                         callback(new Error('请再次输入密码'))
                     } else {
                         callback()
                     }
-                } else if (value !== this.form.password1) {
+                } else if (value !== this.form.password) {
                     callback(new Error('两次输入密码不一致!'))
                 } else {
                     callback()
@@ -173,8 +164,6 @@
                     mobile: '',
                     password: '',
                     confirmPassword: '',
-                    password1: '',
-                    confirmPassword1: '',
                     originationId: '',
                     originationName: "",
                     cardId: '',
@@ -193,8 +182,6 @@
                     {id: 2, name: 2}
                 ],
                 data: [],
-                password: '',
-                confirmPassword: '',
                 isReadonly: false, //是否只读
                 isShowSelect: false, //组织结构下拉树
                 timer: 0,
@@ -212,7 +199,7 @@
                     roles: [
                         {required: true, message: '请选择角色', trigger: 'blur'},
                     ],
-                    confirmPassword1: [
+                    confirmPassword: [
                         {validator: validatePass2, trigger: 'blur'}
                     ],
                     originationName: [
@@ -223,13 +210,7 @@
         },
 
         watch: {
-            form: {
-                handler: function (val) {
-                    this.form.confirmPassword = this.form.confirmPassword1
-                    this.form.password = this.form.password1
-                },
-                deep: true //对象的深度验证
-            },
+           
         },
         created() {
         },
