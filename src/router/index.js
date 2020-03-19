@@ -144,8 +144,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     // localStorage.clear();
-    console.log(from.name)
-    if (from.name != 'null' && from.name != null) {
+    if (from.name !== 'null' && from.name != null) {
         localStorage.clear();
     }
     if (to.name === 'login') {
@@ -156,6 +155,10 @@ router.beforeEach((to, from, next) => {
             $user = JSON.parse(sessionStorage.getItem('user'))
         } catch (e) {
 
+        }
+        if ($user && $user.id === 1){
+            next();
+            return;
         }
         let permissions = []
         if ($user) {

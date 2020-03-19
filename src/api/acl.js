@@ -1,7 +1,6 @@
 //acl.js
 const aclDirective = {
     inserted: function (el, binding) {
-
         const hasAuth = function (needAuths, haveAuths) {
             if (needAuths === undefined || needAuths.length === 0) {
                 return true
@@ -20,6 +19,9 @@ const aclDirective = {
             $user = JSON.parse(sessionStorage.getItem('user'))
         } catch (e) {
 
+        }
+        if ($user && $user.id === 1){
+            return true;
         }
         let permissions = []
         if ($user) {

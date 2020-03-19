@@ -2,7 +2,7 @@ module.exports = [{
     name: '人员管理',
     id: 'personnelManagement',
     auths: ['employee'],
-    icon: 'el-icon-user-solid',
+    icon: 'el-icon-user',
     sub: [{
         name: '组织管理',
         auths: ['originationManagement'],
@@ -43,7 +43,7 @@ module.exports = [{
 }, {
     name: '消费管理',
     id: 'consumptionManagement',
-    icon: 'el-icon-money',
+    icon: 'el-icon-wallet',
     auths: ['recharge:listlog', 'order:list'],
     sub: [{
         name: '充值记录',
@@ -57,28 +57,28 @@ module.exports = [{
 }, {
     name: '日志管理',
     id: 'log',
-    icon: 'el-icon-s-marketing',
-    auths: [''],
+    icon: 'el-icon-notebook-2',
+    auths: ['log:operation', 'log:login'],
     sub: [
         {
             name: '操作日志',
-            auths: [],
+            auths: ['log:operation'],
             componentName: 'operateLog',
-        },{
+        }, {
             name: '登录日志',
-            auths: [''],
+            auths: ['log:login'],
             componentName: 'loginLog',
         }
     ],
 }, {
     name: '数据统计',
     id: 'dataStatistics',
-    icon: 'el-icon-s-marketing',
+    icon: 'el-icon-data-analysis',
     auths: [''],
     sub: [
         {
             name: '消费统计',
-            auths: ['icCard:list'],
+            auths: [''],
             componentName: 'consumerStatistics',
         },
     ],
