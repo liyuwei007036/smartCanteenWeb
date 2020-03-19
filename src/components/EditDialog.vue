@@ -163,7 +163,7 @@
                     type: 1,
                     minimumBalance: 0,
                     validityTime: '',
-                    openCardAmount: '',
+                    openCardAmount: 0,
                     deposit: 0,
                     expense: 0,
                 },
@@ -246,13 +246,6 @@
             },
 
             init(id) {
-                this.form = {};
-                //初始化默认项
-                this.form.type = 1;
-                this.form.deposit = 0;
-                this.form.expense = 0;
-                this.form.minimumBalance = 0
-                this.form.openCardAmount = 0
                 this.form.id = id || 0;
                 this.visible = true;
                 this.getOrigination()  //获取组织结构
@@ -282,7 +275,6 @@
                 let res = await listAllRole()
                 if (res.code === 1000) {
                     this.roleList = res.data
-                    console.log(this.form.id)
                     if (this.form.id === 0) {
                         res.data.forEach(el => {
                             if (el.isDefault === true) {
