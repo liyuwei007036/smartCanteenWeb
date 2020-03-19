@@ -131,6 +131,17 @@
                 }
             }
 
+            let validateOrg = (rule, value, callback) => {
+                let that = this
+                setTimeout(function () {
+                    if (that.form.originationName === '') {
+                        callback(new Error('请选择组织结构'));
+                    } else {
+                        callback()
+                    }
+                }, 200)
+            }
+
             let checkPhone = (rule, value, callback) => {
                 if (!value) {
                     return callback(new Error('手机号不能为空'));
@@ -203,7 +214,7 @@
                         {validator: validatePass2, trigger: 'blur'}
                     ],
                     originationName: [
-                        {required: true, message: '请选择组织结构', trigger: 'blur'},
+                        {validator: validateOrg, trigger: 'blur'},
                     ]
                 },
             }
