@@ -14,6 +14,9 @@
             <!--        弹窗-->
             <el-dialog
                     title="修改密码"
+                    v-dialogDrag
+                    ref="dialog__wrapper"
+                    width="30%"
                     :close-on-click-modal="false"
                     :visible.sync="isChangePasswordVisible">
                 <el-form ref="changePasswordform" :model="changePasswordform" :rules="rules" label-width="80px"

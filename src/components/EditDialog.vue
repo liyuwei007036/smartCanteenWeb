@@ -2,10 +2,10 @@
     <el-dialog class="dialog abow_dialog"
                v-dialogDrag
                ref="dialog__wrapper"
+               width="40%"
                :title="!form.id?'新增人员':'修改人员'"
                :close-on-click-modal="false"
                :visible.sync="visible"
-               width="40%"
                @closed="handleClose">
         <el-form ref="form" :model="form" :rules="rules" status-icon label-width="120px" label-position="right">
             <el-form-item prop="name" label="姓名">
