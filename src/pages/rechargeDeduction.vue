@@ -198,7 +198,7 @@
                                type="number"
                                placeholder="请选择或输入充值金额">
                         <el-option
-                                v-for="item in rechargeAmounntList"
+                                v-for="item in rechargeAmountList"
                                 :key="item.id"
                                 :label="item.name"
                                 :value="item.id">
@@ -319,7 +319,7 @@
                     name: '退费',
                     id: 2
                 }],
-                rechargeAmounntList: [{
+                rechargeAmountList: [{
                     name: '20',
                     id: 20
                 }, {

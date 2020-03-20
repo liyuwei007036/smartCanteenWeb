@@ -240,13 +240,12 @@
                               placeholder="所属组织" disabled/>
                 </el-form-item>
 
-                <div class="dialog-footer">
+            </el-form>
+            <span slot="footer" class="dialog-footer">
                     <el-button class="dialog-btn-reset" @click="resetReplaceForm('replaceForm')">重 置</el-button>
                     <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit('replaceForm')">保存
                     </el-button>
-                </div>
-            </el-form>
-
+            </span>
         </el-dialog>
     </div>
 </template>

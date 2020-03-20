@@ -238,8 +238,6 @@
     }
 
     /*重置dialog样式*/
-
-
     .abow_dialog {
         display: flex;
         justify-content: center;
@@ -338,5 +336,7 @@
     .el-tooltip__popper {
         max-width: 20%;
     }
+
+
 </style>
 

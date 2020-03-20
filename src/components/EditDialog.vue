@@ -1,7 +1,5 @@
 <template>
-    <el-dialog class="dialog abow_dialog"
-               v-dialogDrag
-               ref="dialog__wrapper"
+    <el-dialog class="dialog"
                width="40%"
                :title="!form.id?'新增人员':'修改人员'"
                :close-on-click-modal="false"
@@ -93,11 +91,11 @@
                          ref="selectTree">
                 </el-tree>
             </el-form-item>
-            <div class="dialog-footer">
-                <el-button class="dialog-btn-reset" @click="resetForm('form')">重 置</el-button>
-                <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit('form')">保存</el-button>
-            </div>
         </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button class="dialog-btn-reset" @click="resetForm('form')">重 置</el-button>
+            <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit('form')">保存</el-button>
+        </span>
     </el-dialog>
 </template>
 
@@ -205,8 +203,15 @@
                     ],
                     originationName: [
                         {validator: validateOrg, trigger: 'blur'},
-                    ]
+                    ],
+                    openCardAmount: [{
+                        required: true,
+                        pattern: /^\d+$|^([0-9]+\.\d{1,2})$/,
+                        message: '开卡存入金额必须大于0',
+                        trigger: 'blur'
+                    }],
                 },
+
             }
         },
 
@@ -382,5 +387,24 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+
+    /deep/ .el-dialog {
+        display: flex;
+        flex-direction: column;
+        margin: 0 !important;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        /*height:600px;*/
+        max-height: calc(100% - 30px);
+        max-width: calc(100% - 30px);
+    }
+
+    /deep/ .el-dialog .el-dialog__body {
+        flex: 1;
+        overflow: auto;
     }
 </style>
