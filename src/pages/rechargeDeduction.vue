@@ -169,7 +169,7 @@
 
                 <el-form-item prop="cardNo" label="卡号" v-if="isShow">
                     <el-input type="text" v-model.trim="cardNo" auto-complete="off" placeholder="卡号"
-                              :readonly='true'></el-input>
+                              :readonly='true'/>
                 </el-form-item>
 
                 <el-form-item prop="currentBalance" label="余额(元)" v-if="isShow">
@@ -207,7 +207,7 @@
                 </el-form-item>
 
                 <el-form-item label="充值描述">
-                    <el-input type="textarea" v-model="form.description" rows="3"></el-input>
+                    <el-input type="textarea" v-model="form.description" rows="3"/>
                 </el-form-item>
 
             </el-form>
@@ -224,35 +224,34 @@
                    :close-on-click-modal="false"
                    :visible.sync="isDeductionVisible"
                    width="40%"
-                   @close="handleClose"
-        >
+                   @close="handleClose">
             <el-form ref="deductionForm" :model="deductionForm" :rules="deductionRules" label-width="105px"
                      label-position="left">
                 <el-form-item prop="name" label="姓名">
                     <el-input type="text" v-model.trim="name" auto-complete="off" placeholder="用户姓名"
-                              :readonly='true'></el-input>
+                              :readonly='true'/>
                 </el-form-item>
 
                 <el-form-item prop="no" label="工号">
                     <el-input type="text" v-model.trim="no" auto-complete="off" placeholder="工号"
-                              :readonly='true'></el-input>
+                              :readonly='true'/>
                 </el-form-item>
 
                 <el-form-item prop="currentBalance" label="余额(元)">
                     <el-input type="text" v-model.trim="currentBalance" auto-complete="off" placeholder="余额"
-                              :readonly='true'></el-input>
+                              :readonly='true'/>
                 </el-form-item>
 
                 <el-form-item label="补扣金额(元)" prop="money">
 
                     <el-input type="number" v-model.trim="deductionForm.money" auto-complete="off"
                               @mousewheel.native.prevent
-                              placeholder="请输入补扣金额"></el-input>
+                              placeholder="请输入补扣金额"/>
                 </el-form-item>
 
 
                 <el-form-item label="补扣描述">
-                    <el-input type="textarea" v-model="deductionForm.description" rows="3"></el-input>
+                    <el-input type="textarea" v-model="deductionForm.description" rows="3"/>
                 </el-form-item>
 
             </el-form>
@@ -267,11 +266,9 @@
 </template>
 
 <script>
-    import {rechargeList, deduction} from '@/api/card';
+    import {deduction, rechargeList} from '@/api/card';
     import {recharge} from '@/api/recharge';
     import {get} from '@/api/employeeList';
-    import {SOCKET_URL} from '@/config/global'
-
 
     export default {
         name: "rechargeDeduction",
@@ -305,13 +302,13 @@
                 form: { //充值弹窗
                     cardIds: [],
                     money: '',
-                    description:'',
+                    description: '',
                     rechargeType: 1
                 },
                 deductionForm: { //补扣弹窗
                     cardId: '',
-                    cardNo:'',
-                    description:'',
+                    cardNo: '',
+                    description: '',
                     money: ''
                 },
                 multipleSelection: [],
@@ -339,10 +336,20 @@
                     id: 500
                 }],
                 rules: {
-                    money: [{required: true, message: '请选择或输入充值金额', trigger: 'blur'}],
+                    money: [{
+                        required: true,
+                        pattern: /^\d+$|^([0-9]+\.\d{1,2})$/,
+                        message: '充值金额必须大于0',
+                        trigger: 'blur'
+                    }],
                 },
                 deductionRules: {
-                    money: [{required: true, message: '请输入补扣金额', trigger: 'blur'}],
+                    money: [{
+                        required: true,
+                        pattern: /^\d+$|^([0-9]+\.\d{1,2})$/,
+                        message: '补扣金额必须大于0',
+                        trigger: 'blur'
+                    }],
                 },
             }
         },
@@ -352,45 +359,14 @@
         },
 
         methods: {
-            initWebSocket() { //初始化weosocket
-                const wsUri = SOCKET_URL + this.$route.name
-                this.websock = new WebSocket(wsUri);
-                this.websock.onmessage = this.onMessage;
-                this.websock.onopen = this.onOpen;
-                this.websock.onerror = this.onMessage;
-                this.websock.onclose = this.onClose;
-            },
-            onOpen() { //连接建立之后执行send方法发送数据
-                console.log("'onOpen")
-                let token = sessionStorage.getItem('x-smart-token') || 'x';
-
-                this.onSend({token: token, start: true});
-            },
-            onError() {//连接建立失败重连
-                this.initWebSocket();
-            },
-            onMessage(e) { //数据接收
-                console.log("'接受数据", e)
-                this.replaceForm.cardNo = e.data
-                this.$forceUpdate();
-            },
-            onSend(Data) {//
-                console.log('数据发送', Data)
-                this.websock.send(JSON.stringify(Data));
-            },
-            onClose(e) {  //关闭
-                console.log('断开连接', e);
-                this.websock.close()
-            },
             serach() {
                 this.search.page = 1
                 this.getList();
             },
-
             //获取列表数据
             async getList() {
                 let res = await rechargeList(this.search);
-                console.log(res)
+
                 if (res.code === 1000) {
                     this.total = res.data.total;
                     this.currentPage = res.data.currentPage;
@@ -438,7 +414,7 @@
                     if (valid) {
                         this.addForm();
                     } else {
-                        console.log('error submit!!');
+
                         return false;
                     }
                 });
@@ -469,7 +445,7 @@
                     if (valid) {
                         this.addDeductionForm();
                     } else {
-                        console.log('error submit!!');
+
                         return false;
                     }
                 });
@@ -488,20 +464,17 @@
 
             handleSelectionChange(val) {
                 this.multipleSelection = val;
-                console.log(this.multipleSelection)
+
             },
 
 
             //获取用户数据
             async getUserInfo(empId) {
                 let res = await get(empId);
-                console.log(res)
                 if (res.code === 1000) {
                     this.name = res.data.name
                     this.no = res.data.no
                     this.cardNo = res.data.cardNo
-                } else {
-                    this.$message.error(res.msg);
                 }
             },
 
@@ -517,14 +490,6 @@
             },
 
             handleClose() {
-                if (this.websock && this.websock.readyState === 0) {
-                    this.onClose()
-                }
-                if (this.websock && this.websock.readyState === 1) {
-                    let token = sessionStorage.getItem('x-smart-token') || 'x';
-                    this.onSend({token: token, start: false})
-                    this.onClose()
-                }
                 try {
                     this.$refs['replaceForm'].resetFields()
                 } catch (e) {
@@ -558,13 +523,10 @@
                 if (this.isSearchVisible === true) {
                     this.$nextTick(() => {
                         let height = this.$refs.search.offsetHeight;
-                        // console.log(height)
                         this.maxHeight = this.$ViewportSize - 300 - height + 1
-                        console.log(this.maxHeight)
                     })
                 } else {
                     this.maxHeight = this.$ViewportSize - 300
-                    console.log(this.maxHeight)
                 }
             }
 
