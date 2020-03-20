@@ -7,14 +7,13 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "unit": "jest --config test/unit/jest.conf.js --coverage",
-    "e2e": "node test/e2e/runner.js",
-    "test": "npm run unit && npm run e2e",
-    "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "build:prod": "cross-env NODE_ENV=production env_config=prod node build/build.js",
+    "build:test": "cross-env NODE_ENV=production env_config=test node build/build.js"
   },
   "dependencies": {
     "axios": "^0.19.0",
+    "cross-env": "^7.0.2",
     "echarts": "^4.6.0",
     "element-ui": "^2.13.0",
     "vue": "^2.5.2",

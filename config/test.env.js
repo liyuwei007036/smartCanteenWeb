@@ -1,7 +1,7 @@
 'use strict'
-const merge = require('webpack-merge')
-const devEnv = require('./dev.env')
-
-module.exports = merge(devEnv, {
-  NODE_ENV: '"testing"'
-})
+module.exports = {
+    NODE_ENV: '"testing"',
+    ENV_CONFIG: '"test"',
+    HTTP_URL: 'http://nexus.51mypc.cn:83/vue/',
+    SOCKET_URL: 'ws://nexus.51mypc.cn:83/ws/'
+}
