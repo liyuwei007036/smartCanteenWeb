@@ -96,7 +96,6 @@
             getCurrentUser() {
                 try {
                     let user = sessionStorage.getItem('user');
-                    /127.0.0.1
                     if (!user) {
                         router.push({
                             name: `login`
