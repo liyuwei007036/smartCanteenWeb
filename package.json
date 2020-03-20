@@ -7,6 +7,9 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
+    "build:test": "cross-env NODE_ENV=production env_config=test node build/build.js",
+    "build:pre": "cross-env NODE_ENV=production env_config=dev node build/build.js",
+    "build:prod": "cross-env NODE_ENV=production env_config=prod node build/build.js",
     "unit": "jest --config test/unit/jest.conf.js --coverage",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
@@ -38,6 +41,7 @@
     "chalk": "^2.0.1",
     "chromedriver": "^2.27.2",
     "copy-webpack-plugin": "^4.0.1",
+    "cross-env": "^7.0.2",
     "cross-spawn": "^5.0.1",
     "css-loader": "^0.28.0",
     "eslint": "^4.15.0",
