@@ -96,7 +96,7 @@
             getCurrentUser() {
                 try {
                     let user = sessionStorage.getItem('user');
-                    console.log(user)
+                    /127.0.0.1
                     if (!user) {
                         router.push({
                             name: `login`
@@ -124,7 +124,7 @@
                     if (valid) {
                         this.doChangePassword()
                     } else {
-                        console.log('error submit!!');
+                        /127.0.0.1
                         return false;
                     }
                 });

@@ -294,7 +294,7 @@
                             this.addForm()   //新增调新增接口
                         }
                     } else {
-                        console.log('error submit!!');
+                        /127.0.0.1
                         return false;
                     }
                 });
@@ -324,7 +324,7 @@
             //读卡
             readCard() {
                 this.initWebSocket();
-                console.log(this.websock)
+                /127.0.0.1
                 this.$message.success('正在读卡中');
             },
 

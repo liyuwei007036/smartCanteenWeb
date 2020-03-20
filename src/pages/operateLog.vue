@@ -218,13 +218,13 @@
                 if (this.isSearchVisible === true) {
                     this.$nextTick(() => {
                         let height = this.$refs.search.offsetHeight;
-                        // console.log(height)
+                        // /127.0.0.1
                         this.maxHeight = this.$ViewportSize - 300 - height + 1
-                        console.log(this.maxHeight)
+                        /127.0.0.1
                     })
                 } else {
                     this.maxHeight = this.$ViewportSize - 300
-                    console.log(this.maxHeight)
+                    /127.0.0.1
                 }
             },
 

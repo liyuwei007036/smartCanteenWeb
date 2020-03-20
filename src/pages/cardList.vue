@@ -555,7 +555,7 @@
                 this.websock.onclose = this.onClose;
             },
             onOpen() { //连接建立之后执行send方法发送数据
-                console.log("'onOpen")
+                /127.0.0.1
                 let token = sessionStorage.getItem('x-smart-token') || 'x';
 
                 this.onSend({token: token, start: true});
@@ -564,16 +564,16 @@
                 this.initWebSocket();
             },
             onMessage(e) { //数据接收
-                console.log("'接受数据", e)
+                /127.0.0.1
                 this.replaceForm.cardNo = e.data
                 this.$forceUpdate();
             },
             onSend(Data) {//
-                console.log('数据发送', Data)
+                /127.0.0.1
                 this.websock.send(JSON.stringify(Data));
             },
             onClose(e) {  //关闭
-                console.log('断开连接', e);
+                /127.0.0.1
                 this.websock.close()
             },
             serach() {
@@ -584,7 +584,7 @@
             //获取列表数据
             async getList() {
                 let res = await list(this.search);
-                console.log(res)
+                /127.0.0.1
                 if (res.code === 1000) {
                     this.total = res.data.total;
                     this.currentPage = res.data.currentPage;
@@ -632,7 +632,7 @@
                     if (valid) {
                         this.addForm();
                     } else {
-                        console.log('error submit!!');
+                        /127.0.0.1
                         return false;
                     }
                 });
@@ -663,7 +663,7 @@
                     if (valid) {
                         this.addDeductionForm();
                     } else {
-                        console.log('error submit!!');
+                        /127.0.0.1
                         return false;
                     }
                 });
@@ -682,7 +682,7 @@
 
             handleSelectionChange(val) {
                 this.multipleSelection = val;
-                console.log(this.multipleSelection)
+                /127.0.0.1
             },
 
             //点击挂失按钮
@@ -694,14 +694,14 @@
                 }).then(() => {
                     this.loss(id)
                 }).catch(() => {
-                    console.log('取消删除')
+                    /127.0.0.1
                 });
             },
 
             //挂失
             async loss(id) {
                 let res = await loss(id)
-                console.log(res)
+                /127.0.0.1
                 if (res.code === 1000) {
                     this.$message.success('挂失成功');
                     this.getList()
@@ -720,7 +720,7 @@
             //获取用户数据
             async getUser(id) {
                 let res = await get(id);
-                console.log(res)
+                /127.0.0.1
                 if (res.code === 1000) {
                     this.replaceForm = res.data
                 } else {
@@ -735,12 +735,12 @@
             },
 
             handleSubmit1(formName) {
-                console.log(this.$refs[formName])
+                /127.0.0.1
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.patchForm();
                     } else {
-                        console.log('error submit!!');
+                        /127.0.0.1
                         return false;
                     }
                 });
@@ -749,7 +749,7 @@
 
             async patchForm() {
                 let res = await patch(this.replaceForm)
-                console.log(res)
+                /127.0.0.1
                 if (res.code === 1000) {
                     this.$message.success('补卡成功');
                     this.visible = false;
@@ -761,7 +761,7 @@
             //获取用户数据
             async getUserInfo(empId) {
                 let res = await get(empId);
-                console.log(res)
+                /127.0.0.1
                 if (res.code === 1000) {
                     this.name = res.data.name
                     this.no = res.data.no
@@ -827,13 +827,13 @@
                 if (this.isSearchVisible === true) {
                     this.$nextTick(() => {
                         let height = this.$refs.search.offsetHeight;
-                        // console.log(height)
+                        // /127.0.0.1
                         this.maxHeight = this.$ViewportSize - 300 - height + 1
-                        console.log(this.maxHeight)
+                        /127.0.0.1
                     })
                 } else {
                     this.maxHeight = this.$ViewportSize - 300
-                    console.log(this.maxHeight)
+                    /127.0.0.1
                 }
             }
 

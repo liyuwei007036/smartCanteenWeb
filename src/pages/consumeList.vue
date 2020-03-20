@@ -235,7 +235,7 @@
                 if (this.isSearchVisible === true) {
                     this.$nextTick(() => {
                         let height = this.$refs.search.offsetHeight;
-                        // console.log(height)
+                        // /127.0.0.1
                         this.maxHeight = this.$ViewportSize - 300 - height + 1
                     })
                 } else {
