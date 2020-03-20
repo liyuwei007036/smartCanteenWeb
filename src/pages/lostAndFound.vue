@@ -142,14 +142,14 @@
                         align="center"
                         width="180">
                     <template slot-scope="scope">
-                        <el-button type="text" size="small" class="warning-btn" :disabled="scope.row.status != '激活'"
-                                   v-acl="['icCard:loss']"
-                                   @click="lossAccounnt(scope.row.id)">挂失
-                        </el-button>
                         <el-button type="text" size="small" :disabled="scope.row.accountStatus != '挂失'"
                                    class="green-btn"
                                    v-acl="['icCard:patch']"
-                                   @click="replaceAccounnt(scope.row.empId)">补卡
+                                   @click="replaceAccounnt(scope.row.id)">补卡
+                        </el-button>
+                        <el-button type="text" size="small" class="delete-btn" :disabled="scope.row.status != '激活'"
+                                   v-acl="['icCard:loss']"
+                                   @click="lossAccounnt(scope.row.id)">挂失
                         </el-button>
                     </template>
                 </el-table-column>
@@ -179,11 +179,11 @@
             <el-form ref="replaceForm" :model="replaceForm" :rules="replaceRules" status-icon label-width="100px"
                      label-position="right">
                 <el-form-item prop="name" label="姓名">
-                    <el-input type="text" v-model.trim="replaceForm.name" auto-complete="off"
+                    <el-input type="text" v-model.trim="replaceForm.empName" auto-complete="off"
                               placeholder="姓名" disabled></el-input>
                 </el-form-item>
-                <el-form-item prop="no" label="账号">
-                    <el-input type="text" v-model.trim="replaceForm.no" auto-complete="off" placeholder=账号
+                <el-form-item prop="no" label="工号">
+                    <el-input type="text" v-model.trim="replaceForm.empNo" auto-complete="off" placeholder="工号"
                               disabled></el-input>
                 </el-form-item>
 
@@ -194,7 +194,7 @@
 
                 <el-form-item prop="confirmPassword" label="确认密码">
                     <el-input type="password" v-model.trim="replaceForm.confirmPassword" auto-complete="off"
-                              placeholder="请再次输入密码" disabled/>
+                              placeholder="确认密码" disabled/>
                 </el-form-item>
 
                 <el-form-item prop="idCard" label="身份证号">
@@ -229,7 +229,7 @@
                 </el-form-item>
 
                 <el-form-item label="角色" prop="roles">
-                    <el-select class="select_normal" v-model="replaceForm.roles" multiple placeholder="请选择角色" disabled>
+                    <el-select class="select_normal" v-model="replaceForm.roleName" multiple placeholder="请选择角色" disabled>
                         <el-option
                                 v-for="item in roleList"
                                 :key="item.id"
@@ -239,15 +239,15 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item prop="originationName" label="所属组织">
+                <el-form-item prop="orgName" label="所属组织">
 
-                    <el-input type="text" v-model.trim="replaceForm.originationName" auto-complete="off"
+                    <el-input type="text" v-model.trim="replaceForm.orgName" auto-complete="off"
                               placeholder="所属组织" disabled/>
                 </el-form-item>
 
                 <div class="dialog-footer">
                     <el-button class="dialog-btn-reset" @click="resetReplaceForm('replaceForm')">重 置</el-button>
-                    <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit1('replaceForm')">保存
+                    <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit('replaceForm')">保存
                     </el-button>
                 </div>
             </el-form>
@@ -257,8 +257,7 @@
 </template>
 
 <script>
-    import {list, loss, patch} from '@/api/card';
-    import {get} from '@/api/employeeList';
+    import {list, loss, patch,getPatchUser} from '@/api/card';
     import {SOCKET_URL} from '@/config/global'
     import {listAllRole} from '@/api/role';
 
@@ -328,17 +327,12 @@
                     mobile: '',
                     password: '',
                     confirmPassword: '',
-                    originationId: 1,
-                    originationName: "",
+                    orgName: "",
                     cardId: '',
                     cardNo: '',
                     type: '1',
-                    minimumBalance: 0,
                     validityTime: '',
-                    openCardAmount: '',
-                    deposit: 0,
-                    expense: 0,
-                    roles: []
+                    roleName: []
 
                 },
                 replaceRules: {
@@ -445,7 +439,7 @@
                     this.roleList = res.data
                     res.data.forEach(el => {
                         if (el.isDefault === true) {
-                            this.replaceForm.roles.push(el.id);
+                            this.replaceForm.roleName.push(el.id);
                         }
                     })
                 }
@@ -454,7 +448,7 @@
 
             //获取用户数据
             async getUser(id) {
-                let res = await get(id);
+                let res = await getPatchUser(id);
                 console.log(res)
                 if (res.code === 1000) {
                     this.replaceForm = res.data
@@ -469,7 +463,7 @@
                 this.$message.success('正在读卡中');
             },
 
-            handleSubmit1(formName) {
+            handleSubmit(formName) {
                 console.log(this.$refs[formName])
                 this.$refs[formName].validate((valid) => {
                     if (valid) {

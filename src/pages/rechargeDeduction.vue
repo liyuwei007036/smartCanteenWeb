@@ -128,7 +128,7 @@
                                    v-if="scope.row.status !== '禁止'">充值
                         </el-button>
 
-                        <el-button type="text" size="small" v-acl="['icCard:deduction']"
+                        <el-button type="text" size="small" v-acl="['icCard:deduction']" class="delete-btn"
                                    @click="deduction(scope.row.id,scope.row.empId,scope.row.currentBalance)"
                                    v-if="scope.row.status !== '禁止'">补扣
                         </el-button>

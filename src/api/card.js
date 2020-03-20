@@ -39,6 +39,15 @@ let patch = (data) => {
     })
 }
 
+
+let getPatchUser = (data) => {
+    return axios({
+        method: 'get',
+        url: `/icCard/patch/${data}`,
+        data
+    })
+}
+
 let loss = (data) => {
     return axios({
         method: 'put',
@@ -62,5 +71,6 @@ export {
     loss,
     patch,
     deduction,
-    rechargeList
+    rechargeList,
+    getPatchUser
 }
