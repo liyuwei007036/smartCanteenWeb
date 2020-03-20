@@ -178,7 +178,7 @@
             //获取用户数据
             async getRole() {
                 let res = await get(this.form.id);
-                console.log(res)
+
                 if (res.code === 1000) {
                     this.form = res.data
                 } else {
@@ -190,14 +190,14 @@
             handleSubmit(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        console.log(this.form.id)
+
                         if (this.form.id > 0) {
                             this.updateForm()
                         } else {
                             this.addForm()
                         }
                     } else {
-                        console.log('error submit!!');
+
                         return false;
                     }
                 });
@@ -226,7 +226,7 @@
             //删除用户
             async deleteUser(id) {
                 let res = await deleted(id)
-                console.log(res)
+
                 if (res.code === 1000) {
                     this.$message.success('删除成功');
                     this.getList()
@@ -242,7 +242,7 @@
                 }).then(() => {
                     this.deleteUser(id)
                 }).catch(() => {
-                    console.log('取消删除')
+
                 });
             },
 
@@ -266,7 +266,7 @@
                 if (this.isSearchVisible === true) {
                     this.$nextTick(() => {
                         let height = this.$refs.search.offsetHeight;
-                        // console.log(height)
+                        //
                         this.maxHeight = this.$ViewportSize - 300 - height + 1
                     })
                 } else {

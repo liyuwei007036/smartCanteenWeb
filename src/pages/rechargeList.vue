@@ -225,7 +225,7 @@
             //获取列表数据
             async getList() {
                 let res = await list(this.search);
-                console.log(res)
+
                 if (res.code === 1000) {
                     this.total = res.data.total;
                     this.currentPage = res.data.currentPage;
@@ -251,7 +251,7 @@
                 if (this.isSearchVisible === true) {
                     this.$nextTick(() => {
                         let height = this.$refs.search.offsetHeight;
-                        // console.log(height)
+                        //
                         this.maxHeight = this.$ViewportSize - 300 - height + 1
                     })
                 } else {
