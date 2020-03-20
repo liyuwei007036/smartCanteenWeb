@@ -338,7 +338,7 @@
                 rules: {
                     money: [{
                         required: true,
-                        pattern: /^\d+$|^([0-9]+\.\d{1,2})$/,
+                        pattern: /^\[1-9]+$|^([0-9]+\.\d{1,2})$/,
                         message: '充值金额必须大于0',
                         trigger: 'blur'
                     }],
@@ -346,7 +346,7 @@
                 deductionRules: {
                     money: [{
                         required: true,
-                        pattern: /^\d+$|^([0-9]+\.\d{1,2})$/,
+                        pattern: /^\[1-9]+$|^([0-9]+\.\d{1,2})$/,
                         message: '补扣金额必须大于0',
                         trigger: 'blur'
                     }],
