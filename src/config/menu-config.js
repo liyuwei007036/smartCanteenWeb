@@ -24,6 +24,10 @@ module.exports = [{
             name: '充值补扣',
             auths: ['icCard:list'],
             componentName: 'rechargeDeduction',
+        },{
+            name: '遗失补办',
+            auths: ['icCard:list'],
+            componentName: 'lostAndFound',
         },
     ],
 }, {
