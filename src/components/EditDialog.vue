@@ -54,7 +54,7 @@
                 </el-date-picker>
             </el-form-item>
 
-            <el-form-item prop="openCardAmount" label="开卡存入金额(元)">
+            <el-form-item prop="openCardAmount" label="开卡金额(元)">
                 <el-input type="number" v-model.trim="form.openCardAmount" auto-complete="off"
                           placeholder="请输入开卡存入金额" @mousewheel.native.prevent/>
             </el-form-item>
@@ -406,5 +406,6 @@
     /deep/ .el-dialog .el-dialog__body {
         flex: 1;
         overflow: auto;
+        padding-right: 40px;
     }
 </style>
