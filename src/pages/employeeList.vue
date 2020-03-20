@@ -297,10 +297,10 @@
             let setSearch = JSON.parse(localStorage.getItem('search'))
             if (setSearch !== 'null' && setSearch != null) {
                 this.search = setSearch
-                /127.0.0.1
+
                 this.getList();
             } else {
-                /127.0.0.1
+
                 localStorage.setItem('search', JSON.stringify(this.search))
                 this.getList();
             }
@@ -354,14 +354,14 @@
                 }).then(() => {
                     this.deleted(id)
                 }).catch(() => {
-                    /127.0.0.1
+
                 });
             },
 
             //销户
             async deleted(id) {
                 let res = await deleted(id)
-                /127.0.0.1
+
                 if (res.code === 1000) {
                     this.reload()
                 }
@@ -378,7 +378,7 @@
             searchList() {
                 this.search.page = 1
                 this.getList()
-                /127.0.0.1
+
                 localStorage.setItem('search', JSON.stringify(this.search))
             },
 

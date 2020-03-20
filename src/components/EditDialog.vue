@@ -293,7 +293,7 @@
                             this.addForm()   //新增调新增接口
                         }
                     } else {
-                        /127.0.0.1
+
                         return false;
                     }
                 });
@@ -323,7 +323,7 @@
             //读卡
             readCard() {
                 this.initWebSocket();
-                /127.0.0.1
+
                 this.$message.success('正在读卡中');
             },
 

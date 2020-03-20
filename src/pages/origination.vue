@@ -131,7 +131,7 @@
             //获取根结点数据
             async root() {
                 let res = await getRoot();
-                /127.0.0.1
+
                 if (res.code === 1000) {
                     this.tableData = res.data
                 } else {
@@ -181,7 +181,7 @@
                             this.addNode()
                         }
                     } else {
-                        /127.0.0.1
+
                         return false;
                     }
                 });
@@ -215,7 +215,7 @@
                 this.visible = true;
                 this.form = {};
                 this.form.parentId = id || 0;
-                /127.0.0.1
+
             },
 
             //点击删除按钮
@@ -227,7 +227,7 @@
                 }).then(() => {
                     this.deletedNode(id)
                 }).catch(() => {
-                    /127.0.0.1
+
                 });
             },
 

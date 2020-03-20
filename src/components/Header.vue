@@ -123,7 +123,7 @@
                     if (valid) {
                         this.doChangePassword()
                     } else {
-                        /127.0.0.1
+
                         return false;
                     }
                 });
