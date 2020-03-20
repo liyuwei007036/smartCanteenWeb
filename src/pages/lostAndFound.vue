@@ -229,13 +229,8 @@
                 </el-form-item>
 
                 <el-form-item label="角色" prop="roles">
-                    <el-select class="select_normal" v-model="replaceForm.roleName" multiple placeholder="请选择角色" disabled>
-                        <el-option
-                                v-for="item in roleList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.id">
-                        </el-option>
+                    <el-select class="select_normal" v-model="replaceForm.roleName" multiple placeholder="请选择角色"
+                               disabled>
                     </el-select>
                 </el-form-item>
 
@@ -257,7 +252,7 @@
 </template>
 
 <script>
-    import {list, loss, patch,getPatchUser} from '@/api/card';
+    import {list, loss, patch, getPatchUser} from '@/api/card';
     import {SOCKET_URL} from '@/config/global'
     import {listAllRole} from '@/api/role';
 
@@ -277,7 +272,6 @@
                 no: '',
                 currentBalance: '',
                 maxHeight: 1000,
-                roleList: [],
                 search: {
                     accountStatus: "",
                     cardNo: "",
@@ -427,24 +421,9 @@
                 this.isReplaceVisible = true
                 this.replaceForm = {};
                 this.$nextTick(() => {
-                    this.getEmployeeRole()  //获取角色下拉列表
                     this.getUser(id)
                 })
             },
-
-            //获取角色列表
-            async getEmployeeRole() {
-                let res = await listAllRole()
-                if (res.code === 1000) {
-                    this.roleList = res.data
-                    res.data.forEach(el => {
-                        if (el.isDefault === true) {
-                            this.replaceForm.roleName.push(el.id);
-                        }
-                    })
-                }
-            },
-
 
             //获取用户数据
             async getUser(id) {
@@ -452,6 +431,7 @@
                 console.log(res)
                 if (res.code === 1000) {
                     this.replaceForm = res.data
+                    console.log(this.replaceForm)
                 } else {
                     this.$message.error(res.msg);
                 }

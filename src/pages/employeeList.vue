@@ -297,10 +297,8 @@
             let setSearch = JSON.parse(localStorage.getItem('search'))
             if (setSearch !== 'null' && setSearch != null) {
                 this.search = setSearch
-
                 this.getList();
             } else {
-
                 localStorage.setItem('search', JSON.stringify(this.search))
                 this.getList();
             }
