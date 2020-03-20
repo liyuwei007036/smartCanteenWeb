@@ -5,6 +5,12 @@
 const path = require('path');
 
 module.exports = {
+  // Template for index.html
+  // 添加test pre prod 三处环境的配制
+  prodEnv: require('./prod.env'),
+  devEnv: require('./dev.env'),
+  testEnv: require('./test.env'),
+
   dev: {
 
     // Paths
