@@ -12,13 +12,13 @@
                 </el-col>
                 <el-col :span="8">
                     <div class="grid-content search-grid-content">
-                        <label class="search-label">动作：</label>
+                        <label class="search-label">操作动作：</label>
                         <el-input class="search_input" v-model="search.action" placeholder="请输入动作"></el-input>
                     </div>
                 </el-col>
                 <el-col :span="8">
                     <div class="grid-content search-grid-content">
-                        <label class="search-label">模块：</label>
+                        <label class="search-label">操作模块：</label>
                         <el-input class="search_input" v-model="search.module" placeholder="请输入模块"></el-input>
                     </div>
                 </el-col>
@@ -95,14 +95,14 @@
             </el-table-column>
             <el-table-column
                     prop="module"
-                    label="模块"
+                    label="操作模块"
                     align="center"
                     :show-overflow-tooltip='true'
                     width="">
             </el-table-column>
             <el-table-column
                     prop="action"
-                    label="动作"
+                    label="操作动作"
                     align="center"
                     :show-overflow-tooltip='true'
                     width="">
@@ -155,10 +155,10 @@
                 <el-form-item prop="operationTime" label="操作时间">
                     <el-input type="text" v-model="form.operationTime"></el-input>
                 </el-form-item>
-                <el-form-item prop="module" label="模块">
+                <el-form-item prop="module" label="操作模块">
                     <el-input type="text" v-model="form.module"></el-input>
                 </el-form-item>
-                <el-form-item prop="action" label="操作">
+                <el-form-item prop="action" label="操作动作">
                     <el-input type="text" v-model="form.action"></el-input>
                 </el-form-item>
                 <el-form-item prop="detail" label="详情">
