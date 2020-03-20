@@ -338,16 +338,16 @@
                 rules: {
                     money: [{
                         required: true,
-                        pattern: /^\[1-9]+$|^([0-9]+\.\d{1,2})$/,
-                        message: '充值金额必须大于0',
+                        pattern: /^[1-9]\d{0,5}$|^([0-9]+\.\d{1,2})$/,
+                        message: '补扣金额必须大于0小于等于999999',
                         trigger: 'blur'
                     }],
                 },
                 deductionRules: {
                     money: [{
                         required: true,
-                        pattern: /^\[1-9]+$|^([0-9]+\.\d{1,2})$/,
-                        message: '补扣金额必须大于0',
+                        pattern: /^[1-9]\d{0,5}$|^([0-9]+\.\d{1,2})$/,
+                        message: '补扣金额必须大于0小于等于999999',
                         trigger: 'blur'
                     }],
                 },
