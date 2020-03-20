@@ -317,7 +317,7 @@
                                 margin: 20,
                                 formatter: function (value, index) {
                                     // 格式化成月/日，只在第一个刻度显示年份
-                                    return new Date(value).format("hh:mm");
+                                    return new Date(value.replace(/-/g, '/')).format("hh:mm");
                                 }
                             }, axisTick: {
                                 alignWithLabel: true
