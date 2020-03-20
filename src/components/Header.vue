@@ -16,7 +16,7 @@
                     title="修改密码"
                     :close-on-click-modal="false"
                     :visible.sync="isChangePasswordVisible">
-                <el-form ref="changePasswordform" :model="changePasswordform" :rules="rules" label-width="60px"
+                <el-form ref="changePasswordform" :model="changePasswordform" :rules="rules" label-width="80px"
                          label-position="left">
                     <el-form-item prop="oldPassword" label="原密码">
                         <el-input type="password" v-model.trim="changePasswordform.oldPassword" auto-complete="off"
