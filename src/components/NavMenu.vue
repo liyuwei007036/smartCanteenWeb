@@ -7,7 +7,7 @@
             </div>
             <el-menu class="el-menu-vertical-demo" unique-opened @open="handleOpen" @close="handleClose"
                      background-color="#171F45" text-color="#fff" active-text-color="#2E6CFE"
-                     :default-active="currentMenu">
+                     :default-active="getCurrentMenu()">
                 <el-submenu v-for="item in menu" :index="item.id" :key="item.id" v-acl="item.auths"
                             style="border-bottom: #101634 solid 1px">
                     <template slot="title">
@@ -44,13 +44,15 @@
         data() {
             return {
                 menu,
-                currentMenu: this.$route.name,
             };
         },
         methods: {
             handleOpen(key, keyPath) {
             },
             handleClose(key, keyPath) {
+            },
+            getCurrentMenu() {
+                return this.$route.name;
             },
             click(name) {
                 if (this.$route.name !== name) {

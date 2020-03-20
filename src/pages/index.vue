@@ -43,7 +43,7 @@
             goHome() {
                 if (this.$router.currentRoute.name === 'index') {
                     this.$router.push({
-                        name: 'home'
+                        path: '/consumerStatistics'
                     })
                 } else {
 
