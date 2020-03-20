@@ -65,7 +65,7 @@
                     :data="tableData"
                     stripe
                     border
-                    style="width: 100%; overflow-y: auto"
+                    style="width: 100%"
                     max-height="maxHeight"
                     :header-cell-style="{
                     'background-color': '#F2F6FC',

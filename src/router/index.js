@@ -10,6 +10,7 @@ import roleAuth from '@/pages/roleAuth';
 import rechargeList from '@/pages/rechargeList';
 import consumeList from '@/pages/consumeList';
 import rechargeDeduction from '@/pages/rechargeDeduction';
+import lostAndFound from '@/pages/lostAndFound';
 import consumerStatistics from '@/pages/consumerStatistics';
 import loginLog from '@/pages/loginLog';
 import operateLog from '@/pages/operateLog';
@@ -97,6 +98,14 @@ const router = new VueRouter({
                     name: 'rechargeDeduction',
                     meta: {
                         title: '充值补扣',
+                        auths: ['icCard'],
+                    }
+                }, {
+                    path: '/lostAndFound',
+                    component: lostAndFound,
+                    name: 'lostAndFound',
+                    meta: {
+                        title: '遗失补办',
                         auths: ['icCard'],
                     }
                 }, {
