@@ -170,7 +170,7 @@
 
         <!--        补卡弹窗-->
 
-        <el-dialog class="dialog abow_dialog"
+        <el-dialog class="dialog"
                    title="补卡"
                    :close-on-click-modal="false"
                    :visible.sync="isReplaceVisible"
@@ -180,21 +180,32 @@
                      label-position="right">
                 <el-form-item prop="name" label="姓名">
                     <el-input type="text" v-model.trim="replaceForm.name" auto-complete="off"
-                              placeholder="姓名" :readonly="true"></el-input>
+                              placeholder="姓名" disabled></el-input>
                 </el-form-item>
                 <el-form-item prop="no" label="账号">
                     <el-input type="text" v-model.trim="replaceForm.no" auto-complete="off" placeholder=账号
-                              :readonly="true"></el-input>
+                              disabled></el-input>
                 </el-form-item>
+
+                <el-form-item prop="password" label="登录密码">
+                    <el-input type="password" v-model.trim="replaceForm.password" auto-complete="off"
+                              placeholder="登录密码" disabled/>
+                </el-form-item>
+
+                <el-form-item prop="confirmPassword" label="确认密码">
+                    <el-input type="password" v-model.trim="replaceForm.confirmPassword" auto-complete="off"
+                              placeholder="请再次输入密码" disabled/>
+                </el-form-item>
+
                 <el-form-item prop="idCard" label="身份证号">
                     <el-input type="text" v-model.trim="replaceForm.idCard" auto-complete="off" placeholder="身份证号"
-                              :readonly="true"></el-input>
+                              disabled></el-input>
                 </el-form-item>
 
 
                 <el-form-item prop="mobile" label="手机号">
                     <el-input type="mobile" v-model.trim="replaceForm.mobile" auto-complete="off"
-                              placeholder="手机号" :readonly="true"></el-input>
+                              placeholder="手机号" disabled></el-input>
                 </el-form-item>
 
                 <el-form-item prop="cardNo" label="卡号" class="getCard">
@@ -213,8 +224,25 @@
                             type="date"
                             placeholder="请选择卡有效期"
                             value-format="yyyy-MM-dd HH:mm:ss"
-                            :readonly="true">
+                            disabled>
                     </el-date-picker>
+                </el-form-item>
+
+                <el-form-item label="角色" prop="roles">
+                    <el-select class="select_normal" v-model="replaceForm.roles" multiple placeholder="请选择角色" disabled>
+                        <el-option
+                                v-for="item in roleList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item prop="originationName" label="所属组织">
+
+                    <el-input type="text" v-model.trim="replaceForm.originationName" auto-complete="off"
+                              placeholder="所属组织" disabled/>
                 </el-form-item>
 
                 <div class="dialog-footer">
@@ -229,9 +257,10 @@
 </template>
 
 <script>
-    import {list, loss} from '@/api/card';
+    import {list, loss, patch} from '@/api/card';
     import {get} from '@/api/employeeList';
     import {SOCKET_URL} from '@/config/global'
+    import {listAllRole} from '@/api/role';
 
 
     export default {
@@ -249,6 +278,7 @@
                 no: '',
                 currentBalance: '',
                 maxHeight: 1000,
+                roleList: [],
                 search: {
                     accountStatus: "",
                     cardNo: "",
@@ -264,7 +294,7 @@
                 carStatusList: [{
                     name: '请选择',
                     id: ''
-                },{
+                }, {
                     name: '激活',
                     id: '1'
                 }, {
@@ -274,7 +304,7 @@
                 accountStatusList: [{
                     name: '请选择',
                     id: ''
-                },{
+                }, {
                     name: '正常',
                     id: '1'
                 }, {
@@ -308,12 +338,9 @@
                     openCardAmount: '',
                     deposit: 0,
                     expense: 0,
+                    roles: []
+
                 },
-                cardTypeList: [
-                    {id: 1, name: 1},
-                    {id: 2, name: 2}
-                ],
-                multipleSelection: [],
                 replaceRules: {
                     cardNo: [{required: true, message: '必须填写卡号', trigger: 'blur'}],
                 },
@@ -406,9 +433,24 @@
                 this.isReplaceVisible = true
                 this.replaceForm = {};
                 this.$nextTick(() => {
+                    this.getEmployeeRole()  //获取角色下拉列表
                     this.getUser(id)
                 })
             },
+
+            //获取角色列表
+            async getEmployeeRole() {
+                let res = await listAllRole()
+                if (res.code === 1000) {
+                    this.roleList = res.data
+                    res.data.forEach(el => {
+                        if (el.isDefault === true) {
+                            this.replaceForm.roles.push(el.id);
+                        }
+                    })
+                }
+            },
+
 
             //获取用户数据
             async getUser(id) {
@@ -528,5 +570,24 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+
+    /deep/ .el-dialog {
+        display: flex;
+        flex-direction: column;
+        margin: 0 !important;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        /*height:600px;*/
+        max-height: calc(100% - 30px);
+        max-width: calc(100% - 30px);
+    }
+
+    /deep/ .el-dialog .el-dialog__body {
+        flex: 1;
+        overflow: auto;
     }
 </style>
