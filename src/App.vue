@@ -7,6 +7,15 @@
     export default {
         name: 'app',
         beforeCreate() {
+            window.oncontextmenu=function(e){
+                //取消默认的浏览器自带右键 很重要！！
+                e.preventDefault();
+            },
+            document.onmousedown = function mdClick(event) {
+                const e = event || window.event || arguments.callee.caller.arguments[0];
+                if (e.button === 2 || e.button === 3) {
+                }
+            }
         },
         provide() {
             return {

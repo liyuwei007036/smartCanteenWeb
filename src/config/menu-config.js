@@ -22,11 +22,11 @@ module.exports = [{
     sub: [
         {
             name: '充值补扣',
-            auths: ['icCard:list'],
+            auths: ['recharge:recharge', 'icCard:deduction'],
             componentName: 'rechargeDeduction',
-        },{
+        }, {
             name: '遗失补办',
-            auths: ['icCard:list'],
+            auths: ['icCard:loss', 'icCard:patch'],
             componentName: 'lostAndFound',
         },
     ],

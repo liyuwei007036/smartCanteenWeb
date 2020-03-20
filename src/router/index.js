@@ -122,7 +122,7 @@ const router = new VueRouter({
                     name: 'consumerStatistics',
                     meta: {
                         title: '消费统计',
-                        auths: ['order:list'],
+                        auths: [],
                     }
                 },{
                     path: '/operateLog',
@@ -130,7 +130,7 @@ const router = new VueRouter({
                     name: 'operateLog',
                     meta: {
                         title: '操作日志',
-                        auths: [],
+                        auths: ['log:operation'],
                     }
                 },{
                     path: '/loginLog',
@@ -138,7 +138,7 @@ const router = new VueRouter({
                     name: 'loginLog',
                     meta: {
                         title: '登录日志',
-                        auths: [],
+                        auths: ['log:login'],
                     }
                 },
             ],
