@@ -5,7 +5,7 @@ import App from './App.vue';
 import router from './router/index'; // 引入路由
 import axios from './api/index'; // 引入路由
 import {aclDirective} from './api/acl'
-
+import './api/directives.js';
 Vue.config.productionTip = false;
 
 Vue.use(ElementUI);

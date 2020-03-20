@@ -56,6 +56,8 @@
 
         <!--        弹窗-->
         <el-dialog class="dialog"
+                   v-dialogDrag
+                   ref="dialog__wrapper"
                    :title="this.isUpdate?'编辑':'新增'"
                    :close-on-click-modal="false"
                    :visible.sync="visible"

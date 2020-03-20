@@ -1,5 +1,7 @@
 <template>
     <el-dialog class="dialog abow_dialog"
+               v-dialogDrag
+               ref="dialog__wrapper"
                :title="!form.id?'新增人员':'修改人员'"
                :close-on-click-modal="false"
                :visible.sync="visible"
@@ -209,9 +211,7 @@
             }
         },
 
-        watch: {
-           
-        },
+        watch: {},
         created() {
         },
         destroyed() {
@@ -370,9 +370,7 @@
                     this.$refs[formName].resetFields();
                 }
             }
-
         }
-
     }
 </script>
 

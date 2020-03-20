@@ -12,11 +12,10 @@
                           @click="click('month')">本月</span>
                     <span :class="{is_active:actives === 'year','statistics-tab':true}" style="padding: 0 10px"
                           @click="click('year')">全年</span>
-
                 </div>
             </div>
             <div style="display: flex;align-items: center;padding: 0 0">
-                <div id="Histogram" style="height: 350px;width: 70%">
+                <div id="Histogram" style="height: 340px;width: 70%">
 
                 </div>
                 <div class="statistics_right">
@@ -25,12 +24,6 @@
                     </div>
                     <div style="margin: 20px 0">
                         <div class="total_amount" v-html="formatMoney(totalSale)"></div>
-                        <div class="rate">
-                            <div class="rate_num">周同比 <i class="el-icon-caret-top"></i><span>12%</span>
-                            </div>
-                            <div class="rate_num">日环比 <i class="el-icon-caret-bottom"></i><span>12%</span>
-                            </div>
-                        </div>
                     </div>
                     <div class="day_sales_amount">
                         日均销售额<span style="padding-left: 20px" v-html="formatMoney(avg)"/>

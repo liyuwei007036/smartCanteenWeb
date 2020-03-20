@@ -73,7 +73,7 @@ axios.interceptors.response.use(response => {
             path: '/login'
         })
     } else if (data && data.code === 1012) {
-        return {code: 0}
+        return data
     } else {
         Message({
             message: data.msg,
@@ -99,7 +99,8 @@ axios.interceptors.response.use(response => {
         }, 500)
     }
     return {
-        code: 0
+        code: 0,
+        msg: '操作太快'
     }
 })
 
