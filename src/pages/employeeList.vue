@@ -134,7 +134,8 @@
                                    v-if="scope.row.canEdit"
                                    size="small">查看
                         </el-button>
-                        <el-button v-if="scope.row.status === '在职'  && scope.row.canEdit" type="text" size="small" class="delete-btn"
+                        <el-button v-if="scope.row.status === '在职'  && scope.row.canEdit" type="text" size="small"
+                                   class="delete-btn"
                                    v-acl="['icCard:deleted']"
                                    @click="deletedEmployee(scope.row.id)">
                             销户
@@ -316,12 +317,10 @@
                     this.total = res.data.total;
                     this.currentPage = res.data.currentPage;
                     this.tableData = res.data.data
-                } else {
-                    this.$message.error(res.msg);
                 }
-            },
 
-            // 新增修改触发方法
+                // 新增修改触发方法
+            },
             addOrUpdateEmployee(id) {
                 this.isVisible = true;
                 this.$nextTick(() => {
@@ -343,8 +342,6 @@
                 let res = await get(this.form1.id);
                 if (res.code === 1000) {
                     this.form1 = res.data
-                } else {
-                    this.$message.error(res.msg);
                 }
             },
 

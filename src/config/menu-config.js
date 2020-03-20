@@ -21,9 +21,9 @@ module.exports = [{
     icon: 'el-icon-bank-card',
     sub: [
         {
-            name: '卡片列表',
+            name: '充值补扣',
             auths: ['icCard:list'],
-            componentName: 'cardList',
+            componentName: 'rechargeDeduction',
         },
     ],
 }, {

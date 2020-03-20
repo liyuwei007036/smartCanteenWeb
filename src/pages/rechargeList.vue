@@ -143,6 +143,13 @@
                         align="center"
                         width="">
                 </el-table-column>
+                <el-table-column
+                        prop="description"
+                        label="充值描述"
+                        :show-overflow-tooltip='true'
+                        align="center"
+                        width="">
+                </el-table-column>
 
                 <el-table-column
                         prop="creatorName"
