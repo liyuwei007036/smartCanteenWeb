@@ -7,6 +7,13 @@ let list = (data) => {
         data
     })
 }
+let rechargeList = (data) => {
+    return axios({
+        method: 'post',
+        url: `/icCard/list/recharge`,
+        data
+    })
+}
 
 let beforeGetCard = (data) => {
     return axios({
@@ -54,5 +61,6 @@ export {
     getCard,
     loss,
     patch,
-    deduction
+    deduction,
+    rechargeList
 }

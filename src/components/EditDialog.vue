@@ -41,9 +41,8 @@
                           :readonly="isReadonly"
                           @mousewheel.native.prevent>
                 </el-input>
-                <el-button v-if="!isReadonly" @click="readCard()"
+                <el-button v-if="!isReadonly" @click="readCard()" v-text="status_text"
                            style="margin-left: 10px;height: 34px;color: #fff;background-color: #2E6CFE;font-size: 13px;line-height: 34px;padding:0 10px;border: none">
-                    {{status_text}}
                 </el-button>
             </el-form-item>
 

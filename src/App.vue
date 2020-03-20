@@ -335,5 +335,8 @@
         justify-content: space-around;
     }
 
+    .el-tooltip__popper {
+        max-width: 20%;
+    }
 </style>
 

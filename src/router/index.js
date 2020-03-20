@@ -9,7 +9,7 @@ import roleList from '@/pages/roleList';
 import roleAuth from '@/pages/roleAuth';
 import rechargeList from '@/pages/rechargeList';
 import consumeList from '@/pages/consumeList';
-import cardList from '@/pages/cardList';
+import rechargeDeduction from '@/pages/rechargeDeduction';
 import consumerStatistics from '@/pages/consumerStatistics';
 import loginLog from '@/pages/loginLog';
 import operateLog from '@/pages/operateLog';
@@ -92,11 +92,11 @@ const router = new VueRouter({
                         auths: ['recharge:listlog'],
                     }
                 }, {
-                    path: '/cardList',
-                    component: cardList,
-                    name: 'cardList',
+                    path: '/rechargeDeduction',
+                    component: rechargeDeduction,
+                    name: 'rechargeDeduction',
                     meta: {
-                        title: '卡片管理',
+                        title: '充值补扣',
                         auths: ['icCard'],
                     }
                 }, {

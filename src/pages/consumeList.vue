@@ -160,6 +160,14 @@
             </el-table-column>
 
             <el-table-column
+                    prop="description"
+                    label="补扣描述"
+                    :show-overflow-tooltip='true'
+                    align="center"
+                    width="">
+            </el-table-column>
+
+            <el-table-column
                     prop="creatorName"
                     label="操作人"
                     :show-overflow-tooltip='true'
