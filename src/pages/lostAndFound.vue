@@ -339,36 +339,6 @@
         },
 
         methods: {
-            initWebSocket() { //初始化weosocket
-                const wsUri = SOCKET_URL + this.$route.name
-                this.websock = new WebSocket(wsUri);
-                this.websock.onmessage = this.onMessage;
-                this.websock.onopen = this.onOpen;
-                this.websock.onerror = this.onMessage;
-                this.websock.onclose = this.onClose;
-            },
-            onOpen() { //连接建立之后执行send方法发送数据
-                console.log("'onOpen")
-                let token = sessionStorage.getItem('x-smart-token') || 'x';
-
-                this.onSend({token: token, start: true});
-            },
-            onError() {//连接建立失败重连
-                this.initWebSocket();
-            },
-            onMessage(e) { //数据接收
-                console.log("'接受数据", e)
-                this.replaceForm.cardNo = e.data
-                this.$forceUpdate();
-            },
-            onSend(Data) {//
-                console.log('数据发送', Data)
-                this.websock.send(JSON.stringify(Data));
-            },
-            onClose(e) {  //关闭
-                console.log('断开连接', e);
-                this.websock.close()
-            },
             serach() {
                 this.search.page = 1
                 this.getList();
@@ -389,7 +359,6 @@
 
             handleSelectionChange(val) {
                 this.multipleSelection = val;
-                console.log(this.multipleSelection)
             },
 
             //点击挂失按钮
@@ -438,12 +407,24 @@
 
             //读卡
             readCard() {
-                this.initWebSocket();
-                this.$message.success('正在读卡中');
+                let that = this
+                if (that.socket.ws && that.socket.ws.readyState === 1) {
+                    that.socket.ws.send(JSON.stringify({
+                        start: true,
+                        type: 'readCard',
+                        token: sessionStorage.getItem('x-smart-token')
+                    }))
+                    this.$message.success('正在读卡中');
+                    that.socket.ws.onmessage = this.getMessage
+                }
+            },
+            getMessage(e) {
+                console.log(e.data)
+                this.replaceForm.cardNo = e.data
+                this.$forceUpdate();
             },
 
             handleSubmit(formName) {
-                console.log(this.$refs[formName])
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.patchForm();
@@ -477,13 +458,14 @@
             },
 
             handleClose() {
-                if (this.websock && this.websock.readyState === 0) {
-                    this.onClose()
-                }
-                if (this.websock && this.websock.readyState === 1) {
+                let that = this
+                if (that.socket.ws && that.socket.ws.readyState === 1) {
                     let token = sessionStorage.getItem('x-smart-token') || 'x';
-                    this.onSend({token: token, start: false})
-                    this.onClose()
+                    that.socket.ws.send(JSON.stringify({
+                        start: false,
+                        type: 'readCard',
+                        token: token
+                    }))
                 }
                 try {
                     this.$refs['replaceForm'].resetFields()

@@ -103,7 +103,6 @@
     import {add, get, update} from '@/api/employeeList';
     import {listAll} from '@/api/origination';
     import {listAllRole} from '@/api/role';
-    import {SOCKET_URL} from '@/config/global'
 
     export default {
         name: "EditDialog",
@@ -222,31 +221,7 @@
 
         },
         methods: {
-            initWebSocket() { //初始化weosocket
-                const wsUri = SOCKET_URL + this.$route.name
-                this.websock = new WebSocket(wsUri);
-                this.websock.onmessage = this.onMessage;
-                this.websock.onopen = this.onOpen;
-                this.websock.onerror = this.onMessage;
-                this.websock.onclose = this.onClose;
-            },
-            onOpen() { //连接建立之后执行send方法发送数据
-                let token = sessionStorage.getItem('x-smart-token') || 'x';
-                this.onSend({token: token, start: true});
-            },
-            onError() {//连接建立失败重连
-                this.initWebSocket();
-            },
-            onMessage(e) { //数据接收
-                this.form.cardNo = e.data
-                this.$forceUpdate();
-            },
-            onSend(Data) {//
-                this.websock.send(JSON.stringify(Data));
-            },
-            onClose(e) {  //关闭
-                this.websock.close();
-            },
+
             init(id) {
                 this.form.id = id || 0;
                 this.visible = true;
@@ -298,7 +273,6 @@
                             this.addForm()   //新增调新增接口
                         }
                     } else {
-
                         return false;
                     }
                 });
@@ -327,11 +301,22 @@
 
             //读卡
             readCard() {
-                this.initWebSocket();
-
-                this.$message.success('正在读卡中');
+                let that = this
+                if (that.socket.ws && that.socket.ws.readyState === 1) {
+                    that.socket.ws.send(JSON.stringify({
+                        start: true,
+                        type: 'readCard',
+                        token: sessionStorage.getItem('x-smart-token')
+                    }))
+                    this.$message.success('正在读卡中');
+                    that.socket.ws.onmessage = this.getMessage
+                }
             },
-
+            getMessage(e) {
+                console.log(e.data)
+                this.form.cardNo = e.data
+                this.$forceUpdate();
+            },
             async getOrigination() { //获取组织数据
                 let res = await listAll();
                 this.data = res.data
@@ -344,13 +329,14 @@
             },
 
             handleClose() {
-                if (this.websock && this.websock.readyState === 0) {
-                    this.onClose()
-                }
-                if (this.websock && this.websock.readyState === 1) {
+                let that = this
+                if (that.socket.ws && that.socket.ws.readyState === 1) {
                     let token = sessionStorage.getItem('x-smart-token') || 'x';
-                    this.onSend({token: token, start: false})
-                    this.onClose()
+                    that.socket.ws.send(JSON.stringify({
+                        start: false,
+                        type: 'readCard',
+                        token: token
+                    }))
                 }
                 this.$refs.form.resetFields()
             },

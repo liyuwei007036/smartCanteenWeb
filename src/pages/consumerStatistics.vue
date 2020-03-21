@@ -60,7 +60,13 @@
                 avg: 0,
             }
         },
+        beforeCreate() {
+        },
         mounted() {
+            let that = this
+            setTimeout(function () {
+                that.initUpdate()
+            }, 3000)
             this.actives = sessionStorage.getItem('summarySearch') || 'day'
             this.drawLine();
             this.drawHistogram();
@@ -70,6 +76,17 @@
                 this.getMonthChat();
             } else if (this.actives === 'day') {
                 this.getDayChat();
+            }
+        },
+        destroyed() {
+            let that = this
+            if (that.socket.ws && that.socket.ws.readyState === 1) {
+                let token = sessionStorage.getItem('x-smart-token') || 'x';
+                that.socket.ws.send(JSON.stringify({
+                    start: false,
+                    type: 'summary',
+                    token: token
+                }))
             }
         },
         methods: {
@@ -148,6 +165,7 @@
                 }
             },
             async getDayChat() {
+                console.log('更新数据')
                 const that = this;
                 let res = await dayChat();
                 if (res && res.code === 1000) {
@@ -255,6 +273,8 @@
 
             },
             async getLineChatData() {
+                console.log('更新数据')
+
                 let res = await lineChat()
                 if (res && res.code === 1000) {
                     let data = res.data
@@ -381,7 +401,33 @@
                     i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
                     j = (j = i.length) > 3 ? j % 3 : 0;
                 return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
-            }
+            },
+
+            async initUpdate() {
+                let that = this
+                if (that.socket.ws && that.socket.ws.readyState === 1) {
+                    that.socket.ws.send(JSON.stringify({
+                        start: true,
+                        type: 'summary',
+                        token: sessionStorage.getItem('x-smart-token')
+                    }))
+                    that.socket.ws.onmessage = this.getMessage
+                }
+            },
+            getMessage(e) {
+                console.log(e.data)
+                let that = this
+                setTimeout(function () {
+                    if (that.actives === 'year') {
+                        that.getYearChat()
+                    } else if (that.actives === 'month') {
+                        that.getMonthChat();
+                    } else if (that.actives === 'day') {
+                        that.getDayChat();
+                    }
+                    that.drawLine();
+                }, 2000)
+            },
         }
     }
 </script>

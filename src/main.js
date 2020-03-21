@@ -16,6 +16,9 @@ Vue.prototype.$user = {
     name: '',
     powers: []
 }
+import socket  from "./config/socket";
+Vue.prototype.socket = socket;
+
 Vue.prototype.$ViewportSize = document.documentElement.clientHeight;
 //main.js
 Vue.directive('acl', aclDirective); //全局注册指令

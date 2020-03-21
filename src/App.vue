@@ -4,6 +4,8 @@
     </div>
 </template>
 <script>
+    import {SOCKET_URL} from '@/config/global'
+
     export default {
         name: 'app',
         beforeCreate() {
@@ -29,13 +31,36 @@
                 isRouterAlive: true
             }
         },
+        created() {
+            this.localSocket()
+        },
         methods: {
             reload() {
                 this.isRouterAlive = false
                 this.$nextTick(() => {
                     this.isRouterAlive = true
                 })
-            }
+            },
+            localSocket() {
+                let that = this
+                if (typeof (WebSocket) == "function") {
+                    const wsUri = SOCKET_URL + sessionStorage.getItem('x-smart-token') || 'x'
+                    that.ws = new WebSocket(wsUri);
+                    that.ws.onOpen = function () {
+                        console.log('开启webSocket')
+                    }
+                    that.ws.onClose = function () {
+                        console.log('onClose webSocket')
+                    }
+                    that.ws.onerror = function () {
+                        console.log('onError webSocket')
+                        that.localSocket();
+                    }
+                    that.socket.setWs(that.ws);
+                } else {
+                    that.$message.error('您的浏览器不支持websocket')
+                }
+            },
         }
     };
 </script>
