@@ -99,9 +99,9 @@
                     this.avg = res.data.avg
                     let HistogramX = []
                     let HistogramY = []
-                    for (let x in data) {
-                        HistogramX.push(x)
-                        HistogramY.push(data[x])
+                    for (let x of data) {
+                        HistogramX.push(x.key)
+                        HistogramY.push(x.value)
                     }
                     this.Histogram.setOption({
                         tooltip: {
@@ -136,9 +136,9 @@
                     this.avg = res.data.avg
                     let HistogramX = []
                     let HistogramY = []
-                    for (let x in data) {
-                        HistogramX.push(x)
-                        HistogramY.push(data[x])
+                    for (let x of data) {
+                        HistogramX.push(x.key)
+                        HistogramY.push(x.value)
                     }
                     this.Histogram.setOption({
                         tooltip: {
@@ -174,9 +174,9 @@
                     this.avg = res.data.avg
                     let HistogramX = []
                     let HistogramY = []
-                    for (let x in data) {
-                        HistogramX.push(x)
-                        HistogramY.push(data[x])
+                    for (let x of data) {
+                        HistogramX.push(x.key)
+                        HistogramY.push(x.value)
                     }
                     this.Histogram.setOption({
                         tooltip: {
@@ -426,7 +426,7 @@
                         that.getDayChat();
                     }
                     that.drawLine();
-                }, 2000)
+                }, 2001)
             },
         }
     }
