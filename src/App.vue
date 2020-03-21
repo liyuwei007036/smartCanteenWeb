@@ -7,15 +7,17 @@
     export default {
         name: 'app',
         beforeCreate() {
-            window.oncontextmenu=function(e){
-                //取消默认的浏览器自带右键 很重要！！
-                e.preventDefault();
-            },
-            document.onmousedown = function mdClick(event) {
-                const e = event || window.event || arguments.callee.caller.arguments[0];
-                if (e.button === 2 || e.button === 3) {
+            if (process.env.ENV_CONFIG === 'prod') {
+                window.oncontextmenu = function (e) {
+                    e.preventDefault();
+                }
+                document.onmousedown = function mdClick(event) {
+                    const e = event || window.event || arguments.callee.caller.arguments[0];
+                    if (e.button === 2 || e.button === 3) {
+                    }
                 }
             }
+
         },
         provide() {
             return {
@@ -332,12 +334,12 @@
         border-radius: 3px;
     }
 
-    .el-dialog__footer{
+    .el-dialog__footer {
         border-top: 1px solid #eee;
         padding: 20px;
     }
 
-    .dialog-footer{
+    .dialog-footer {
         display: flex;
         justify-content: space-around;
     }

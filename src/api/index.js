@@ -4,7 +4,7 @@ import router from "../router";
 import {HTTP_URL} from '@/config/global'
 
 axios.defaults.timeout = 50000;
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = false;
 axios.defaults.baseURL = HTTP_URL;
 
 

@@ -112,7 +112,6 @@
             },
             changePassword() {
                 this.isChangePasswordVisible = true
-
             },
             async doChangePassword() {
                 let res = await changePassword(this.changePasswordform)
@@ -125,12 +124,9 @@
                     if (valid) {
                         this.doChangePassword()
                     } else {
-
                         return false;
                     }
                 });
-
-
             }
         }
     }
