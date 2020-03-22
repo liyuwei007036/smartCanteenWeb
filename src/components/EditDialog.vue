@@ -16,12 +16,12 @@
 
             <el-form-item prop="password" label="登录密码">
                 <el-input type="password" v-model.trim="form.password" auto-complete="off"
-                          placeholder="登录密码"/>
+                          placeholder="登录密码" @input="change"/>
             </el-form-item>
 
             <el-form-item prop="confirmPassword" label="确认密码">
                 <el-input type="password" v-model.trim="form.confirmPassword" auto-complete="off"
-                          placeholder="请再次输入密码"/>
+                          placeholder="请再次输入密码" @input="change"/>
             </el-form-item>
 
             <el-form-item prop="idCard" label="身份证号">
@@ -70,7 +70,7 @@
                 </el-select>
             </el-form-item>
 
-            <el-form-item prop="originationName" label="所属组织">
+            <el-form-item prop="originationName" label="所属组织" class="orgName">
                 <el-input
                         placeholder="请选择所属组织"
                         class="width-220 selectTree-input"
@@ -107,7 +107,7 @@
     export default {
         name: "EditDialog",
         inject: ['reload'],
-        data: function () {
+        data() {
             let validatePass2 = (rule, value, callback) => {
                 if (value === '') {
                     if (this.form.password && this.form.password.length > 0) {
@@ -169,7 +169,7 @@
                     roles: [],
                     type: 1,
                     minimumBalance: 0,
-                    validityTime: new Date('2099-12-31'),
+                    validityTime: new Date('2099-12-31 00:00:00'),
                     openCardAmount: 0,
                     deposit: 0,
                     expense: 0,
@@ -196,6 +196,9 @@
                     ],
                     roles: [
                         {required: true, message: '请选择角色', trigger: 'blur'},
+                    ],
+                    idCard: [
+                        {required: true, message: '请填写身份证号', trigger: 'blur'},
                     ],
                     confirmPassword: [
                         {validator: validatePass2, trigger: 'blur'}
@@ -281,7 +284,9 @@
 
             //更新数据
             async updateForm() {
-                let res = await update(this.form)
+                let form = this.form
+                form.validityTime = this.dateFormat('YYYY-mm-dd HH:MM:SS', form.validityTime || new Date("2099-12-31"))
+                let res = await update(form)
                 if (res.code === 1000) {
                     this.$message.success('保存成功');
                     this.visible = false;
@@ -290,8 +295,10 @@
             },
 
             //保存数据
-            async addForm() {
-                let res = await add(this.form)
+            async addForm(s) {
+                let form = this.form
+                form.validityTime = this.dateFormat('YYYY-mm-dd HH:MM:SS', form.validityTime || new Date("2099-12-31"))
+                let res = await add(form)
                 if (res.code === 1000) {
                     this.$message.success('保存成功');
                     this.visible = false;
@@ -359,9 +366,36 @@
                 } else {
                     this.$refs[formName].resetFields();
                 }
+            },
+
+            dateFormat(fmt, date) {
+                date = new Date(date)
+                let ret;
+                const opt = {
+                    "Y+": date.getFullYear().toString(),        // 年
+                    "m+": (date.getMonth() + 1).toString(),     // 月
+                    "d+": date.getDate().toString(),            // 日
+                    "H+": date.getHours().toString(),           // 时
+                    "M+": date.getMinutes().toString(),         // 分
+                    "S+": date.getSeconds().toString()          // 秒
+                    // 有其他格式化字符需求可以继续添加，必须转化成字符串
+                };
+                for (let k in opt) {
+                    ret = new RegExp("(" + k + ")").exec(fmt);
+                    if (ret) {
+                        fmt = fmt.replace(ret[1], (ret[1].length === 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+                    }
+                }
+                return fmt;
+            },
+
+            change(){
+                console.log(22)
+                this.$forceUpdate()
             }
         }
     }
+
 </script>
 
 <style scoped>
@@ -394,4 +428,11 @@
         overflow: auto;
         padding-right: 40px;
     }
+
+   /deep/ .orgName .el-form-item__label:before {
+        content: '*';
+        color: #F56C6C;
+        margin-right: 4px;
+    }
+
 </style>
