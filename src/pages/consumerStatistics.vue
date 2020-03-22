@@ -42,7 +42,7 @@
 
 <script>
     import echarts from 'echarts'
-    import {lineChat, yearChat, monthChat, dayChat} from "../api/dateSummary";
+    import {dayChat, lineChat, monthChat, yearChat} from "../api/dateSummary";
 
 
     export default {
@@ -94,113 +94,68 @@
                 const that = this
                 let res = await yearChat();
                 if (res && res.code === 1000) {
-                    let data = res.data.data
-                    this.totalSale = res.data.total
-                    this.avg = res.data.avg
-                    let HistogramX = []
-                    let HistogramY = []
-                    for (let x of data) {
-                        HistogramX.push(x.key)
-                        HistogramY.push(x.value)
-                    }
-                    this.Histogram.setOption({
-                        tooltip: {
-                            formatter: function (params) {
+                    that.updateHistogramData(res.data, 'year');
+                }
+            },
+            updateHistogramData(res, type) {
+                this.totalSale = res.total
+                this.avg = res.avg
+                let data = res.data
+                let that = this
+                let HistogramX = []
+                let HistogramY = []
+                for (let x of data) {
+                    HistogramX.push(x.key)
+                    HistogramY.push(x.value)
+                }
+                this.Histogram.setOption({
+                    tooltip: {
+                        formatter: function (params) {
+                            if (type === 'year') {
                                 return '' + params[0].axisValueLabel + '' + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
+                            } else if (type === 'month') {
+                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
+                            } else if (type === 'day') {
+                                let times = params[0].axisValueLabel.split('-')
+                                return `${times[0]}-${times[1]}-${times[2]} ${times[3]} 时` + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
+                            }
+                        }
+                    },
+                    xAxis: {
+                        axisLabel: {
+                            margin: 20,
+                            formatter: function (value, index) {
+                                if (type === 'year') {
+                                    return value.split('-')[1] + '月'
+                                } else if (type === 'month') {
+                                    return value.split('-')[2] + '日'
+                                } else if (type === 'day') {
+                                    return value.split('-')[3] + '时'
+                                }
                             }
                         },
-                        xAxis: {
-                            axisLabel: {
-                                margin: 20,
-                                formatter: function (value, index) {
-                                    return value.split('-')[1] + '月'
-                                }
-                            },
-                            data: HistogramX
-                        },
-                        series: [{
-                            name: '销售额',
-                            type: 'bar',
-                            barWidth: '50%',
-                            data: HistogramY
-                        }]
-                    })
-                }
+                        data: HistogramX
+                    },
+                    series: [{
+                        name: '销售额',
+                        type: 'bar',
+                        barWidth: '50%',
+                        data: HistogramY
+                    }]
+                })
             },
             async getMonthChat() {
                 const that = this
                 let res = await monthChat();
                 if (res && res.code === 1000) {
-                    let data = res.data.data
-                    this.totalSale = res.data.total
-                    this.avg = res.data.avg
-                    let HistogramX = []
-                    let HistogramY = []
-                    for (let x of data) {
-                        HistogramX.push(x.key)
-                        HistogramY.push(x.value)
-                    }
-                    this.Histogram.setOption({
-                        tooltip: {
-                            formatter: function (params) {
-                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
-                            }
-                        },
-                        xAxis: {
-                            axisLabel: {
-                                margin: 20,
-                                formatter: function (value, index) {
-                                    return value.split('-')[2] + '日'
-                                }
-                            },
-                            data: HistogramX
-                        },
-                        series: [{
-                            name: '销售额',
-                            type: 'bar',
-                            barWidth: '50%',
-                            data: HistogramY
-                        }]
-                    })
+                    that.updateHistogramData(res.data, 'month');
                 }
             },
             async getDayChat() {
-                console.log('更新数据')
                 const that = this;
                 let res = await dayChat();
                 if (res && res.code === 1000) {
-                    let data = res.data.data
-                    this.totalSale = res.data.total
-                    this.avg = res.data.avg
-                    let HistogramX = []
-                    let HistogramY = []
-                    for (let x of data) {
-                        HistogramX.push(x.key)
-                        HistogramY.push(x.value)
-                    }
-                    this.Histogram.setOption({
-                        tooltip: {
-                            formatter: function (params) {
-                                let times = params[0].axisValueLabel.split('-')
-                                return `${times[0]}-${times[1]}-${times[2]} ${times[3]} 时` + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
-                            }
-                        },
-                        xAxis: {
-                            axisLabel: {
-                                margin: 20,
-                                formatter: function (value, index) {
-                                    return value.split('-')[3] + '时'
-                                }
-                            },
-                            data: HistogramX
-                        },
-                        series: [{
-                            name: '销售额',
-                            type: 'bar',
-                            barWidth: '50%',
-                            data: HistogramY
-                        }]
-                    })
+                    that.updateHistogramData(res.data, 'day');
                 }
             },
             drawHistogram() {
@@ -273,112 +228,113 @@
 
             },
             async getLineChatData() {
-                console.log('更新数据')
-
                 let res = await lineChat()
                 if (res && res.code === 1000) {
                     let data = res.data
-                    let lineChatX = []
-                    let lineChatY = []
-                    for (let x in data) {
-                        lineChatX.push(x)
-                        lineChatY.push(data[x])
-                    }
-                    this.chartColumn.setOption({
-                        color: ['#2FC25B'],
-                        title: {
-                            text: '消费峰值统计',
-                            left: '10%',
-                            textStyle: {
-                                fontStyle: 'normal',
-                                fontSize: 14,
-                                fontWeight: 'bolder',
-                                color: '#000'
-                            }
-                        },
-                        legend: {
-                            type: 'plain',
-                            show: true,
-                            data: [{
-                                icon: 'circle',
-                                name: '支付笔数',
-                            }],
-                            right: '10%',
-                            top: '5%',
-                            selectedMode: false,
-                            itemHeight: 8,
-                            itemWidth: 8,
-
-                        },
-                        tooltip: {
-                            trigger: 'axis',
-                            backgroundColor: 'rgba(50,50,50,0.9)',
-                            padding: [
-                                15,  // 上
-                                10, // 右
-                                15,  // 下
-                                10, // 左
-                            ],
-                            formatter: function (params) {
-                                return params[0].axisValueLabel + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + params[0].value + '笔'
-                            }
-                        },
-                        minInterval: 1,
-                        xAxis: {
-                            type: 'category',
-                            axisLabel: {
-                                margin: 20,
-                                formatter: function (value, index) {
-                                    // 格式化成月/日，只在第一个刻度显示年份
-                                    return new Date(value.replace(/-/g, '/')).format("hh:mm");
-                                }
-                            }, axisTick: {
-                                alignWithLabel: true
-                            },
-                            data: lineChatX,
-                        },
-                        yAxis: {
-                            min: 0,
-                            type: 'value',
-                            show: true,
-                            axisTick: {
-                                show: false
-                            },
-                            axisLabel: {
-                                margin: 20,
-                            },
-                            axisLine: {
-                                show: true,
-                                lineStyle: {
-                                    color: {
-                                        type: 'radial',
-                                        x: 0.5,
-                                        y: 0.5,
-                                        r: 0.5,
-                                        colorStops: [{
-                                            offset: 0, color: '#fff' // 0% 处的颜色
-                                        }, {
-                                            offset: 1, color: '#fff' // 100% 处的颜色
-                                        }],
-                                        global: false // 缺省为 false
-                                    }
-                                }
-                            },
-                            splitLine: {
-                                lineStyle: {
-                                    color: ['#aaa'],
-                                    type: 'dashed'
-                                }
-                            }
-                        },
-                        series: [{
-                            symbol: 'circle',
-                            name: '支付笔数',
-                            data: lineChatY,
-                            type: 'line'
-                        }]
-                    });
+                    this.drawLineChat(data)
                 }
+            },
+            drawLineChat(data) {
+                let lineChatX = []
+                let lineChatY = []
+                for (let x in data) {
+                    lineChatX.push(x)
+                    lineChatY.push(data[x])
+                }
+                this.chartColumn.setOption({
+                    color: ['#2FC25B'],
+                    title: {
+                        text: '消费峰值统计',
+                        left: '10%',
+                        textStyle: {
+                            fontStyle: 'normal',
+                            fontSize: 14,
+                            fontWeight: 'bolder',
+                            color: '#000'
+                        }
+                    },
+                    legend: {
+                        type: 'plain',
+                        show: true,
+                        data: [{
+                            icon: 'circle',
+                            name: '支付笔数',
+                        }],
+                        right: '10%',
+                        top: '5%',
+                        selectedMode: false,
+                        itemHeight: 8,
+                        itemWidth: 8,
+
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: 'rgba(50,50,50,0.9)',
+                        padding: [
+                            15,  // 上
+                            10, // 右
+                            15,  // 下
+                            10, // 左
+                        ],
+                        formatter: function (params) {
+                            return params[0].axisValueLabel + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + params[0].value + '笔'
+                        }
+                    },
+                    minInterval: 1,
+                    xAxis: {
+                        type: 'category',
+                        axisLabel: {
+                            margin: 20,
+                            formatter: function (value, index) {
+                                // 格式化成月/日，只在第一个刻度显示年份
+                                return new Date(value.replace(/-/g, '/')).format("hh:mm");
+                            }
+                        }, axisTick: {
+                            alignWithLabel: true
+                        },
+                        data: lineChatX,
+                    },
+                    yAxis: {
+                        min: 0,
+                        type: 'value',
+                        show: true,
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            margin: 20,
+                        },
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: {
+                                    type: 'radial',
+                                    x: 0.5,
+                                    y: 0.5,
+                                    r: 0.5,
+                                    colorStops: [{
+                                        offset: 0, color: '#fff' // 0% 处的颜色
+                                    }, {
+                                        offset: 1, color: '#fff' // 100% 处的颜色
+                                    }],
+                                    global: false // 缺省为 false
+                                }
+                            }
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: ['#aaa'],
+                                type: 'dashed'
+                            }
+                        }
+                    },
+                    series: [{
+                        symbol: 'circle',
+                        name: '支付笔数',
+                        data: lineChatY,
+                        type: 'line'
+                    }]
+                });
             },
             click(i) {
                 this.actives = i
@@ -402,7 +358,6 @@
                     j = (j = i.length) > 3 ? j % 3 : 0;
                 return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
             },
-
             async initUpdate() {
                 let that = this
                 if (that.socket.ws && that.socket.ws.readyState === 1) {
@@ -415,18 +370,10 @@
                 }
             },
             getMessage(e) {
-                console.log(e.data)
-                let that = this
-                setTimeout(function () {
-                    if (that.actives === 'year') {
-                        that.getYearChat()
-                    } else if (that.actives === 'month') {
-                        that.getMonthChat();
-                    } else if (that.actives === 'day') {
-                        that.getDayChat();
-                    }
-                    that.drawLine();
-                }, 2001)
+                let data = JSON.parse(e.data)
+                console.log(data[`${this.actives}`], this.actives)
+                this.updateHistogramData(data[`${this.actives}`], this.actives)
+                this.drawLineChat(data.line)
             },
         }
     }
