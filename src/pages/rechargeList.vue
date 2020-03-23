@@ -47,7 +47,7 @@
                 </el-col>
                 <el-col :span="8">
                     <div class="grid-content search-grid-content">
-                        <label class="search-label">记账时间：</label>
+                        <label class="search-label">充值时间：</label>
                         <el-date-picker class="search_input" style="margin: 0"
                                         v-model="search.start"
                                         type="date"
