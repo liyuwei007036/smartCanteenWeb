@@ -102,7 +102,7 @@
             </el-table-column>
             <el-table-column
                     prop="action"
-                    label="操作动作"
+                    label="操作功能"
                     align="center"
                     :show-overflow-tooltip='true'
                     width="">

@@ -171,8 +171,8 @@
                     <el-input type="text" v-model.trim="form1.name" auto-complete="off" placeholder="姓名"></el-input>
                 </el-form-item>
 
-                <el-form-item prop="no" label="账号">
-                    <el-input type="text" v-model.trim="form1.no" auto-complete="off" placeholder=账号></el-input>
+                <el-form-item prop="no" label="工号">
+                    <el-input type="text" v-model.trim="form1.no" auto-complete="off" placeholder=工号></el-input>
                 </el-form-item>
 
                 <el-form-item prop="idCard" label="身份证号">
@@ -201,8 +201,9 @@
                               placeholder="请输入开卡存入金额"/>
                 </el-form-item>
 
-                <el-form-item prop="originationName" label="所属组织">
+                <el-form-item prop="originationName" label="所属组织" style="background-color: #ffffff">
                     <el-input type="text" v-model.trim="form1.originationName" auto-complete="off"
+                              style="background-color: #ffffff !important;"
                               placeholder="请选择组织"/>
                 </el-form-item>
 
@@ -218,10 +219,10 @@
                 </el-form-item>
 
             </el-form>
-
+            <span slot="footer" class="dialog-footer">
             <el-button type="primary" class="dialog-btn-normal" @click="isShowVisible = false" :disabled="false">关 闭
             </el-button>
-
+            </span>
         </el-dialog>
 
     </div>

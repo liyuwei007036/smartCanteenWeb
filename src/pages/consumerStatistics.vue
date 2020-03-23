@@ -258,7 +258,7 @@
                         show: true,
                         data: [{
                             icon: 'circle',
-                            name: '支付笔数',
+                            name: '消费次数',
                         }],
                         right: '10%',
                         top: '5%',
@@ -330,7 +330,7 @@
                     },
                     series: [{
                         symbol: 'circle',
-                        name: '支付笔数',
+                        name: '消费次数',
                         data: lineChatY,
                         type: 'line'
                     }]

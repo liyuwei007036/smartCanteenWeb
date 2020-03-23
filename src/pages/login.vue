@@ -8,7 +8,7 @@
                              hide-required-asterisk>
                         <el-form-item prop="account" label="用户名">
                             <el-input type="text" v-model="loginForm.account" auto-complete="off" class="login-input"
-                                      placeholder="账号"></el-input>
+                                      placeholder="工号"></el-input>
                         </el-form-item>
 
                         <el-form-item prop="password" label="密码">
@@ -25,7 +25,7 @@
             </el-col>
         </el-row>
         <div style="position:absolute;bottom:10px;display: flex;justify-content: center;align-items: center;height: 30px;color: #999999;font-size: 13px;background-color: transparent">
-            copyright &copy; 2019-2029南京镀尔墨科技有限公司
+            Copyright &copy; 2019-2020&nbsp;南京镀尔墨科技有限公司
         </div>
     </div>
 </template>
@@ -43,7 +43,7 @@
                     code: 'aaa'
                 },
                 rules: {
-                    account: [{required: true, message: '请输入账号', trigger: 'blur'}],
+                    account: [{required: true, message: '请输入工号', trigger: 'blur'}],
                     password: [{required: true, message: '请输入密码', trigger: 'blur'}]
                 },
             }
@@ -63,7 +63,7 @@
                     if (valid) {
                         this.login()
                     } else {
-                        this.$message.error('账号或密码错误');
+                        this.$message.error('工号或密码错误');
                         return false;
                     }
                 });

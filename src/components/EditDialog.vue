@@ -9,8 +9,8 @@
             <el-form-item prop="name" label="姓名">
                 <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="姓名"/>
             </el-form-item>
-            <el-form-item prop="no" label="账号">
-                <el-input type="text" v-model.trim="form.no" auto-complete="off" placeholder=账号
+            <el-form-item prop="no" label="工号">
+                <el-input type="text" v-model.trim="form.no" auto-complete="off" placeholder=工号
                           :readonly="isReadonly"/>
             </el-form-item>
 
@@ -37,8 +37,7 @@
             <el-form-item prop="cardNo" label="卡号" class="getCard">
                 <el-input type="number" id="cardNo" v-model.trim="form.cardNo" auto-complete="off" placeholder="卡号"
                           :readonly="isReadonly"
-                          @mousewheel.native.prevent>
-                </el-input>
+                          @mousewheel.native.prevent/>
                 <el-button v-if="!isReadonly" @click="readCard()" v-text="status_text"
                            style="margin-left: 10px;height: 34px;color: #fff;background-color: #2E6CFE;font-size: 13px;line-height: 34px;padding:0 10px;border: none">
                 </el-button>
@@ -54,8 +53,8 @@
                 </el-date-picker>
             </el-form-item>
 
-            <el-form-item prop="openCardAmount" label="开卡金额(元)">
-                <el-input type="number" v-model.trim="form.openCardAmount" auto-complete="off"
+            <el-form-item prop="openCardAmount" label="开卡充值(元)">
+                <el-input type="number" v-model.trim="form.openCardAmount" auto-complete="off" :readonly="isReadonly"
                           placeholder="请输入开卡存入金额" @mousewheel.native.prevent/>
             </el-form-item>
 
@@ -75,6 +74,7 @@
                         placeholder="请选择所属组织"
                         class="width-220 selectTree-input"
                         auto-complete="off"
+                        :readonly="true"
                         v-model="form.originationName"
                         @click.native="changeSelectTree()">
                 </el-input>
@@ -109,13 +109,13 @@
         inject: ['reload'],
         data() {
             let validatePass2 = (rule, value, callback) => {
-                if (value === '') {
+                if (this.form.confirmPassword === '') {
                     if (this.form.password && this.form.password.length > 0) {
                         callback(new Error('请再次输入密码'))
                     } else {
                         callback()
                     }
-                } else if (value !== this.form.password) {
+                } else if (this.form.confirmPassword !== this.form.password) {
                     callback(new Error('两次输入密码不一致!'))
                 } else {
                     callback()
@@ -137,7 +137,7 @@
                 if (!value) {
                     return callback(new Error('手机号不能为空'));
                 } else {
-                    const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+                    const reg = /^1[3|4|5|7|8|9][0-9]\d{8}$/
                     if (reg.test(value)) {
                         callback();
                     } else {
@@ -187,9 +187,13 @@
                 searchCardNo: '',
                 rules: {
                     name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
-                    no: [{required: true, message: '请输入账号', trigger: 'blur'}],
+                    no: [{required: true, message: '请输入工号', trigger: 'blur'}],
                     cardNo: [
-                        {required: true, message: '卡号不能为空', trigger: 'blur'}],
+                        {
+                            required: true,
+                            pattern: /^\d{6,12}$/,
+                            message: '卡号不能为空且只能为6-12位', trigger: 'blur'
+                        }],
                     mobile: [
                         {required: true, message: '请输入手机号', trigger: 'blur'},
                         {validator: checkPhone, trigger: 'blur'}
@@ -224,7 +228,6 @@
 
         },
         methods: {
-
             init(id) {
                 this.form.id = id || 0;
                 this.visible = true;
@@ -337,6 +340,7 @@
 
             handleClose() {
                 let that = this
+                that.isShowSelect = false
                 if (that.socket.ws && that.socket.ws.readyState === 1) {
                     let token = sessionStorage.getItem('x-smart-token') || 'x';
                     that.socket.ws.send(JSON.stringify({
@@ -389,8 +393,7 @@
                 return fmt;
             },
 
-            change(){
-                console.log(22)
+            change(e) {
                 this.$forceUpdate()
             }
         }
@@ -400,6 +403,10 @@
 
 <style scoped>
     .select_normal /deep/ input[readonly] {
+        background-color: #fff;
+    }
+
+    .orgName /deep/ input[readonly] {
         background-color: #fff;
     }
 
@@ -429,7 +436,7 @@
         padding-right: 40px;
     }
 
-   /deep/ .orgName .el-form-item__label:before {
+    /deep/ .orgName .el-form-item__label:before {
         content: '*';
         color: #F56C6C;
         margin-right: 4px;

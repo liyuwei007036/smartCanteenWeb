@@ -69,7 +69,7 @@ module.exports = [{
             auths: ['log:operation'],
             componentName: 'operateLog',
         }, {
-            name: '登录日志',
+            name: '安全日志',
             auths: ['log:login'],
             componentName: 'loginLog',
         }

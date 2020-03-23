@@ -7,7 +7,7 @@
                 <el-col :span="8">
                     <div class="grid-content search-grid-content">
                         <label class="search-label">登录人：</label>
-                        <el-input class="search_input" v-model="search.empName" placeholder="请输入姓名"></el-input>
+                        <el-input class="search_input" v-model="search.empName" placeholder="请输入姓名"/>
                     </div>
                 </el-col>
                 <el-col :span="8">
@@ -38,7 +38,7 @@
         <div class="option-menu clearfix">
             <el-button type="primary" class="search-btn" @click="toggleSearch"
                        icon="el-icon-search"
-                       style="float: right;"></el-button>
+                       style="float: right;"/>
         </div>
 
         <el-table
@@ -65,15 +65,22 @@
                     width="">
             </el-table-column>
             <el-table-column
-                    prop="loginTime"
-                    label="登录时间"
+                    prop="type"
+                    label="操作功能"
                     align="center"
                     :show-overflow-tooltip='true'
                     width="">
             </el-table-column>
             <el-table-column
                     prop="ip"
-                    label="登录ip"
+                    label="操作IP"
+                    align="center"
+                    :show-overflow-tooltip='true'
+                    width="">
+            </el-table-column>
+            <el-table-column
+                    prop="loginTime"
+                    label="操作时间"
                     align="center"
                     :show-overflow-tooltip='true'
                     width="">
