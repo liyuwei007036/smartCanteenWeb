@@ -14,7 +14,7 @@
                   lazy
                   :load="load"
                   :stripe="true"
-                  :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+                  :tree-props="{children: 'kids', hasChildren: 'hasChildren'}"
                   style="width: 100%; overflow-y: auto"
                   :max-height="maxHeight"
                   :header-cell-style="{
@@ -119,11 +119,11 @@
         },
         methods: {
 
-            load(tree, treeNode, resolve) {
-                this.nodes(tree.id);
-                setTimeout(() => {
-                    resolve(this.childrenTableData)
-                }, 1000)
+            async load(tree, treeNode, resolve) {
+                let res = await getNodes(tree.id)
+                if (res.code === 1000) {
+                    resolve(res.data)
+                }
             },
 
             //获取根结点数据
@@ -132,16 +132,6 @@
 
                 if (res.code === 1000) {
                     this.tableData = res.data
-                } else {
-
-                }
-            },
-
-            //获取子节点数据
-            async nodes(id) {
-                let res = await getNodes(id);
-                if (res.code === 1000) {
-                    this.childrenTableData = res.data
                 } else {
 
                 }
@@ -173,7 +163,7 @@
             handleSubmit(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        if (this.isUpdate == true) {
+                        if (this.isUpdate === true) {
                             this.updateNode()
                         } else {
                             this.addNode()
