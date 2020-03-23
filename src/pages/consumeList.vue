@@ -259,7 +259,7 @@
                     this.currentPage = res.data.currentPage;
                     this.tableData = res.data.data
                 } else {
-                    this.$message.error(res.msg);
+
                 }
             },
 

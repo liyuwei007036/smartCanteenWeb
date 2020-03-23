@@ -246,7 +246,7 @@
                 if (res.code === 1000) {
                     this.form = res.data
                 } else {
-                    this.$message.error(res.msg);
+
                 }
             },
 

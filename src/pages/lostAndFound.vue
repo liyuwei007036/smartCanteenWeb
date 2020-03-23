@@ -353,7 +353,7 @@
                     this.currentPage = res.data.currentPage;
                     this.tableData = res.data.data
                 } else {
-                    this.$message.error(res.msg);
+
                 }
             },
 
@@ -401,7 +401,7 @@
                     this.replaceForm = res.data
                     console.log(this.replaceForm)
                 } else {
-                    this.$message.error(res.msg);
+
                 }
             },
 

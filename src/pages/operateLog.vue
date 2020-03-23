@@ -236,7 +236,7 @@
                     this.currentPage = res.data.currentPage;
                     this.tableData = res.data.data
                 } else {
-                    this.$message.error(res.msg);
+
                 }
             },
 
@@ -247,7 +247,7 @@
                 if (res.code === 1000) {
                     this.form = res.data
                 } else {
-                    this.$message.error(res.msg);
+
                 }
             },
 
@@ -256,7 +256,7 @@
                 if (res.code === 1000) {
                     this.form = res.data
                 } else {
-                    this.$message.error(res.msg);
+
                 }
             },
             //分页

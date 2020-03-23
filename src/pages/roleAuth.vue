@@ -87,7 +87,7 @@
                 if (res.code === 1000) {
                     this.$message.success('操作成功')
                 } else {
-                    this.$message.error(res.msg);
+
                 }
             },
             async listPermission() {
@@ -114,7 +114,7 @@
                         this.getRolePermissions()
                     }
                 } else {
-                    this.$message.error(res.msg);
+
                 }
             },
         }

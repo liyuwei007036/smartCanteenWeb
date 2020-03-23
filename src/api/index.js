@@ -7,7 +7,6 @@ axios.defaults.timeout = 50000;
 axios.defaults.withCredentials = false;
 axios.defaults.baseURL = HTTP_URL;
 
-
 const reqList = []
 
 /**
@@ -43,13 +42,12 @@ axios.interceptors.request.use(config => {
     config.cancelToken = new axios.CancelToken(function (c) {
         cancel = c
     })
-
+    if (config.method !== 'get') {
+        stopRepeatRequest(config.url + '&' + config.method, cancel, '${config.url} request cancel')
+    }
     //阻止重复请求，当上个请求未完成时，相同的请求不会进行
-    stopRepeatRequest(config.url + '&' + config.method, cancel, '${config.url} request cancel')
-    // config.headers = buildHeaders() || {}
     config.headers['content-type'] = 'application/json'
     config.headers['x-smart-token'] = sessionStorage.getItem('x-smart-token')
-    // config.headers['X-lang-Id'] = localStorage.getItem(LANG.LOCALE)
     return config
 }, err => {
     return Promise.reject(err)
@@ -60,11 +58,12 @@ axios.interceptors.response.use(response => {
     if (response.headers['x-smart-token']) {
         sessionStorage.setItem('x-smart-token', response.headers['x-smart-token'])
     }
-
-    //增加延迟，相同请求不得在短时间内重复发送
-    setTimeout(() => {
-        allowRequest(response.config.url + '&' + response.config.method)
-    }, 500)
+    if (response.config.method !== 'get') {
+        //增加延迟，相同请求不得在短时间内重复发送
+        setTimeout(() => {
+            allowRequest(response.config.url + '&' + response.config.method)
+        }, 500)
+    }
     let data = response.data
     if (data && data.code === 1000) {
         return data
@@ -94,13 +93,14 @@ axios.interceptors.response.use(response => {
             default:
                 Message.error('连接服务器失败')
         }
-        setTimeout(() => {
-            allowRequest(error.response.config.url + '&' + error.response.config.method)
-        }, 500)
+        if (error.response.config.method !== 'get') {
+            setTimeout(() => {
+                allowRequest(error.response.config.url + '&' + error.response.config.method)
+            }, 500)
+        }
     }
     return {
         code: 0,
-        msg: '操作太快'
     }
 })
 
