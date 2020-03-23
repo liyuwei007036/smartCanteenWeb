@@ -14,7 +14,6 @@
                   lazy
                   :load="load"
                   :stripe="true"
-                  :default-expand-all="true"
                   :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
                   style="width: 100%; overflow-y: auto"
                   :max-height="maxHeight"
