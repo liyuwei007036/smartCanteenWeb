@@ -16,7 +16,7 @@ module.exports = [{
     ],
 }, {
     name: '卡片管理',
-    id: 'cardManagemant',
+    id: 'cardManagement',
     auths: ['icCard:list'],
     icon: 'el-icon-bank-card',
     sub: [
@@ -29,6 +29,18 @@ module.exports = [{
             auths: ['icCard:loss', 'icCard:patch'],
             componentName: 'lostAndFound',
         },
+    ],
+}, {
+    name: '卡机管理',
+    id: 'machineManagement',
+    auths: ['machine:view'],
+    icon: 'el-icon-files',
+    sub: [
+        {
+            name: '卡机列表',
+            auths: ['machine:view'],
+            componentName: 'machine',
+        }
     ],
 }, {
     name: '角色管理',

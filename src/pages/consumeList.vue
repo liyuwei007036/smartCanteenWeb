@@ -72,7 +72,7 @@
         <div class="option-menu clearfix">
             <el-button type="primary" class="search-btn" @click="toggleSearch"
                        icon="el-icon-search"
-                       style="float: right;"></el-button>
+                       style="float: right;"/>
         </div>
 
         <el-table
@@ -232,7 +232,6 @@
         },
 
         methods: {
-
             serach() {
                 this.search.page = 1
                 this.getList();
@@ -258,8 +257,6 @@
                     this.total = res.data.total;
                     this.currentPage = res.data.currentPage;
                     this.tableData = res.data.data
-                } else {
-
                 }
             },
 

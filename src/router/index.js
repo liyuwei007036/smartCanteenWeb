@@ -19,6 +19,7 @@ import login from '@/pages/login';
 import home from '@/pages/home';
 import error from '@/pages/error';
 import error403 from '@/pages/error403';
+import machineList from "@/pages/machineList";
 // 使用插件, 用use
 Vue.use(VueRouter); // 调用一个这个方法
 const router = new VueRouter({
@@ -101,6 +102,14 @@ const router = new VueRouter({
                         auths: ['icCard'],
                     }
                 }, {
+                    path: '/machine',
+                    component: machineList,
+                    name: 'machine',
+                    meta: {
+                        title: '卡机管理',
+                        auths: ['machine:view'],
+                    }
+                }, {
                     path: '/lostAndFound',
                     component: lostAndFound,
                     name: 'lostAndFound',
@@ -116,7 +125,7 @@ const router = new VueRouter({
                         title: '消费记录',
                         auths: ['order:list'],
                     }
-                },{
+                }, {
                     path: '/consumerStatistics',
                     component: consumerStatistics,
                     name: 'consumerStatistics',
@@ -124,7 +133,7 @@ const router = new VueRouter({
                         title: '消费统计',
                         auths: [],
                     }
-                },{
+                }, {
                     path: '/operateLog',
                     component: operateLog,
                     name: 'operateLog',
@@ -132,7 +141,7 @@ const router = new VueRouter({
                         title: '操作日志',
                         auths: ['log:operation'],
                     }
-                },{
+                }, {
                     path: '/loginLog',
                     component: loginLog,
                     name: 'loginLog',
@@ -165,7 +174,7 @@ router.beforeEach((to, from, next) => {
         } catch (e) {
 
         }
-        if ($user && $user.id === 1){
+        if ($user && $user.id === 1) {
             next();
             return;
         }
