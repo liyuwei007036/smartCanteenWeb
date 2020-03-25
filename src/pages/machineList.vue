@@ -3,7 +3,7 @@
         <hr style="height: 2px;background-color: #5286FF;border:none;margin-bottom: 12px;">
         <div class="option-menu">
             <el-button type="primary" class="add-btn" @click="addVisible = true" icon="el-icon-plus"
-                       v-acl="['machine:add']">新增机器
+                       v-acl="['machine:add']">新增卡机
             </el-button>
         </div>
         <div>
@@ -257,6 +257,18 @@
                 }
             },
             async remove(id) {
+                this.$confirm('确定删除该卡机？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.removeMachine(id)
+                }).catch(() => {
+
+                });
+
+            },
+            async removeMachine(id) {
                 let res = await machine.remove(id)
                 if (res.code === 1000) {
                     this.$message.success('删除成功')
