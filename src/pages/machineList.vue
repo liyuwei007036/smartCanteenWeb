@@ -234,7 +234,7 @@
                 if (res.code === 1000) {
                     this.$message.success('保存成功')
                     this.addVisible = false;
-                    this.reload()
+                    this.page()
                 }
             },
             async get(id) {
@@ -253,7 +253,7 @@
                 if (res.code === 1000) {
                     this.$message.success('修改成功')
                     this.editVisible = false;
-                    this.reload()
+                    this.page()
                 }
             },
             async remove(id) {

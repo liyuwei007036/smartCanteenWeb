@@ -56,6 +56,14 @@ let loss = (data) => {
     })
 }
 
+let unLoss = (data) => {
+    return axios({
+        method: 'put',
+        url: `/icCard/report/unloss/${data}`,
+        data
+    })
+}
+
 let deduction = (data) => {
     return axios({
         method: 'post',
@@ -72,5 +80,6 @@ export {
     patch,
     deduction,
     rechargeList,
-    getPatchUser
+    getPatchUser,
+    unLoss
 }

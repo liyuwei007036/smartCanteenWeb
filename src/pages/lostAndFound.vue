@@ -142,14 +142,19 @@
                         align="center"
                         width="180">
                     <template slot-scope="scope">
-                        <el-button type="text" size="small" :disabled="scope.row.accountStatus != '挂失'"
+                        <el-button type="text" size="small" :disabled="scope.row.accountStatus !== '挂失'"
                                    class="green-btn"
                                    v-acl="['icCard:patch']"
                                    @click="replaceAccounnt(scope.row.id)">补卡
                         </el-button>
-                        <el-button type="text" size="small" class="delete-btn" :disabled="scope.row.status != '激活'"
+                        <el-button type="text" size="small" class="delete-btn" :disabled="scope.row.status !== '激活'"
                                    v-acl="['icCard:loss']"
                                    @click="lossAccounnt(scope.row.id)">挂失
+                        </el-button>
+                        <el-button type="text" size="small" class="delete-btn"
+                                   :disabled="scope.row.accountStatus !== '挂失'"
+                                   v-acl="['icCard:unloss']"
+                                   @click="unLossAccount(scope.row.id)">解挂
                         </el-button>
                     </template>
                 </el-table-column>
@@ -251,9 +256,7 @@
 </template>
 
 <script>
-    import {list, loss, patch, getPatchUser} from '@/api/card';
-    import {SOCKET_URL} from '@/config/global'
-    import {listAllRole} from '@/api/role';
+    import {list, loss, patch, getPatchUser, unLoss} from '@/api/card';
 
 
     export default {
@@ -374,12 +377,34 @@
                 });
             },
 
+            unLossAccount(id) {
+                this.$confirm('确定解挂该卡片？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.unLoss(id)
+                }).catch(() => {
+                    console.log('取消挂失')
+                });
+            },
+
+
             //挂失
             async loss(id) {
                 let res = await loss(id)
                 console.log(res)
                 if (res.code === 1000) {
                     this.$message.success('挂失成功');
+                    this.getList()
+                }
+            },
+            //挂失
+            async unLoss(id) {
+                let res = await unLoss(id)
+                console.log(res)
+                if (res.code === 1000) {
+                    this.$message.success('解挂成功');
                     this.getList()
                 }
             },
