@@ -1,31 +1,49 @@
 <template>
     <div class="statistics">
-        <div style="background-color: #fff;padding: 15px;margin-bottom: 15px;">
-            <div style="border-bottom: 1px solid #E8E8E8;height: 30px">
-                <div style="font-size: 16px;border-bottom: 2px solid #108DE9;height: 30px;display:inline-block;line-height: 30px;padding: 0 15px;color: #1890FF">
-                    销售额
-                </div>
-                <div style="display: inline-block;margin-left: 20px;color: #666666;font-size: 14px;">
-                    <span :class="{is_active:actives === 'day','statistics-tab':true}" style="padding: 0 10px"
-                          @click="click('day')">今日</span>
-                    <span :class="{is_active:actives === 'month','statistics-tab':true}" style="padding: 0 10px"
-                          @click="click('month')">本月</span>
-                    <span :class="{is_active:actives === 'year','statistics-tab':true}" style="padding: 0 10px"
-                          @click="click('year')">全年</span>
-                </div>
-            </div>
-            <div style="display: flex;align-items: center;padding: 0 0">
-                <div id="Histogram" style="height: 340px;width: 80%">
 
+        <div style="background-color: #fff;padding:14px 0;margin-bottom: 10px;border-radius: 4px;box-shadow: 0 0 6px 0 #DFDFDF;">
+            <div style="margin-left: 20px;color: #666666;font-size: 14px;height: 30px;line-height: 30px">
+                <div :class="{is_active:actives === 'day','statistics-tab':true}"
+                     style="border-top-left-radius: 4px;border-bottom-left-radius: 4px"
+                     @click="click('day')">今日
                 </div>
-                <div class="statistics_right">
-                    <div id="pieChat" style="height: 100%;width: 100%">
-                    </div>
+                <div :class="{is_active:actives === 'month','statistics-tab':true}"
+                     style="margin-left: -1px;"
+                     @click="click('month')">本月
+                </div>
+                <div :class="{is_active:actives === 'year','statistics-tab':true}"
+                     style="border-top-right-radius: 4px;border-bottom-right-radius: 4px;margin-left: -1px;"
+                     @click="click('year')">全年
                 </div>
             </div>
         </div>
 
-        <div style="background-color: #fff;padding: 25px;margin-bottom: 0px">
+        <div style="display: flex;align-items: center">
+
+            <div style="background-color: #fff;padding:0 20px 15px;margin-bottom: 10px;width: 80%;margin-right: 20px;border-radius: 4px;box-shadow: 0 0 6px 0 #DFDFDF;">
+                <div style="border-bottom: 1px solid #DDDFE6">
+                    <div style="font-size: 14px;display:inline-block;padding: 16px 0px;color: #333333;font-weight: bold">
+                        销售额
+                    </div>
+
+                </div>
+                <div id="Histogram" style="height: 340px">
+                </div>
+            </div>
+
+            <div style="background-color: #fff;padding:0 20px 15px;margin-bottom: 10px;;width: 20%;border-radius: 4px;box-shadow: 0 0 6px 0 #DFDFDF;">
+                <div style="border-bottom: 1px solid #DDDFE6">
+                    <div style="font-size: 14px;display:inline-block;padding: 16px 0px;color: #333333;font-weight: bold">
+                        总金额占比
+                    </div>
+                </div>
+                <div id="pieChat" style="height: 340px">
+                </div>
+            </div>
+
+        </div>
+
+        <div style="background-color: #fff;padding: 25px;margin-bottom: 0px;border-radius: 4px;box-shadow: 0 0 6px 0 #DFDFDF;">
             <div id="chartColumn" style="height: 350px;">
             </div>
         </div>
@@ -447,21 +465,35 @@
 </script>
 
 <style scoped>
+    /deep/ .el-main {
+        padding: 10px;
+    }
+
     /deep/ .el-tabs__header {
         margin: 0;
     }
 
-    .statistics.statistics-tab {
+    .statistics-tab {
         padding: 0 10px;
+        height: 30px;
+        line-height: 30px;
+        border: 1px solid #DDDFE6;;
+        float: left;
+        box-sizing: border-box;
+        font-size: 12px;
     }
 
     .statistics-tab:hover, .statistics-tab:focus {
-        color: #9760E4;
+        background-color: #2E6CFE;
         cursor: pointer;
+        color: #FFFFFF;
+        border: 1px solid #2E6CFE;
     }
 
     .is_active {
-        color: #9760E4;
+        background-color: #2E6CFE;
+        color: #FFFFFF;
+        border: 1px solid #2E6CFE;
     }
 
     .is_show {
