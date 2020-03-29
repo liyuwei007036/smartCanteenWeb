@@ -144,15 +144,14 @@
                 let recharge = res.recharge
                 let fillBuckle = res.fillBuckle
                 let refund = res.refund
-
                 this.pieChat.setOption({
                     series: [
                         {
                             data: [
-                                {value: total, name: '充值总额'},
-                                {value: recharge, name: '退费总额'},
-                                {value: fillBuckle, name: '补扣总额'},
-                                {value: refund, name: '消费总额'},
+                                {value: recharge, name: '充值总额'},
+                                {value: fillBuckle, name: '退费总额'},
+                                {value: refund, name: '补扣总额'},
+                                {value: total, name: '消费总额'},
                             ]
                         }
                     ]
@@ -240,15 +239,16 @@
                 });
             },
             drawPieChat() {
+                let that = this
                 this.pieChat = echarts.init(document.getElementById('pieChat'));
                 this.pieChat.setOption({
-                    color: ['rgb(82,95,255)', 'rgb(64,211,177)', "rgb(249,116,55)", "rgb(211,21,181)"],
-                    aria: {
-                        show: true
-                    },
+                    color: ['rgb(211,21,181)', 'rgb(64,211,177)', "rgb(249,116,55)", 'rgb(82,95,255)'],
                     tooltip: {
                         trigger: 'item',
-                        formatter: '{a} <br/>{b}: {c} ({d}%)'
+                        formatter: function (a) {
+                            let c = that.formatMoney(a.value);
+                            return `${a.marker} ${a.name}: ${c}  (${a.percent}%)`
+                        }
                     },
                     legend: {
                         orient: 'vertical',
@@ -259,18 +259,12 @@
                         },
                         data: ['充值总额', '退费总额', '补扣总额', '消费总额']
                     },
-                    grid: {
-                        show: true,
-                        left: 0,
-                        top: 0,
-                        bottom: 0,
-                    },
                     series: [
                         {
                             name: '',
                             type: 'pie',
-                            bottom: '20%',
-                            radius: ['60%', '40%'],
+                            bottom: '10%',
+                            radius: ['90%', '60%'],
                             center: ['50%', '50%'],//控制圆位置
                             stillShowZeroSum: true,
                             avoidLabelOverlap: false,
@@ -283,7 +277,7 @@
                             emphasis: {
                                 label: {
                                     show: true,
-                                    fontSize: '10',
+                                    fontSize: '12',
                                     fontWeight: 'bold'
                                 }
                             },
@@ -423,7 +417,7 @@
             formatMoney(number, places, symbol, thousand, decimal) {
                 number = number || 0;
                 places = !isNaN(places = Math.abs(places)) ? places : 2;
-                symbol = symbol !== undefined ? symbol : "&#xA5; ";
+                symbol = symbol !== undefined ? symbol : "<span>&#xA5;</span> ";
                 thousand = thousand || ",";
                 decimal = decimal || ".";
                 var negative = number < 0 ? "-" : "",
