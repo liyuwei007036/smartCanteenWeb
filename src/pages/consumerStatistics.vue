@@ -125,12 +125,12 @@
                     tooltip: {
                         formatter: function (params) {
                             if (type === 'year') {
-                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
+                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
                             } else if (type === 'month') {
-                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
+                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
                             } else if (type === 'day') {
                                 let times = params[0].axisValueLabel.split('-')
-                                return `${times[0]}-${times[1]}-${times[2]} ${times[3]} 时` + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
+                                return `${times[0]}-${times[1]}-${times[2]} ${times[3]} 时` + '</br>' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
                             }
                         }
                     },
@@ -152,7 +152,38 @@
                     series: [{
                         name: '销售额',
                         type: 'bar',
-                        barWidth: '50%',
+                        showBackground: false,
+                        emphasis: {
+                            itemStyle: {
+                                color: {
+                                    type: 'linear',
+                                    x: 0,
+                                    y: 0,
+                                    x2: 0,
+                                    y2: 1,
+                                    colorStops: [{
+                                        offset: 0, color: '#5BA5FF' // 0% 处的颜色
+                                    }, {
+                                        offset: 1, color: '#525FFF' // 100% 处的颜色
+                                    }],
+                                    global: false // 缺省为 false
+                                }
+                            }
+                        },
+                        itemStyle: {
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: '#20C8FC' // 0% 处的颜色
+                                }, {
+                                    offset: 1, color: '#E8FAFF' // 100% 处的颜色
+                                }],
+                            }
+                        },
                         data: HistogramY
                     }]
                 })
@@ -195,7 +226,6 @@
             drawHistogram() {
                 this.Histogram = echarts.init(document.getElementById('Histogram'));
                 this.Histogram.setOption({
-                    color: ['#1890FF'],
                     tooltip: {
                         trigger: 'axis',
                         backgroundColor: 'rgba(50,50,50,0.9)',
@@ -204,13 +234,16 @@
                             10, // 右
                             15,  // 下
                             10, // 左
-                        ], axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        ],
+                        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                            type: 'none'        // 默认为直线，可选为：'line' | 'shadow'
                         },
                     },
                     grid: {
                         top: '10%',
-                        bottom: '10%'
+                        bottom: '10%',
+                        left: '13%',
+                        right: '0%'
                     },
                     xAxis: {
                         type: 'category',
@@ -327,7 +360,7 @@
                     lineChatY.push(data[x])
                 }
                 this.chartColumn.setOption({
-                    color: ['#2FC25B'],
+                    color: ['#FF5101'],
                     title: {
                         text: '消费峰值统计',
                         left: '10%',
@@ -362,7 +395,7 @@
                             10, // 左
                         ],
                         formatter: function (params) {
-                            return params[0].axisValueLabel + '</br>' + params[0].marker + ' ' + params[0].seriesName + ': ' + params[0].value + '笔'
+                            return params[0].axisValueLabel + '</br>' + params[0].seriesName + ': ' + params[0].value + '笔'
                         }
                     },
                     minInterval: 1,
@@ -414,10 +447,28 @@
                         }
                     },
                     series: [{
+                        type: 'line',
                         symbol: 'circle',
                         name: '消费次数',
-                        data: lineChatY,
-                        type: 'line'
+                        smooth: 0.5,
+                        dimensions: ['x', 'y'],
+                        smoothMonotone: 'x',
+                        // data: lineChatY,
+                        data: [1, 2, 4, 6, 5, 8, 0, 4, 12, 45, 67, 1, 45, 12, 34, 111, 1, 6, 8, 0, 3, 2, 1, 7, 8],
+                        areaStyle: {
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: 'rgba(255, 81, 1, 0.2)' // 0% 处的颜色
+                                }, {
+                                    offset: 1, color: 'rgba(255, 255, 255)' // 100% 处的颜色
+                                }],
+                            }
+                        }
                     }]
                 });
             },
