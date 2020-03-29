@@ -15,18 +15,11 @@
                 </div>
             </div>
             <div style="display: flex;align-items: center;padding: 0 0">
-                <div id="Histogram" style="height: 340px;width: 70%">
+                <div id="Histogram" style="height: 340px;width: 80%">
 
                 </div>
                 <div class="statistics_right">
-                    <div class="total_sales_amount">
-                        总销售额
-                    </div>
-                    <div style="margin: 20px 0">
-                        <div class="total_amount" v-html="formatMoney(totalSale)"></div>
-                    </div>
-                    <div class="day_sales_amount">
-                        日均销售额<span style="padding-left: 20px" v-html="formatMoney(avg)"/>
+                    <div id="pieChat" style="height: 100%;width: 100%">
                     </div>
                 </div>
             </div>
@@ -69,6 +62,7 @@
             }, 3000)
             this.actives = sessionStorage.getItem('summarySearch') || 'day'
             this.drawLine();
+            this.drawPieChat();
             this.drawHistogram();
             if (this.actives === 'year') {
                 this.getYearChat()
@@ -95,6 +89,7 @@
                 let res = await yearChat();
                 if (res && res.code === 1000) {
                     that.updateHistogramData(res.data, 'year');
+                    that.updatePieChat(res.data);
                 }
             },
             updateHistogramData(res, type) {
@@ -128,9 +123,9 @@
                                 if (type === 'year') {
                                     return value.split('-')[1] + '月'
                                 } else if (type === 'month') {
-                                    return value.split('-')[2] + '日'
+                                    return value.split('-')[2]
                                 } else if (type === 'day') {
-                                    return value.split('-')[3] + '时'
+                                    return value.split('-')[3]
                                 }
                             }
                         },
@@ -144,11 +139,32 @@
                     }]
                 })
             },
+            updatePieChat(res) {
+                let total = res.total
+                let recharge = res.recharge
+                let fillBuckle = res.fillBuckle
+                let refund = res.refund
+
+                this.pieChat.setOption({
+                    series: [
+                        {
+                            data: [
+                                {value: total, name: '充值总额'},
+                                {value: recharge, name: '退费总额'},
+                                {value: fillBuckle, name: '补扣总额'},
+                                {value: refund, name: '消费总额'},
+                            ]
+                        }
+                    ]
+                });
+
+            },
             async getMonthChat() {
                 const that = this
                 let res = await monthChat();
                 if (res && res.code === 1000) {
                     that.updateHistogramData(res.data, 'month');
+                    that.updatePieChat(res.data);
                 }
             },
             async getDayChat() {
@@ -156,6 +172,7 @@
                 let res = await dayChat();
                 if (res && res.code === 1000) {
                     that.updateHistogramData(res.data, 'day');
+                    that.updatePieChat(res.data);
                 }
             },
             drawHistogram() {
@@ -220,6 +237,62 @@
                         }
                     },
                     series: []
+                });
+            },
+            drawPieChat() {
+                this.pieChat = echarts.init(document.getElementById('pieChat'));
+                this.pieChat.setOption({
+                    color: ['rgb(82,95,255)', 'rgb(64,211,177)', "rgb(249,116,55)", "rgb(211,21,181)"],
+                    aria: {
+                        show: true
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 'center',
+                        bottom: '1%',
+                        formatter: function (a) {
+                            return a;
+                        },
+                        data: ['充值总额', '退费总额', '补扣总额', '消费总额']
+                    },
+                    grid: {
+                        show: true,
+                        left: 0,
+                        top: 0,
+                        bottom: 0,
+                    },
+                    series: [
+                        {
+                            name: '',
+                            type: 'pie',
+                            bottom: '20%',
+                            radius: ['60%', '40%'],
+                            center: ['50%', '50%'],//控制圆位置
+                            stillShowZeroSum: true,
+                            avoidLabelOverlap: false,
+                            hoverOffset: 3,
+                            selectedOffset: 3,
+                            label: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                label: {
+                                    show: true,
+                                    fontSize: '10',
+                                    fontWeight: 'bold'
+                                }
+                            },
+                            labelLine: {
+                                show: false
+                            },
+                            data: []
+                        }
+                    ]
                 });
             },
             drawLine() {
@@ -403,7 +476,7 @@
 
     .statistics_right {
         border: 1px solid #2E6CFE;
-        width: 30%;
+        width: 20%;
         height: 280px;
         display: flex;
         flex-direction: column;
