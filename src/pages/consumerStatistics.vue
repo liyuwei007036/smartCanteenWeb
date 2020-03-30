@@ -22,12 +22,14 @@
                                 type="monthrange"
                                 range-separator="至"
                                 start-placeholder="开始月份"
+                                value-format="yyyy-MM-dd"
+                                format="yyyy-MM"
                                 end-placeholder="结束月份"
                                 :picker-options="pickerOptions">
                         </el-date-picker>
                     </div>
-                    <el-button type="primary" class="search-btn-primary" @click="" icon="el-icon-search"
-                               style="height: 30px;line-height: 30px;margin-left: 10px">搜索
+                    <el-button type="primary" class="search-btn-primary" @click="searchOther()" icon="el-icon-search"
+                               style="height: 30px;line-height: 30px;margin-left: 10px">查询
                     </el-button>
                 </el-form>
             </div>
@@ -58,7 +60,7 @@
 
         </div>
 
-        <div style="background-color: #fff;padding: 25px;margin-bottom: 0px;border-radius: 4px;box-shadow: 0 0 6px 0 #DFDFDF;">
+        <div style="background-color: #fff;padding:25px 0px 25px 25px;margin-bottom: 0px;border-radius: 4px;box-shadow: 0 0 6px 0 #DFDFDF;">
             <div id="chartColumn" style="height: 350px;">
             </div>
         </div>
@@ -68,8 +70,7 @@
 
 <script>
     import echarts from 'echarts'
-    import {dayChat, lineChat, monthChat, yearChat} from "../api/dateSummary";
-
+    import {dayChat, other, monthChat, yearChat} from "../api/dateSummary";
 
     export default {
         name: "dataStatistics",
@@ -84,12 +85,10 @@
                 is_show: 'year',
                 totalSale: 0,
                 avg: 0,
-                value1: '',
+                value1: [],
                 pickerOptions: {
                     disabledDate: (time) => {
-                        const lastMonthTime = new Date().setMonth(new Date().getMonth() - 12)
-                        const nextMonthTime = new Date().setMonth(new Date().getMonth() + 12)
-                        return time.getTime() >nextMonthTime || time < lastMonthTime
+                        return time.getTime() > new Date();
                     }
                 }
             }
@@ -111,6 +110,8 @@
                 this.getMonthChat();
             } else if (this.actives === 'day') {
                 this.getDayChat();
+            } else if (this.actives === 'other') {
+                this.getOtherChat();
             }
         },
         destroyed() {
@@ -131,104 +132,8 @@
                 if (res && res.code === 1000) {
                     that.updateHistogramData(res.data, 'year');
                     that.updatePieChat(res.data);
+                    that.updateLineChat(res.data.lineChat, 'year');
                 }
-            },
-            updateHistogramData(res, type) {
-                this.totalSale = res.total
-                this.avg = res.avg
-                let data = res.data
-                let that = this
-                let HistogramX = []
-                let HistogramY = []
-                for (let x of data) {
-                    HistogramX.push(x.key)
-                    HistogramY.push(x.value)
-                }
-                this.Histogram.setOption({
-                    tooltip: {
-                        formatter: function (params) {
-                            if (type === 'year') {
-                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
-                            } else if (type === 'month') {
-                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
-                            } else if (type === 'day') {
-                                let times = params[0].axisValueLabel.split('-')
-                                return `${times[0]}-${times[1]}-${times[2]} ${times[3]} 时` + '</br>' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
-                            }
-                        }
-                    },
-                    xAxis: {
-                        axisLabel: {
-                            margin: 20,
-                            formatter: function (value, index) {
-                                if (type === 'year') {
-                                    return value.split('-')[1] + '月'
-                                } else if (type === 'month') {
-                                    return value.split('-')[2]
-                                } else if (type === 'day') {
-                                    return value.split('-')[3]
-                                }
-                            }
-                        },
-                        data: HistogramX
-                    },
-                    series: [{
-                        name: '销售额',
-                        type: 'bar',
-                        showBackground: false,
-                        emphasis: {
-                            itemStyle: {
-                                color: {
-                                    type: 'linear',
-                                    x: 0,
-                                    y: 0,
-                                    x2: 0,
-                                    y2: 1,
-                                    colorStops: [{
-                                        offset: 0, color: '#5BA5FF' // 0% 处的颜色
-                                    }, {
-                                        offset: 1, color: '#525FFF' // 100% 处的颜色
-                                    }],
-                                    global: false // 缺省为 false
-                                }
-                            }
-                        },
-                        itemStyle: {
-                            color: {
-                                type: 'linear',
-                                x: 0,
-                                y: 0,
-                                x2: 0,
-                                y2: 1,
-                                colorStops: [{
-                                    offset: 0, color: '#20C8FC' // 0% 处的颜色
-                                }, {
-                                    offset: 1, color: '#E8FAFF' // 100% 处的颜色
-                                }],
-                            }
-                        },
-                        data: HistogramY
-                    }]
-                })
-            },
-            updatePieChat(res) {
-                let total = res.total
-                let recharge = res.recharge
-                let fillBuckle = res.fillBuckle
-                let refund = res.refund
-                this.pieChat.setOption({
-                    series: [
-                        {
-                            data: [
-                                {value: recharge, name: '充值总额'},
-                                {value: fillBuckle, name: '退费总额'},
-                                {value: refund, name: '补扣总额'},
-                                {value: total, name: '消费总额'},
-                            ]
-                        }
-                    ]
-                });
-
             },
             async getMonthChat() {
                 const that = this
@@ -236,6 +141,7 @@
                 if (res && res.code === 1000) {
                     that.updateHistogramData(res.data, 'month');
                     that.updatePieChat(res.data);
+                    that.updateLineChat(res.data.lineChat, 'month');
                 }
             },
             async getDayChat() {
@@ -244,6 +150,49 @@
                 if (res && res.code === 1000) {
                     that.updateHistogramData(res.data, 'day');
                     that.updatePieChat(res.data);
+                    that.updateLineChat(res.data.lineChat, 'day');
+                }
+            },
+            searchOther() {
+                let value = this.value1;
+                if (!value) {
+                    return;
+                }
+                let start = new Date(value[0])
+                let end = new Date(value[1])
+
+                let startYear = start.getFullYear();
+                let startMonth = start.getMonth();
+
+                let endYear = end.getFullYear();
+                let endMonth = end.getMonth();
+
+                //通过年,月差计算月份差
+                let months = (endYear - startYear) * 12 + (endMonth - startMonth) + 1;
+                if (months > 12) {
+                    this.$message.error('时间距离不能超过12个月')
+                    return;
+                }
+                sessionStorage.setItem('SEARCH_SUMMARY', JSON.stringify(this.value1))
+                sessionStorage.setItem('summarySearch', 'other')
+                this.actives = 'other'
+                this.getOtherChat();
+            },
+            async getOtherChat() {
+                const that = this;
+                let value = sessionStorage.getItem('SEARCH_SUMMARY');
+                if (!value) {
+                    return;
+                }
+                that.value1 = JSON.parse(value) || []
+                let res = await other({
+                    start: that.value1[0],
+                    end: that.value1[1]
+                });
+                if (res && res.code === 1000) {
+                    that.updateHistogramData(res.data, 'other');
+                    that.updatePieChat(res.data);
+                    that.updateLineChat(res.data.lineChat, 'other');
                 }
             },
             drawHistogram() {
@@ -365,23 +314,6 @@
             },
             drawLine() {
                 this.chartColumn = echarts.init(document.getElementById('chartColumn'));
-                this.getLineChatData()
-
-            },
-            async getLineChatData() {
-                let res = await lineChat()
-                if (res && res.code === 1000) {
-                    let data = res.data
-                    this.drawLineChat(data)
-                }
-            },
-            drawLineChat(data) {
-                let lineChatX = []
-                let lineChatY = []
-                for (let x in data) {
-                    lineChatX.push(x)
-                    lineChatY.push(data[x])
-                }
                 this.chartColumn.setOption({
                     color: ['#FF5101'],
                     title: {
@@ -417,23 +349,13 @@
                             15,  // 下
                             10, // 左
                         ],
-                        formatter: function (params) {
-                            return params[0].axisValueLabel + '</br>' + params[0].seriesName + ': ' + params[0].value + '笔'
-                        }
                     },
                     minInterval: 1,
                     xAxis: {
                         type: 'category',
-                        axisLabel: {
-                            margin: 20,
-                            formatter: function (value, index) {
-                                // 格式化成月/日，只在第一个刻度显示年份
-                                return new Date(value.replace(/-/g, '/')).format("hh:mm");
-                            }
-                        }, axisTick: {
+                        axisTick: {
                             alignWithLabel: true
                         },
-                        data: lineChatX,
                     },
                     yAxis: {
                         min: 0,
@@ -469,6 +391,154 @@
                             }
                         }
                     },
+                });
+            },
+            updateHistogramData(res, type) {
+                this.totalSale = res.total
+                this.avg = res.avg
+                let data = res.data
+                let that = this
+                let HistogramX = []
+                let HistogramY = []
+                for (let x of data) {
+                    HistogramX.push(x.key)
+                    HistogramY.push(x.value)
+                }
+                this.Histogram.setOption({
+                    tooltip: {
+                        formatter: function (params) {
+                            if (type === 'month') {
+                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
+                            } else if (type === 'day') {
+                                let times = params[0].axisValueLabel.split('-')
+                                return `${times[0]}-${times[1]}-${times[2]} ${times[3]} 时` + '</br>' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
+                            } else {
+                                return '' + params[0].axisValueLabel + '' + '</br>' + params[0].seriesName + ': ' + that.formatMoney(params[0].value)
+                            }
+                        }
+                    },
+                    xAxis: {
+                        axisLabel: {
+                            margin: 20,
+                            formatter: function (value, index) {
+                                if (type === 'month') {
+                                    return value.split('-')[2]
+                                } else if (type === 'day') {
+                                    return value.split('-')[3]
+                                } else {
+                                    return value.split('-')[1] + '月'
+                                }
+                            }
+                        },
+                        data: HistogramX
+                    },
+                    series: [{
+                        name: '销售额',
+                        type: 'bar',
+                        showBackground: false,
+                        emphasis: {
+                            itemStyle: {
+                                color: {
+                                    type: 'linear',
+                                    x: 0,
+                                    y: 0,
+                                    x2: 0,
+                                    y2: 1,
+                                    colorStops: [{
+                                        offset: 0, color: '#5BA5FF' // 0% 处的颜色
+                                    }, {
+                                        offset: 1, color: '#525FFF' // 100% 处的颜色
+                                    }],
+                                    global: false // 缺省为 false
+                                }
+                            }
+                        },
+                        itemStyle: {
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: '#20C8FC' // 0% 处的颜色
+                                }, {
+                                    offset: 1, color: '#E8FAFF' // 100% 处的颜色
+                                }],
+                            }
+                        },
+                        data: HistogramY
+                    }]
+                })
+            },
+            updatePieChat(res) {
+                let that = this;
+                let total = res.total
+                let recharge = res.recharge
+                let fillBuckle = res.fillBuckle
+                let refund = res.refund
+                this.pieChat.setOption({
+                    legend: {
+                        orient: 'vertical',
+                        left: 'center',
+                        bottom: '0',
+                        formatter: function (a) {
+                            let value;
+                            if (a === '充值总额') {
+                                value = that.formatMoney(recharge).replace('&#xA5;', '￥')
+                            } else if (a === '退费总额') {
+                                value = that.formatMoney(fillBuckle).replace('&#xA5;', '￥')
+                            } else if (a === '补扣总额') {
+                                value = that.formatMoney(refund).replace('&#xA5;', '￥')
+                            } else if (a === '消费总额') {
+                                value = that.formatMoney(total).replace('&#xA5;', '￥')
+                            }
+                            return `${a} ${value}`;
+                        },
+                        data: ['充值总额', '退费总额', '补扣总额', '消费总额']
+                    },
+                    series: [
+                        {
+                            data: [
+                                {value: recharge, name: '充值总额'},
+                                {value: fillBuckle, name: '退费总额'},
+                                {value: refund, name: '补扣总额'},
+                                {value: total, name: '消费总额'},
+                            ]
+                        }
+                    ]
+                });
+
+            },
+            updateLineChat(data, type) {
+                let lineChatX = []
+                let lineChatY = []
+                for (let x in data) {
+                    lineChatX.push(x)
+                    lineChatY.push(data[x])
+                }
+                this.chartColumn.setOption({
+                    tooltip: {
+                        formatter: function (params) {
+                            return params[0].axisValueLabel + '</br>' + params[0].seriesName + ': ' + params[0].value + '笔'
+                        }
+                    },
+                    xAxis: {
+                        axisLabel: {
+                            margin: 20,
+                            formatter: function (value, index) {
+                                // 格式化成月/日，只在第一个刻度显示年份
+                                if (type === 'month') {
+                                    return new Date(value.replace(/-/g, '/')).format("dd");
+                                } else if (type === 'day') {
+                                    return new Date(value.replace(/-/g, '/')).format("hh:mm");
+                                } else {
+                                    return new Date(value.replace(/-/g, '/')).format("MM") + '月';
+                                }
+                            }
+                        },
+                        data: lineChatX
+                    },
                     series: [{
                         type: 'line',
                         symbol: 'circle',
@@ -476,8 +546,7 @@
                         smooth: 0.5,
                         dimensions: ['x', 'y'],
                         smoothMonotone: 'x',
-                        // data: lineChatY,
-                        data: [1, 2, 4, 6, 5, 8, 0, 4, 12, 45, 67, 1, 45, 12, 34, 111, 1, 6, 8, 0, 3, 2, 1, 7, 8],
+                        data: lineChatY,
                         areaStyle: {
                             color: {
                                 type: 'linear',
@@ -493,7 +562,7 @@
                             }
                         }
                     }]
-                });
+                })
             },
             click(i) {
                 this.actives = i
@@ -509,7 +578,7 @@
             formatMoney(number, places, symbol, thousand, decimal) {
                 number = number || 0;
                 places = !isNaN(places = Math.abs(places)) ? places : 2;
-                symbol = symbol !== undefined ? symbol : "<span>&#xA5;</span> ";
+                symbol = symbol !== undefined ? symbol : "&#xA5;";
                 thousand = thousand || ",";
                 decimal = decimal || ".";
                 var negative = number < 0 ? "-" : "",
@@ -530,9 +599,13 @@
             },
             getMessage(e) {
                 let data = JSON.parse(e.data)
-                console.log(data[`${this.actives}`], this.actives)
-                this.updateHistogramData(data[`${this.actives}`], this.actives)
-                this.drawLineChat(data.line)
+                if (this.actives !== 'other') {
+                    this.updateHistogramData(data[`${this.actives}`], this.actives)
+                    this.updatePieChat(data[`${this.actives}`])
+                    this.updateLineChat(data[`${this.actives}`], this.actives)
+                } else {
+                    this.getOtherChat();
+                }
             },
         }
     }
@@ -574,14 +647,6 @@
         display: block;
     }
 
-    .statistics_right {
-        border: 1px solid #2E6CFE;
-        width: 20%;
-        height: 280px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
 
     .total_sales_amount {
         padding: 20px 0 10px 20px;

@@ -1,9 +1,10 @@
 import axios from '@/api/index';
 
-const lineChat = () => {
+const other = (data) => {
     return axios({
-        method: 'get',
-        url: `/order/summary`,
+        method: 'post',
+        url: `/order/summary/other`,
+        data
     })
 }
 
@@ -30,7 +31,7 @@ const dayChat = () => {
 
 
 export {
-    lineChat,
+    other,
     yearChat,
     monthChat,
     dayChat,
