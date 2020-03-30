@@ -15,6 +15,20 @@
                      style="border-top-right-radius: 4px;border-bottom-right-radius: 4px;margin-left: -1px;"
                      @click="click('year')">全年
                 </div>
+                <el-form :inline="true" :model="formInline" class="demo-form-inline" style="float: left;margin-right: 20px">
+                    <div class="block" style="height: 30px;line-height: 30px;">
+                        <!--                    <span class="demonstration">默认</span>-->
+                        <el-date-picker
+                                v-model="value1"
+                                type="monthrange"
+                                range-separator="至"
+                                start-placeholder="开始月份"
+                                end-placeholder="结束月份">
+                        </el-date-picker>
+                    </div>
+                    <el-button type="primary" class="search-btn-primary" @click="" icon="el-icon-search" style="height: 30px;line-height: 30px;margin-left: 10px">搜索
+                    </el-button>
+                </el-form>
             </div>
         </div>
 
@@ -607,5 +621,38 @@
         color: #888888;
         vertical-align: center;;
         font-size: 14px;
+    }
+
+    .block {
+        float: left;
+        height: 30px;
+        line-height: 30px;
+        width: 231px;
+        margin-left: 10px;
+    }
+
+    .el-dialog__body .el-date-editor.el-input, .el-date-editor.el-input__inner {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        display: flex;
+        padding: 0 10px;
+    }
+
+    .el-date-editor /deep/ .el-range-input {
+        height: 26px;
+    }
+
+    .el-date-editor /deep/ .el-range__icon {
+        font-size: 14px;
+        margin-left: -5px;
+        color: #C0C4CC;
+        float: left;
+        line-height: 26px;
+    }
+
+    .el-input__icon .el-range__icon /deep/ .el-icon-date, .el-date-editor /deep/ .el-range-separator {
+        height: 30px;
+        line-height: 30px;
     }
 </style>
