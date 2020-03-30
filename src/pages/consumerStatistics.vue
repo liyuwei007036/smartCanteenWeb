@@ -15,17 +15,19 @@
                      style="border-top-right-radius: 4px;border-bottom-right-radius: 4px;margin-left: -1px;"
                      @click="click('year')">全年
                 </div>
-                <el-form :inline="true"  class="demo-form-inline" style="float: left;margin-right: 20px">
+                <el-form :inline="true" class="demo-form-inline" style="float: left;margin-right: 20px">
                     <div class="block" style="height: 30px;line-height: 30px;">
                         <el-date-picker
                                 v-model="value1"
                                 type="monthrange"
                                 range-separator="至"
                                 start-placeholder="开始月份"
-                                end-placeholder="结束月份">
+                                end-placeholder="结束月份"
+                                :picker-options="pickerOptions">
                         </el-date-picker>
                     </div>
-                    <el-button type="primary" class="search-btn-primary" @click="" icon="el-icon-search" style="height: 30px;line-height: 30px;margin-left: 10px">搜索
+                    <el-button type="primary" class="search-btn-primary" @click="" icon="el-icon-search"
+                               style="height: 30px;line-height: 30px;margin-left: 10px">搜索
                     </el-button>
                 </el-form>
             </div>
@@ -82,7 +84,14 @@
                 is_show: 'year',
                 totalSale: 0,
                 avg: 0,
-                value1:''
+                value1: '',
+                pickerOptions: {
+                    disabledDate: (time) => {
+                        const lastMonthTime = new Date().setMonth(new Date().getMonth() - 12)
+                        const nextMonthTime = new Date().setMonth(new Date().getMonth() + 12)
+                        return time.getTime() >nextMonthTime || time < lastMonthTime
+                    }
+                }
             }
         },
         beforeCreate() {
