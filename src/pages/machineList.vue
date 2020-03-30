@@ -92,7 +92,7 @@
                    :visible.sync="addVisible"
                    @close="addClose"
                    width="30%">
-            <el-form ref="addForm" :model="addForm" :rules="rules" label-width="60px">
+            <el-form ref="addForm" :model="addForm" :rules="rules" label-width="80px">
                 <el-form-item prop="code" label="卡机编号">
                     <el-input type="text" v-model.trim="addForm.code" auto-complete="off" placeholder="编号"
                               clearable/>
