@@ -1,5 +1,5 @@
 <template>
-    <el-dialog class="dialog"
+    <el-dialog class="dialog" id="dialog"
                width="40%"
                :title="!form.id?'新增人员':'修改人员'"
                :close-on-click-modal="false"
@@ -76,7 +76,8 @@
                         auto-complete="off"
                         :readonly="true"
                         v-model="form.originationName"
-                        @click.native="changeSelectTree()">
+                        @click.native="changeSelectTree()"
+                        id="locationName">
                 </el-input>
 
                 <el-tree v-show="isShowSelect"
@@ -186,8 +187,13 @@
                 t: null,
                 searchCardNo: '',
                 rules: {
-                    name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
-                    no: [{required: true, message: '请输入工号', trigger: 'blur'}],
+                    name: [
+                        {required: true, message: '请输入姓名', trigger: 'blur'},
+                        {min: 2, max: 40, message: '长度在 2 到 40 个汉字或字符', trigger: 'blur'}
+                    ],
+                    no: [{required: true, message: '请输入工号', trigger: 'blur'},
+                        {min: 2, max: 40, message: '长度在 2 到 40 个字符', trigger: 'blur'}
+                    ],
                     cardNo: [
                         {
                             required: true,
@@ -354,7 +360,15 @@
 
             //
             changeSelectTree() {
-                this.isShowSelect = true;
+                let elDialog = document.getElementById("dialog")
+                elDialog.addEventListener('click', (e) => {
+                    let sp3 = document.getElementById("locationName")
+                    if (sp3.contains(e.target)) {
+                        this.isShowSelect = true
+                    } else {
+                        this.isShowSelect = false
+                    }
+                })
             },
 
             filterNode(value, data) {

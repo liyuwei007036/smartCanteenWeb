@@ -25,21 +25,21 @@
                 </el-table-column>
                 <el-table-column
                         prop="code"
-                        label="编号"
+                        label="卡机编号"
                         align="center"
                         :show-overflow-tooltip='true'>
                 </el-table-column>
 
                 <el-table-column
                         prop="name"
-                        label="名称"
+                        label="卡机名称"
                         align="center"
                         :show-overflow-tooltip='true'>
                 </el-table-column>
 
                 <el-table-column
                         prop="location"
-                        label="位置"
+                        label="卡机位置"
                         align="center"
                         :show-overflow-tooltip='true'>
                 </el-table-column>
@@ -93,15 +93,15 @@
                    @close="addClose"
                    width="30%">
             <el-form ref="addForm" :model="addForm" :rules="rules" label-width="60px">
-                <el-form-item prop="code" label="编号">
+                <el-form-item prop="code" label="卡机编号">
                     <el-input type="text" v-model.trim="addForm.code" auto-complete="off" placeholder="编号"
                               clearable/>
                 </el-form-item>
-                <el-form-item prop="name" label="名称">
+                <el-form-item prop="name" label="卡机名称">
                     <el-input type="text" v-model.trim="addForm.name" auto-complete="off" placeholder="名称"
                               clearable/>
                 </el-form-item>
-                <el-form-item prop="location" label="位置">
+                <el-form-item prop="location" label="卡机位置">
                     <el-input type="text" v-model.trim="addForm.location" auto-complete="off" placeholder="位置"
                               clearable/>
                 </el-form-item>
@@ -120,21 +120,21 @@
 
         <!--        编辑弹窗-->
         <el-dialog class="dialog"
-                   :title="'新增'"
+                   :title="'修改'"
                    :close-on-click-modal="false"
                    :visible.sync="editVisible"
                    @close="editClose"
                    width="30%">
             <el-form ref="editForm" :model="editForm" :rules="rules" label-width="60px">
-                <el-form-item prop="code" label="编号">
+                <el-form-item prop="code" label="卡机编号">
                     <el-input type="text" v-model.trim="editForm.code" auto-complete="off" placeholder="编号"
                               clearable/>
                 </el-form-item>
-                <el-form-item prop="name" label="名称">
+                <el-form-item prop="name" label="卡机名称">
                     <el-input type="text" v-model.trim="editForm.name" auto-complete="off" placeholder="名称"
                               clearable/>
                 </el-form-item>
-                <el-form-item prop="location" label="位置">
+                <el-form-item prop="location" label="卡机位置">
                     <el-input type="text" v-model.trim="editForm.location" auto-complete="off" placeholder="位置"
                               clearable/>
                 </el-form-item>

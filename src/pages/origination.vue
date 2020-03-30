@@ -56,11 +56,11 @@
         <!--        弹窗-->
         <el-dialog class="dialog"
 
-                   :title="this.isUpdate?'编辑':'新增'"
+                   :title="this.isUpdate?'修改':'新增'"
                    :close-on-click-modal="false"
                    :visible.sync="visible"
                    width="40%">
-            <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
+            <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="right" style="padding-right: 10px;">
                 <el-form-item prop="name" label="组织名称">
                     <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="组织名称"
                               clearable></el-input>

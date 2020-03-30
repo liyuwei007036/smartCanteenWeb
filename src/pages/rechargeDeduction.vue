@@ -339,7 +339,7 @@
                     money: [{
                         required: true,
                         pattern: /^[1-9]\d{0,5}$|^([0-9]+\.\d{1,2})$/,
-                        message: '补扣金额必须大于0小于等于999999',
+                        message: '充值金额上限为100,000',
                         trigger: 'blur'
                     }],
                 },
@@ -554,5 +554,18 @@
         display: block;
         height: 0;
         clear: both;
+    }
+
+    /deep/ .el-dialog {
+        display: flex;
+        flex-direction: column;
+        margin: 0 !important;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        /*height:600px;*/
+        max-height: calc(100% - 30px);
+        max-width: calc(100% - 30px);
     }
 </style>

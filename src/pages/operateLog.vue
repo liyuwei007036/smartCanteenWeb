@@ -12,7 +12,7 @@
                 </el-col>
                 <el-col :span="8">
                     <div class="grid-content search-grid-content">
-                        <label class="search-label">操作动作：</label>
+                        <label class="search-label">操作功能：</label>
                         <el-input class="search_input" v-model="search.action" placeholder="请输入动作"></el-input>
                     </div>
                 </el-col>

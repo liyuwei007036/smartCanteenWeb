@@ -32,8 +32,8 @@
                 </el-col>
                 <el-col :span="8">
                     <div class="grid-content search-grid-content">
-                        <label class="search-label">消费类型：</label>
-                        <el-select class="search_input el-input" v-model="search.orderType" placeholder="请选择消费类型"
+                        <label class="search-label">消费方式：</label>
+                        <el-select class="search_input el-input" v-model="search.orderType" placeholder="请选择消费方式"
                                    clearable>
                             <el-option
                                     v-for="item in orderTypeList"
@@ -136,7 +136,7 @@
 
             <el-table-column
                     prop="machineNo"
-                    label="终端编号"
+                    label="卡机名称"
                     :show-overflow-tooltip='true'
                     align="center"
                     width="">

@@ -85,7 +85,7 @@
 
         <!--        弹窗-->
         <el-dialog class="dialog"
-                   :title="!form.id?'新增':'编辑'"
+                   :title="!form.id?'新增':'修改'"
                    :close-on-click-modal="false"
                    :visible.sync="visible"
                    width="40%">

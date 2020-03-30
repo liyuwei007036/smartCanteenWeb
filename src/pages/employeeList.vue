@@ -285,7 +285,7 @@
                 ],
                 statusList: [
                     {id: '', name: '全部'},
-                    {id: 1, name: '正常'},
+                    {id: 1, name: '在职'},
                     {id: 2, name: '离职'}
                 ],
                 isVisible: false, //编辑新增弹窗
@@ -429,6 +429,19 @@
 
     .el-tree-node__content:hover {
         background-color: #C7C9E1;
+    }
+
+    .el-dialog {
+        display: flex;
+        flex-direction: column;
+        margin: 0 !important;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        /*height:600px;*/
+        max-height: calc(100% - 30px);
+        max-width: calc(100% - 30px);
     }
 
 </style>
