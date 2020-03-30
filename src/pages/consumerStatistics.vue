@@ -327,7 +327,7 @@
                     legend: {
                         orient: 'vertical',
                         left: 'center',
-                        bottom: '1%',
+                        bottom: '0',
                         formatter: function (a) {
                             return a;
                         },
@@ -337,7 +337,7 @@
                         {
                             name: '',
                             type: 'pie',
-                            bottom: '10%',
+                            bottom: '30%',
                             radius: ['90%', '60%'],
                             center: ['50%', '50%'],//控制圆位置
                             stillShowZeroSum: true,
