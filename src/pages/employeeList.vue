@@ -66,7 +66,7 @@
                     stripe
                     border
                     style="width: 100%"
-                    max-height="maxHeight"
+                    :max-height="maxHeight"
                     :header-cell-style="{
                     'background-color': '#F2F6FC',
                     'color':'#333333',
@@ -294,7 +294,7 @@
             }
         },
         mounted: function () {
-            this.maxHeight = this.$ViewportSize - 260
+            this.maxHeight = this.$ViewportSize - 300
             let setSearch = JSON.parse(localStorage.getItem('search'))
             if (setSearch !== 'null' && setSearch != null) {
                 this.search = setSearch

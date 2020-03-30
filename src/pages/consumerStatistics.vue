@@ -44,7 +44,7 @@
                     </div>
 
                 </div>
-                <div id="Histogram" style="height: 340px">
+                <div id="Histogram" style="height: 300px">
                 </div>
             </div>
 
@@ -54,14 +54,19 @@
                         总金额占比
                     </div>
                 </div>
-                <div id="pieChat" style="height: 340px">
+                <div id="pieChat" style="height: 300px">
                 </div>
             </div>
 
         </div>
 
-        <div style="background-color: #fff;padding:25px 0px 25px 25px;margin-bottom: 0px;border-radius: 4px;box-shadow: 0 0 6px 0 #DFDFDF;">
-            <div id="chartColumn" style="height: 350px;">
+        <div style="background-color: #fff;padding:0 20px 15px;margin-bottom: 0px;border-radius: 4px;box-shadow: 0 0 6px 0 #DFDFDF;">
+            <div style="border-bottom: 1px solid #DDDFE6">
+                <div style="font-size: 14px;display:inline-block;padding: 16px 0px;color: #333333;font-weight: bold">
+                    消费峰值统计
+                </div>
+            </div>
+            <div id="chartColumn" style="height: 310px;">
             </div>
         </div>
 
