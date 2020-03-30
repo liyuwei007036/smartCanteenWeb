@@ -316,29 +316,10 @@
                 this.chartColumn = echarts.init(document.getElementById('chartColumn'));
                 this.chartColumn.setOption({
                     color: ['#FF5101'],
-                    title: {
-                        text: '消费峰值统计',
+                    grid: {
+                        top: '10%',
                         left: '10%',
-                        textStyle: {
-                            fontStyle: 'normal',
-                            fontSize: 14,
-                            fontWeight: 'bolder',
-                            color: '#000'
-                        }
-                    },
-                    legend: {
-                        type: 'plain',
-                        show: true,
-                        data: [{
-                            icon: 'circle',
-                            name: '消费次数',
-                        }],
-                        right: '10%',
-                        top: '5%',
-                        selectedMode: false,
-                        itemHeight: 8,
-                        itemWidth: 8,
-
+                        right: '2%'
                     },
                     tooltip: {
                         trigger: 'axis',
