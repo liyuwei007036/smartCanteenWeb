@@ -160,7 +160,7 @@
             },
             searchOther() {
                 let value = this.value1;
-                if (!value) {
+                if (value.length !== 2) {
                     return;
                 }
                 let start = new Date(value[0])
@@ -588,7 +588,7 @@
                 if (this.actives !== 'other') {
                     this.updateHistogramData(data[`${this.actives}`], this.actives)
                     this.updatePieChat(data[`${this.actives}`])
-                    this.updateLineChat(data[`${this.actives}`], this.actives)
+                    this.updateLineChat(data[`${this.actives}`].lineChat, this.actives)
                 } else {
                     this.getOtherChat();
                 }
