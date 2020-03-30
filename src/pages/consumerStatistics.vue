@@ -15,9 +15,8 @@
                      style="border-top-right-radius: 4px;border-bottom-right-radius: 4px;margin-left: -1px;"
                      @click="click('year')">全年
                 </div>
-                <el-form :inline="true" :model="formInline" class="demo-form-inline" style="float: left;margin-right: 20px">
+                <el-form :inline="true"  class="demo-form-inline" style="float: left;margin-right: 20px">
                     <div class="block" style="height: 30px;line-height: 30px;">
-                        <!--                    <span class="demonstration">默认</span>-->
                         <el-date-picker
                                 v-model="value1"
                                 type="monthrange"
@@ -83,6 +82,7 @@
                 is_show: 'year',
                 totalSale: 0,
                 avg: 0,
+                value1:''
             }
         },
         beforeCreate() {
