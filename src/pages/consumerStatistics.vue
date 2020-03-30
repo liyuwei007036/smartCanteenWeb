@@ -66,7 +66,7 @@
                     消费峰值统计
                 </div>
             </div>
-            <div id="chartColumn" style="height: 310px;">
+            <div id="chartColumn" style="height: 290px;">
             </div>
         </div>
 
