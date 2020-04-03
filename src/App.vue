@@ -9,18 +9,17 @@
     export default {
         name: 'app',
         beforeCreate() {
-            if (process.env.APP_ENV === 'prod') {
-                window.oncontextmenu = function (e) {
-                    e.preventDefault();
+            if (process.env.NODE_ENV !== 'development') {
+                //禁用右键（防止右键查看源代码）
+                window.oncontextmenu = function () {
+                    return false;
                 }
-                window.document.onmousedown = function mdClick(event) {
-                    const e = event || window.event || arguments.callee.caller.arguments[0];
-                    // eslint-disable-next-line no-empty
-                    if (e.button === 2 || e.button === 3) {
-                    }
+                //禁止任何键盘敲击事件（防止F12和shift+ctrl+i调起开发者工具）
+                window.onkeydown = window.onkeyup = window.onkeypress = function () {
+                    window.event.returnValue = false;
+                    return false;
                 }
             }
-
         },
         provide() {
             return {
@@ -36,6 +35,9 @@
             this.localSocket()
         },
         methods: {
+            dis() {
+
+            },
             reload() {
                 this.isRouterAlive = false
                 this.$nextTick(() => {
