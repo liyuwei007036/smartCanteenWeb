@@ -44,7 +44,7 @@
                     </div>
 
                 </div>
-                <div id="Histogram" style="height: 250px">
+                <div id="Histogram" style="height: 300px">
                 </div>
             </div>
 
@@ -54,7 +54,7 @@
                         总金额占比
                     </div>
                 </div>
-                <div id="pieChat" style="height: 250px">
+                <div id="pieChat" style="height: 300px">
                 </div>
             </div>
 
@@ -217,8 +217,8 @@
                         },
                     },
                     grid: {
-                        top: '5%',
-                        bottom: '15%',
+                        top: '10%',
+                        bottom: '10%',
                         left: '13%',
                         right: '0%'
                     },
@@ -292,7 +292,7 @@
                             name: '',
                             type: 'pie',
                             bottom: '30%',
-                            radius: ['70%', '40%'],
+                            radius: ['90%', '60%'],
                             center: ['50%', '50%'],//控制圆位置
                             stillShowZeroSum: true,
                             avoidLabelOverlap: false,
