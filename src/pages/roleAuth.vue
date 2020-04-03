@@ -86,8 +86,6 @@
                 let res = await addPermission(data)
                 if (res.code === 1000) {
                     this.$message.success('操作成功')
-                } else {
-
                 }
             },
             async listPermission() {
@@ -113,8 +111,6 @@
                     if (this.roleId) {
                         this.getRolePermissions()
                     }
-                } else {
-
                 }
             },
         }

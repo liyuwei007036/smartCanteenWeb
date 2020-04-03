@@ -2,7 +2,7 @@ import axios from 'axios';
 import {Message} from 'element-ui'
 import router from "../router";
 import {HTTP_URL} from '@/config/global'
-
+console.log(HTTP_URL)
 axios.defaults.timeout = 50000;
 axios.defaults.withCredentials = false;
 axios.defaults.baseURL = HTTP_URL;

@@ -17,6 +17,7 @@ const aclDirective = {
         let $user
         try {
             $user = JSON.parse(sessionStorage.getItem('user'))
+            // eslint-disable-next-line no-empty
         } catch (e) {
 
         }

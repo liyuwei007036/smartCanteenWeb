@@ -4,17 +4,18 @@
     </div>
 </template>
 <script>
-    import {SOCKET_URL} from '@/config/global'
+    import {SOCKET_URL} from './config/global.js'
 
     export default {
         name: 'app',
         beforeCreate() {
-            if (process.env.ENV_CONFIG === 'prod') {
+            if (process.env.APP_ENV === 'prod') {
                 window.oncontextmenu = function (e) {
                     e.preventDefault();
                 }
-                document.onmousedown = function mdClick(event) {
+                window.document.onmousedown = function mdClick(event) {
                     const e = event || window.event || arguments.callee.caller.arguments[0];
+                    // eslint-disable-next-line no-empty
                     if (e.button === 2 || e.button === 3) {
                     }
                 }
@@ -43,6 +44,7 @@
             },
             localSocket() {
                 let that = this
+                console.log(SOCKET_URL)
                 if (typeof (WebSocket) == "function") {
                     const wsUri = SOCKET_URL + sessionStorage.getItem('x-smart-token') || 'x'
                     that.ws = new WebSocket(wsUri);

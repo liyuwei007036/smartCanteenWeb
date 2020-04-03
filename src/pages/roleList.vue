@@ -151,11 +151,8 @@
                     this.total = res.data.total;
                     this.currentPage = res.data.currentPage;
                     this.tableData = res.data.data
-                } else {
-
                 }
             },
-
 
             //搜索
             serach() {
@@ -178,11 +175,8 @@
             //获取用户数据
             async getRole() {
                 let res = await get(this.form.id);
-
                 if (res.code === 1000) {
                     this.form = res.data
-                } else {
-
                 }
             },
 
