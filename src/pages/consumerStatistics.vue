@@ -75,7 +75,7 @@
 
 <script>
     import echarts from 'echarts'
-    import {dayChat, other, monthChat, yearChat} from "../api/dateSummary";
+    import {dayChat, monthChat, other, yearChat} from "../api/dateSummary";
 
     export default {
         name: "dataStatistics",
@@ -290,6 +290,10 @@
                     legend: {
                         orient: 'vertical',
                         left: 'center',
+                        padding: 0,
+                        itemGap: 8,
+                        itemWidth: 20,
+                        itemHeight: 10,
                         bottom: '0',
                         formatter: function (a) {
                             return a;
@@ -301,7 +305,7 @@
                             name: '',
                             type: 'pie',
                             bottom: '30%',
-                            radius: ['90%', '60%'],
+                            radius: ['85%', '60%'],
                             center: ['50%', '50%'],//控制圆位置
                             stillShowZeroSum: true,
                             avoidLabelOverlap: false,
@@ -333,7 +337,8 @@
                     grid: {
                         top: '10%',
                         left: '10%',
-                        right: '2%'
+                        right: '2%',
+                        bottom: '13%'
                     },
                     tooltip: {
                         trigger: 'axis',
