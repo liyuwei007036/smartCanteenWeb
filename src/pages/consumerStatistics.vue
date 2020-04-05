@@ -101,6 +101,8 @@
         beforeCreate() {
         },
         mounted() {
+            this.getScreenHeight()
+
             let that = this
             setTimeout(function () {
                 that.initUpdate()
@@ -131,6 +133,21 @@
             }
         },
         methods: {
+            getScreenHeight() {
+
+                console.clear()
+
+                let height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+
+                console.log(height);
+                let h = document.documentElement.clientHeight;
+                console.log(h - 60)
+
+                h = document.documentElement.clientHeight || document.body.clientHeight;
+                console.log(h - 60)
+
+            },
+
             async getYearChat() {
                 const that = this
                 let res = await yearChat();
@@ -218,7 +235,7 @@
                     },
                     grid: {
                         top: '10%',
-                        bottom: '10%',
+                        bottom: '13%',
                         left: '13%',
                         right: '0%'
                     },
