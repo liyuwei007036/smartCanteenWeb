@@ -10,20 +10,20 @@
                     <div class="grid-content search-grid-content">
                         <label class="search-label">姓名：</label>
                         <el-input class="search_input" v-model="search.empName" placeholder="请输入姓名"
-                                  clearable></el-input>
+                                  clearable/>
                     </div>
                 </el-col>
                 <el-col :span="8">
                     <div class="grid-content search-grid-content">
                         <label class="search-label">工号：</label>
-                        <el-input class="search_input" v-model="search.empNo" placeholder="请输入工号" clearable></el-input>
+                        <el-input class="search_input" v-model="search.empNo" placeholder="请输入工号" clearable/>
                     </div>
                 </el-col>
                 <el-col :span="8">
                     <div class="grid-content search-grid-content">
                         <label class="search-label">手机号：</label>
                         <el-input class="search_input" v-model="search.mobile" placeholder="请输入手机号"
-                                  clearable></el-input>
+                                  clearable/>
                     </div>
                 </el-col>
             </el-row>
@@ -32,7 +32,7 @@
                 <el-col :span="8">
                     <div class="grid-content search-grid-content">
                         <label class="search-label">卡号：</label>
-                        <el-input class="search_input" v-model="search.cardNo" placeholder="请输入卡号" clearable></el-input>
+                        <el-input class="search_input" v-model="search.cardNo" placeholder="请输入卡号" clearable/>
                     </div>
                 </el-col>
             </el-row>
@@ -47,7 +47,7 @@
             </el-button>
             <el-button type="primary" class="search-btn" @click="toggleSearch"
                        icon="el-icon-search"
-                       style="float: right;"></el-button>
+                       style="float: right;"/>
         </div>
 
         <div>
@@ -156,7 +156,7 @@
                    :close-on-click-modal="false"
                    :visible.sync="visible"
                    width="40%" @closed="handleClose">
-            <el-form ref="form" :model="form" :rules="rules" label-width="104px" label-position="left">
+            <el-form ref="form" :model="form" :rules="rules" label-width="104px" label-position="right">
                 <el-form-item prop="name" label="姓名" v-if="isShow">
                     <el-input type="text" v-model.trim="name" auto-complete="off" placeholder="用户姓名"
                               :readonly='true'/>
@@ -226,7 +226,7 @@
                    width="40%"
                    @close="handleClose">
             <el-form ref="deductionForm" :model="deductionForm" :rules="deductionRules" label-width="105px"
-                     label-position="left">
+                     label-position="right">
                 <el-form-item prop="name" label="姓名">
                     <el-input type="text" v-model.trim="name" auto-complete="off" placeholder="用户姓名"
                               :readonly='true'/>
@@ -366,13 +366,10 @@
             //获取列表数据
             async getList() {
                 let res = await rechargeList(this.search);
-
                 if (res.code === 1000) {
                     this.total = res.data.total;
                     this.currentPage = res.data.currentPage;
                     this.tableData = res.data.data
-                } else {
-
                 }
             },
 
@@ -414,7 +411,6 @@
                     if (valid) {
                         this.addForm();
                     } else {
-
                         return false;
                     }
                 });
@@ -445,7 +441,6 @@
                     if (valid) {
                         this.addDeductionForm();
                     } else {
-
                         return false;
                     }
                 });
@@ -464,7 +459,6 @@
 
             handleSelectionChange(val) {
                 this.multipleSelection = val;
-
             },
 
 
