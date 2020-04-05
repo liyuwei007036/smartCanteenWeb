@@ -44,7 +44,7 @@
                     </div>
 
                 </div>
-                <div id="Histogram" style="height: 300px">
+                <div id="Histogram" :style="{height: heightx}">
                 </div>
             </div>
 
@@ -54,7 +54,7 @@
                         总金额占比
                     </div>
                 </div>
-                <div id="pieChat" style="height: 300px">
+                <div id="pieChat" :style="{height: heightx}">
                 </div>
             </div>
 
@@ -66,7 +66,7 @@
                     消费峰值统计
                 </div>
             </div>
-            <div id="chartColumn" style="height: 290px;">
+            <div id="chartColumn" :style="{height: heightx}">
             </div>
         </div>
 
@@ -100,8 +100,14 @@
         },
         beforeCreate() {
         },
+        computed: {
+            heightx: function () {
+                let h = document.documentElement.clientHeight || document.body.clientHeight;
+                h = h - 60 - 58 - 30 - 40 - 52 * 2 - 60
+                return h / 2 + 'px'
+            },
+        },
         mounted() {
-            this.getScreenHeight()
 
             let that = this
             setTimeout(function () {
@@ -133,20 +139,6 @@
             }
         },
         methods: {
-            getScreenHeight() {
-
-                console.clear()
-
-                let height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-
-                console.log(height);
-                let h = document.documentElement.clientHeight;
-                console.log(h - 60)
-
-                h = document.documentElement.clientHeight || document.body.clientHeight;
-                console.log(h - 60)
-
-            },
 
             async getYearChat() {
                 const that = this
