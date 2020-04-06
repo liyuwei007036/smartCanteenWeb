@@ -227,8 +227,8 @@
                     },
                     grid: {
                         top: '10%',
-                        bottom: '13%',
-                        left: '13%',
+                        bottom: '15%',
+                        left: '15%',
                         right: '0%'
                     },
                     xAxis: {
@@ -338,7 +338,7 @@
                         top: '10%',
                         left: '10%',
                         right: '2%',
-                        bottom: '13%'
+                        bottom: '15%'
                     },
                     tooltip: {
                         trigger: 'axis',
