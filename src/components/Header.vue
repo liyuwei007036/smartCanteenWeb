@@ -6,9 +6,9 @@
         </div>
         <div class="demonstration">
             <el-image :src="require('@/assets/b730ea28a331725fd1ae1ac746795ab.png')" class="header-img"/>
-            <span class="user-name">欢迎您：{{user.name}}</span>&nbsp;| &nbsp;
-            <span style="color: #777" :style="{cursor:'pointer'}" @click="changePassword">修改密码</span>&nbsp;| &nbsp;
-            <span style="color: #777" @click="out" :style="{cursor:'pointer'}">安全退出</span>
+            <span class="user-name" style="padding:0 5px;">欢迎您：{{user.name}}</span>|
+            <span style="color: #777;cursor:pointer;padding:0 5px;" @click="changePassword">修改密码</span>&nbsp;| &nbsp;
+            <span style="color: #777;cursor:pointer;padding:0 5px;" @click="out">安全退出</span>
         </div>
         <div>
             <!--        弹窗-->
