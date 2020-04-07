@@ -40,7 +40,7 @@
             <div style="background-color: #fff;padding:0 20px 15px;margin-bottom: 10px;width: 80%;margin-right: 20px;border-radius: 4px;box-shadow: 0 0 6px 0 #DFDFDF;">
                 <div style="border-bottom: 1px solid #DDDFE6">
                     <div style="font-size: 14px;display:inline-block;padding: 16px 0px;color: #333333;font-weight: bold">
-                        销售额
+                        消费记录
                     </div>
 
                 </div>

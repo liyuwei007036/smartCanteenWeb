@@ -213,6 +213,11 @@
                               placeholder="手机号" disabled></el-input>
                 </el-form-item>
 
+                <el-form-item prop="mobile" label="余额(元)">
+                    <el-input type="text" v-model.trim="replaceForm.currentBalance" auto-complete="off"
+                              placeholder="余额(元)" disabled></el-input>
+                </el-form-item>
+
                 <el-form-item prop="cardNo" label="卡号" class="getCard">
                     <el-input type="number" v-model.trim="replaceForm.cardNo" auto-complete="off" placeholder="卡号"
                               @mousewheel.native.prevent>
@@ -328,7 +333,8 @@
                     cardNo: '',
                     type: '1',
                     validityTime: '',
-                    roleName: []
+                    roleName: [],
+                    currentBalance: '',
 
                 },
                 replaceRules: {

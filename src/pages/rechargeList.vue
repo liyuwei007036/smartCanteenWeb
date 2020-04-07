@@ -117,7 +117,7 @@
                 </el-table-column>
                 <el-table-column
                         prop="createTime"
-                        label="记账时间"
+                        label="充值时间"
                         :show-overflow-tooltip='true'
                         align="center"
                         width="">
@@ -131,7 +131,7 @@
                 </el-table-column>
                 <el-table-column
                         prop="balance"
-                        label="卡余额"
+                        label="卡余额(元)"
                         :show-overflow-tooltip='true'
                         align="center"
                         width="">

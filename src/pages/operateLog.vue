@@ -87,13 +87,6 @@
                     width="">
             </el-table-column>
             <el-table-column
-                    prop="operationTime"
-                    label="操作时间"
-                    align="center"
-                    :show-overflow-tooltip='true'
-                    width="">
-            </el-table-column>
-            <el-table-column
                     prop="module"
                     label="操作模块"
                     align="center"
@@ -114,12 +107,18 @@
                     :show-overflow-tooltip='true'
                     width="">
             </el-table-column>
-
+            <el-table-column
+                    prop="operationTime"
+                    label="操作时间"
+                    align="center"
+                    :show-overflow-tooltip='true'
+                    width="170">
+            </el-table-column>
             <el-table-column
                     prop="operation"
                     label="操作"
                     align="center"
-                    width="180">
+                    width="120">
                 <template slot-scope="scope">
                     <el-button type="text" size="small"
                                v-acl="['icCard:patch']"

@@ -59,28 +59,35 @@
             </el-table-column>
             <el-table-column
                     prop="empName"
-                    label="登录人"
+                    label="姓名"
                     align="center"
                     :show-overflow-tooltip='true'
                     width="">
             </el-table-column>
             <el-table-column
-                    prop="type"
-                    label="操作功能"
-                    align="center"
-                    :show-overflow-tooltip='true'
-                    width="">
-            </el-table-column>
-            <el-table-column
-                    prop="ip"
-                    label="操作IP"
+                    prop="empNo"
+                    label="工号"
                     align="center"
                     :show-overflow-tooltip='true'
                     width="">
             </el-table-column>
             <el-table-column
                     prop="loginTime"
-                    label="操作时间"
+                    label="时间"
+                    align="center"
+                    :show-overflow-tooltip='true'
+                    width="">
+            </el-table-column>
+            <el-table-column
+                    prop="ip"
+                    label="IP地址"
+                    align="center"
+                    :show-overflow-tooltip='true'
+                    width="">
+            </el-table-column>
+            <el-table-column
+                    prop="type"
+                    label="功能模块"
                     align="center"
                     :show-overflow-tooltip='true'
                     width="">
