@@ -444,4 +444,10 @@
         max-width: calc(100% - 30px);
     }
 
+   .el-dialog .el-dialog__body {
+        flex: 1;
+        overflow: auto;
+        padding-right: 40px;
+    }
+
 </style>
