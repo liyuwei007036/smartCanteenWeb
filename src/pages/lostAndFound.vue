@@ -292,7 +292,7 @@
                     size: 10,
                 },
                 carStatusList: [{
-                    name: '请选择',
+                    name: '全部',
                     id: ''
                 }, {
                     name: '激活',
@@ -302,7 +302,7 @@
                     id: '2'
                 }],
                 accountStatusList: [{
-                    name: '请选择',
+                    name: '全部',
                     id: ''
                 }, {
                     name: '正常',

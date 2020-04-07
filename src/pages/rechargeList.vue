@@ -202,6 +202,9 @@
                     size: 10,
                 },
                 rechargeTypeList: [{
+                    name: '全部',
+                    id: ''
+                }, {
                     name: '正常',
                     id: 1
                 }, {
