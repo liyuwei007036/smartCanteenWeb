@@ -217,6 +217,9 @@
                     size: 10,
                 },
                 orderTypeList: [{
+                    name: '全部',
+                    id: ''
+                }, {
                     name: '正常',
                     id: 1
                 }, {

@@ -202,6 +202,7 @@
                         }],
                     mobile: [
                         {required: true, message: '请输入手机号', trigger: 'blur'},
+                        {min: 11, max: 11, message: '手机号长度必须为11位', trigger: 'blur'},
                         {validator: checkPhone, trigger: 'blur'}
                     ],
                     roles: [
@@ -209,6 +210,7 @@
                     ],
                     idCard: [
                         {required: true, message: '请填写身份证号', trigger: 'blur'},
+                        {min: 18, max: 18, message: '身份证号长度必须为18位', trigger: 'blur'}
                     ],
                     confirmPassword: [
                         {validator: validatePass2, trigger: 'blur'}
