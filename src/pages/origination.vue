@@ -59,7 +59,7 @@
                    :close-on-click-modal="false"
                    :visible.sync="visible"
                    @close="close"
-                   width="40%">
+                   width="30%">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="right" style="padding-right: 10px;">
                 <el-form-item prop="name" label="组织名称">
                     <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="组织名称"
