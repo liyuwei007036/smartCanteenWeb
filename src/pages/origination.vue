@@ -55,34 +55,30 @@
 
         <!--        弹窗-->
         <el-dialog class="dialog"
-
                    :title="this.isUpdate?'修改':'新增'"
                    :close-on-click-modal="false"
                    :visible.sync="visible"
+                   @close="close"
                    width="40%">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="right" style="padding-right: 10px;">
                 <el-form-item prop="name" label="组织名称">
                     <el-input type="text" v-model.trim="form.name" auto-complete="off" placeholder="组织名称"
                               clearable></el-input>
                 </el-form-item>
-
                 <el-form-item prop="description" label="备注">
                     <el-input type="textarea" v-model.trim="form.description" auto-complete="off" clearable
                               placeholder="备注"></el-input>
                 </el-form-item>
-
             </el-form>
             <span slot="footer" class="dialog-footer" style="text-align: center">
             <el-button class="dialog-btn-reset" @click="resetForm('form')">重 置</el-button>
             <el-button type="primary" class="dialog-btn-normal" @click="handleSubmit('form')">保存</el-button>
         </span>
-
         </el-dialog>
-
     </div>
 </template>
 <script>
-    import {getRoot, getNodes, get, update, add, deleted} from '@/api/origination';
+    import {add, deleted, get, getNodes, getRoot, update} from '@/api/origination';
 
     export default {
         inject: ['reload'],
@@ -97,6 +93,12 @@
                     description: ''
                 }],
                 form: {
+                    description: "",
+                    id: '',
+                    name: "",
+                    parentId: 0
+                },
+                copyForm: {
                     description: "",
                     id: '',
                     name: "",
@@ -118,7 +120,11 @@
             this.maxHeight = this.$ViewportSize - 260
         },
         methods: {
-
+            close() {
+                this.visible = false
+                this.form = {};
+                this.copyForm = {};
+            },
             async load(tree, treeNode, resolve) {
                 let res = await getNodes(tree.id)
                 if (res.code === 1000) {
@@ -129,17 +135,13 @@
             //获取根结点数据
             async root() {
                 let res = await getRoot();
-
                 if (res.code === 1000) {
                     this.tableData = res.data
-                } else {
-
                 }
             },
 
             // 点击编辑按钮
             editNodes(id) {
-                // this.$refs.form.resetFields()
                 this.visible = true;
                 this.isUpdate = true;
                 this.form = {};
@@ -151,11 +153,13 @@
 
             // 弹窗获取节点数据
             async getNodes() {
+                let that = this
                 let res = await get(this.form.id)
                 if (res.code === 1000) {
                     this.form = res.data
-                } else {
-
+                    for (let m in res.data) {
+                        that.copyForm[m] = res.data[m]
+                    }
                 }
             },
 
@@ -169,7 +173,6 @@
                             this.addNode()
                         }
                     } else {
-
                         return false;
                     }
                 });
@@ -177,7 +180,6 @@
 
             //更新数据
             async updateNode() {
-
                 let res = await update(this.form)
                 if (res.code === 1000) {
                     this.$message.success('保存成功');
@@ -203,7 +205,6 @@
                 this.visible = true;
                 this.form = {};
                 this.form.parentId = id || 0;
-
             },
 
             //点击删除按钮
@@ -230,7 +231,12 @@
             },
 
             resetForm(formName) {
-                this.$refs[formName].resetFields();
+                this.$refs[formName].clearValidate();
+                let data = this.copyForm
+                let that = this
+                for (let m in data) {
+                    that.form[m] = data[m]
+                }
             }
         },
     }
