@@ -9,6 +9,8 @@ cp dist.tar.gz docker/dist.tar.gz
 
 cd docker
 
+tar -zxvf dist.tar.gz
+
 docker stop smartcanteenweb && docker rm smartcanteenweb
 
 docker rmi smartcanteenweb:v1
