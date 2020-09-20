@@ -3,9 +3,9 @@
 
 cd /root/.jenkins/workspace/smartCanteenWeb_deploy
 
-tar -cvf dist.tar /dist
+tar -zcvf dist.tar.gz /dist
 
-cp dist.tar docker/dist.tar
+cp dist.tar.gz docker/dist.tar.gz
 
 cd docker
 
