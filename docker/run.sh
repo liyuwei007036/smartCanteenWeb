@@ -1,15 +1,12 @@
 #!/bin/bash
 
-
 cd /root/.jenkins/workspace/smartCanteenWeb_deploy
 
-tar -zcvf dist.tar.gz /dist
+tar -zcvf dist.tar.gz dist/
 
 cp dist.tar.gz docker/dist.tar.gz
 
 cd docker
-
-tar -zxvf dist.tar.gz
 
 docker stop smartcanteenweb && docker rm smartcanteenweb
 
