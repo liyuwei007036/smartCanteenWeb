@@ -1,10 +1,11 @@
 pipeline {
     agent any
     stages {
-        stage('打包') {
+        stage('编译&打包') {
             steps {
                 //
-                sh 'npm run build:test'
+                sh 'cnpm install'
+                sh 'cnpm run build:test'
                 sh 'chmod 777 docker/run.sh'
             }
         }
