@@ -1,7 +1,34 @@
 import axios from 'axios';
 import {Message} from 'element-ui'
 import router from "../router";
-import {HTTP_URL} from '@/config/global'
+import {HTTP_URL, AES_KEY, AES_IV} from '@/config/global'
+import CryptoJS from 'crypto-js';
+
+//解密方法
+const decrypt = function (data) {
+    const key = CryptoJS.enc.Utf8.parse(AES_KEY);
+    const iv = CryptoJS.enc.Utf8.parse(AES_IV);
+    let dat = CryptoJS.AES.decrypt(data, key, {
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    });
+    dat = CryptoJS.enc.Utf8.stringify(dat).toString();
+    return dat;
+
+}
+
+const encrypt = function (data) {
+    const key = CryptoJS.enc.Utf8.parse(AES_KEY);
+    const iv = CryptoJS.enc.Utf8.parse(AES_IV);
+    return CryptoJS.AES.encrypt(data, key, {
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    }).toString()
+}
+
+
 console.log(HTTP_URL)
 axios.defaults.timeout = 50000;
 axios.defaults.withCredentials = false;
@@ -48,6 +75,7 @@ axios.interceptors.request.use(config => {
     //阻止重复请求，当上个请求未完成时，相同的请求不会进行
     config.headers['content-type'] = 'application/json'
     config.headers['x-smart-token'] = sessionStorage.getItem('x-smart-token')
+    config.data = encrypt(JSON.stringify(config.data));
     return config
 }, err => {
     return Promise.reject(err)
@@ -64,7 +92,7 @@ axios.interceptors.response.use(response => {
             allowRequest(response.config.url + '&' + response.config.method)
         }, 500)
     }
-    let data = response.data
+    let data = JSON.parse(decrypt(response.data))
     if (data && data.code === 1000) {
         return data
     } else if (data && data.code === 1022) {

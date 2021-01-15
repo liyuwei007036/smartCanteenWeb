@@ -3,7 +3,11 @@
 'use strict'
 const HTTP_URL = process.env.VUE_APP_URL
 const SOCKET_URL = process.env.VUE_APP_SOCKET_URL
+const AES_KEY = process.env.VUE_APP_AES_KEY
+const AES_IV = process.env.VUE_APP_AES_IV
 export {
     HTTP_URL,
     SOCKET_URL,
+    AES_IV,
+    AES_KEY
 }
