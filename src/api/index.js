@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {Message} from 'element-ui'
 import router from "../router";
-import {HTTP_URL, AES_KEY, AES_IV} from '@/config/global'
+import {HTTP_URL, AES_KEY, AES_IV, TELNET_ID} from '@/config/global'
 import CryptoJS from 'crypto-js';
 
 //解密方法
@@ -30,6 +30,7 @@ const encrypt = function (data) {
 
 
 console.log(HTTP_URL)
+console.log(TELNET_ID)
 axios.defaults.timeout = 50000;
 axios.defaults.withCredentials = false;
 axios.defaults.baseURL = HTTP_URL;
@@ -74,6 +75,7 @@ axios.interceptors.request.use(config => {
     }
     //阻止重复请求，当上个请求未完成时，相同的请求不会进行
     config.headers['content-type'] = 'application/json'
+    config.headers['tenant-id'] = TELNET_ID
     config.headers['x-smart-token'] = sessionStorage.getItem('x-smart-token')
     config.data = encrypt(JSON.stringify(config.data));
     return config
