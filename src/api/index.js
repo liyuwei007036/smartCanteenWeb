@@ -94,7 +94,11 @@ axios.interceptors.response.use(response => {
             allowRequest(response.config.url + '&' + response.config.method)
         }, 500)
     }
-    let data = JSON.parse(decrypt(response.data))
+    let data = response.data;
+    let encryptData = data.data || "";
+    if (encryptData !== "") {
+        data.data = JSON.parse(decrypt(encryptData));
+    }
     if (data && data.code === 1000) {
         return data
     } else if (data && data.code === 1022) {
