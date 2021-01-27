@@ -174,7 +174,7 @@ router.beforeEach((to, from, next) => {
         } catch (e) {
 
         }
-        if ($user && $user.id === 1) {
+        if ($user && $user.id === "1") {
             next();
             return;
         }
