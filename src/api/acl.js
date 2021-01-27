@@ -21,7 +21,7 @@ const aclDirective = {
         } catch (e) {
 
         }
-        if ($user && $user.id === 1){
+        if ($user && $user.hasAllPowers === true) {
             return true;
         }
         let permissions = []

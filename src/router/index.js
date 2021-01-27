@@ -171,10 +171,11 @@ router.beforeEach((to, from, next) => {
         let $user
         try {
             $user = JSON.parse(sessionStorage.getItem('user'))
+            // eslint-disable-next-line no-empty
         } catch (e) {
 
         }
-        if ($user && $user.id === "1") {
+        if ($user && $user.hasAllPowers === true) {
             next();
             return;
         }
